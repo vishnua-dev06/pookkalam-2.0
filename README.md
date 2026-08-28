@@ -1,5 +1,4 @@
-[POOVUM_CODEUM_README.md](https://github.com/user-attachments/files/31561108/POOVUM_CODEUM_README.md)
-# 🌸 POOVUM CODEUM
+
 
 ### **Design it. Code it. Bloom it.**
 
