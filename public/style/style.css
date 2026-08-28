@@ -1,0 +1,2411 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
+
+:root {
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(240, 10%, 3.9%);
+    --card: hsl(0, 0%, 100%);
+    --card-foreground: hsl(240, 10%, 3.9%);
+    --popover: hsl(0, 0%, 100%);
+    --popover-foreground: hsl(240, 10%, 3.9%);
+    --primary: hsl(240, 5.9%, 10%);
+    --primary-foreground: hsl(0, 1%, 94%);
+    --secondary: hsl(240, 4.8%, 95.9%);
+    --secondary-foreground: hsl(240, 5.9%, 10%);
+    --muted: hsl(240, 4.8%, 95.9%);
+    --muted-foreground: hsl(240, 3.8%, 45%);
+    --accent: hsl(0, 1%, 83%);
+    --accent-foreground: hsl(240, 5.9%, 10%);
+    --destructive: hsl(0, 72%, 51%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --border: hsl(240, 5.9%, 90%);
+    --input: hsl(240, 5.9%, 90%);
+    --ring: hsl(240, 5.9%, 10%);
+
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.bg-background {
+    background-color: var(--background);
+}
+
+.bg-foreground {
+    background-color: var(--foreground);
+}
+
+.bg-card {
+    background-color: var(--card);
+}
+
+.bg-card-foreground {
+    background-color: var(--card-foreground);
+}
+
+.bg-popover {
+    background-color: var(--popover);
+}
+
+.bg-popover-foreground {
+    background-color: var(--popover-foreground);
+}
+
+.bg-primary {
+    background-color: var(--primary);
+}
+
+.bg-primary-foreground {
+    background-color: var(--primary-foreground);
+}
+
+.bg-secondary {
+    background-color: var(--secondary);
+}
+
+.bg-secondary-foreground {
+    background-color: var(--secondary-foreground);
+}
+
+.bg-muted {
+    background-color: var(--muted);
+}
+
+.bg-muted-foreground {
+    background-color: var(--muted-foreground);
+}
+
+.bg-accent {
+    background-color: var(--accent);
+}
+
+.bg-accent-foreground {
+    background-color: var(--accent-foreground);
+}
+
+.bg-destructive {
+    background-color: var(--destructive);
+}
+
+.bg-destructive-foreground {
+    background-color: var(--destructive-foreground);
+}
+
+.bg-border {
+    background-color: var(--border);
+}
+
+.bg-input {
+    background-color: var(--input);
+}
+
+.bg-ring {
+    background-color: var(--ring);
+}
+
+
+
+.text-background {
+    color: var(--background);
+}
+
+.text-foreground {
+    color: var(--foreground);
+}
+
+.text-card {
+    color: var(--card);
+}
+
+.text-card-foreground {
+    color: var(--card-foreground);
+}
+
+.text-popover {
+    color: var(--popover);
+}
+
+.text-popover-foreground {
+    color: var(--popover-foreground);
+}
+
+.text-primary {
+    color: var(--primary);
+}
+
+.text-primary-foreground {
+    color: var(--primary-foreground);
+}
+
+.text-secondary {
+    color: var(--secondary);
+}
+
+.text-secondary-foreground {
+    color: var(--secondary-foreground);
+}
+
+.text-muted {
+    color: var(--muted);
+}
+
+.text-muted-foreground {
+    color: var(--muted-foreground);
+}
+
+.text-accent {
+    color: var(--accent);
+}
+
+.text-accent-foreground {
+    color: var(--accent-foreground);
+}
+
+.text-destructive {
+    color: var(--destructive);
+}
+
+.text-destructive-foreground {
+    color: var(--destructive-foreground);
+}
+
+.text-border {
+    color: var(--border);
+}
+
+.text-input {
+    color: var(--input);
+}
+
+.text-ring {
+    color: var(--ring);
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--secondary);
+    outline: none;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid black;
+    margin-top: -8px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid black;
+}
+
+input[type="range"]::-ms-thumb {
+    width: 24px;
+    height: 24px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid black;
+    margin-top: 0;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: linear-gradient(to right, black 0%, black var(--range-progress, 0%), var(--secondary) var(--range-progress, 0%), var(--secondary) 100%);
+    border-radius: 4px;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: var(--secondary);
+    border-radius: 4px;
+}
+
+input[type="range"]::-moz-range-progress {
+    background-color: black;
+    height: 8px;
+    border-radius: 4px;
+}
+
+input[type="range"]::-ms-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type="range"]::-ms-fill-lower {
+    background-color: black;
+    border-radius: 4px;
+}
+
+input[type="range"]::-ms-fill-upper {
+    background-color: var(--secondary);
+    border-radius: 4px;
+}
+
+.navbar-collapse {
+    display: none;
+}
+
+.navbar-collapse.open {
+    display: block;
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Landing Page Design System (Phase 2A)
+   Scoped entirely to pc- prefixed classes used only on index.html.
+   Does not modify or override any existing selectors/variables above,
+   so the /create app page and its input styling are unaffected.
+   ========================================================================== */
+
+:root {
+    --pc-cream: #FDF6EA;
+    --pc-cream-soft: #F7ECD8;
+    --pc-ink: #3B2A20;
+    --pc-maroon: #7A1F2B;
+    --pc-maroon-dark: #5E1520;
+    --pc-marigold: #E08A1E;
+    --pc-marigold-dark: #C06F0E;
+    --pc-gold: #D4A017;
+    --pc-leaf: #4C7A3D;
+    --pc-heading-font: 'Fraunces', 'Georgia', serif;
+    --pc-body-font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.pc-body {
+    background-color: var(--pc-cream);
+    font-family: var(--pc-body-font);
+}
+
+/* Header */
+.pc-header {
+    background-color: var(--pc-cream);
+    color: var(--pc-ink);
+}
+
+.pc-logo-mark {
+    color: var(--pc-maroon);
+    display: inline-flex;
+}
+
+.pc-brand-name {
+    color: var(--pc-maroon);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.pc-nav-toggle {
+    color: var(--pc-maroon);
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.pc-nav-toggle:hover {
+    color: var(--pc-marigold-dark);
+}
+
+.pc-nav-menu {
+    background-color: rgba(253, 246, 234, 0.97);
+}
+
+.pc-nav-link {
+    color: var(--pc-ink);
+    text-underline-offset: 4px;
+    transition: color 0.2s ease;
+}
+
+.pc-nav-link:hover {
+    color: var(--pc-marigold-dark);
+    text-decoration: underline;
+}
+
+/* Text helper classes (brand palette) */
+.pc-text-maroon { color: var(--pc-maroon); }
+.pc-text-ink { color: var(--pc-ink); opacity: 0.9; }
+.pc-text-marigold-dark { color: var(--pc-marigold-dark); }
+
+.pc-bg-marigold { background-color: var(--pc-marigold); }
+.pc-hover-marigold-dark:hover { background-color: var(--pc-marigold-dark); }
+.pc-bg-cream-soft { background-color: var(--pc-cream-soft); }
+.pc-hover-cream-soft:hover { background-color: var(--pc-cream-soft); }
+.pc-border-marigold { border-color: var(--pc-marigold); }
+.pc-border-soft { border-color: rgba(122, 31, 43, 0.15); }
+
+/* Buttons */
+.pc-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    background-color: var(--pc-marigold);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 14px rgba(224, 138, 30, 0.35);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pc-btn-primary:hover {
+    background-color: var(--pc-marigold-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(224, 138, 30, 0.4);
+}
+
+.pc-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--pc-maroon);
+    color: var(--pc-maroon);
+    font-weight: 600;
+    font-size: 0.95rem;
+    background-color: transparent;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.pc-btn-secondary:hover {
+    background-color: rgba(122, 31, 43, 0.07);
+    transform: translateY(-1px);
+}
+
+/* Hero */
+.pc-hero {
+    background: radial-gradient(circle at 50% 15%, var(--pc-cream-soft), var(--pc-cream) 70%);
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.pc-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.pc-pookalam-wrap {
+    width: min(92vw, 840px);
+    height: min(92vw, 840px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.95;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.1s linear;
+    will-change: transform;
+}
+
+.pc-pookalam-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.pc-ring {
+    transform-origin: 400px 400px;
+    will-change: transform;
+    transition: transform 0.08s linear;
+}
+
+.pc-hero > .container {
+    z-index: 2;
+}
+
+.pc-hero-content {
+    backdrop-filter: blur(2px);
+    border-radius: 1.5rem;
+    padding: 1.5rem 1rem;
+}
+
+.pc-eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pc-maroon);
+    background-color: rgba(122, 31, 43, 0.08);
+    border: 1px solid rgba(122, 31, 43, 0.12);
+    padding: 0.35rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.pc-hero-title {
+    font-family: var(--pc-heading-font);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6.5vw, 4.25rem);
+    letter-spacing: 0.02em;
+    color: var(--pc-maroon);
+    line-height: 1.05;
+    text-shadow: 0 2px 20px rgba(253, 246, 234, 0.9);
+}
+
+.pc-hero-tagline {
+    font-family: var(--pc-heading-font);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+    color: var(--pc-marigold-dark);
+}
+
+.pc-hero-sub {
+    color: var(--pc-ink);
+    opacity: 0.88;
+    font-size: 1.08rem;
+    line-height: 1.65;
+}
+
+.pc-hero-note {
+    color: var(--pc-ink);
+    opacity: 0.7;
+}
+
+/* Scroll Reveal System */
+.pc-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.pc-reveal.pc-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered Delays for Children */
+.pc-steps .pc-step:nth-child(1) { transition-delay: 0.05s; }
+.pc-steps .pc-step:nth-child(3) { transition-delay: 0.15s; }
+.pc-steps .pc-step:nth-child(5) { transition-delay: 0.25s; }
+.pc-steps .pc-step:nth-child(7) { transition-delay: 0.35s; }
+
+.pc-feature-grid .pc-feature-card:nth-child(1) { transition-delay: 0.05s; }
+.pc-feature-grid .pc-feature-card:nth-child(2) { transition-delay: 0.12s; }
+.pc-feature-grid .pc-feature-card:nth-child(3) { transition-delay: 0.19s; }
+.pc-feature-grid .pc-feature-card:nth-child(4) { transition-delay: 0.26s; }
+.pc-feature-grid .pc-feature-card:nth-child(5) { transition-delay: 0.33s; }
+.pc-feature-grid .pc-feature-card:nth-child(6) { transition-delay: 0.4s; }
+
+/* Section titles */
+.pc-section-title {
+    font-family: var(--pc-heading-font);
+    font-weight: 700;
+    font-size: clamp(1.85rem, 4vw, 2.6rem);
+    color: var(--pc-maroon);
+    margin-bottom: 0.5rem;
+}
+
+.pc-section-title-sm {
+    font-family: var(--pc-heading-font);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.2vw, 2.15rem);
+    color: var(--pc-maroon);
+    margin-bottom: 0.5rem;
+}
+
+.pc-section-sub {
+    color: var(--pc-ink);
+    opacity: 0.8;
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-bottom: 2.5rem;
+}
+
+.pc-section-alt {
+    background-color: var(--pc-cream-soft);
+    background-image: radial-gradient(circle at 10% 20%, rgba(224, 138, 30, 0.05), transparent 40%),
+                      radial-gradient(circle at 90% 80%, rgba(122, 31, 43, 0.04), transparent 40%);
+}
+
+/* How It Works */
+.pc-steps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.pc-step {
+    flex: 1 1 200px;
+    max-width: 230px;
+    background-color: #fff;
+    border: 1px solid rgba(122, 31, 43, 0.1);
+    border-radius: 1.15rem;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(59, 42, 32, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pc-step:hover {
+    transform: translateY(-4px);
+    border-color: rgba(224, 138, 30, 0.4);
+    box-shadow: 0 12px 28px rgba(59, 42, 32, 0.1);
+}
+
+.pc-step-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(224, 138, 30, 0.18), rgba(212, 160, 23, 0.1));
+    color: var(--pc-marigold-dark);
+    border: 1px solid rgba(224, 138, 30, 0.25);
+    transition: transform 0.25s ease;
+}
+
+.pc-step:hover .pc-step-icon {
+    transform: scale(1.08) rotate(6deg);
+}
+
+.pc-step h3 {
+    font-family: var(--pc-heading-font);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--pc-maroon);
+    margin-bottom: 0.45rem;
+}
+
+.pc-step p {
+    font-size: 0.875rem;
+    color: var(--pc-ink);
+    opacity: 0.78;
+    line-height: 1.5;
+}
+
+.pc-step-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pc-marigold);
+    opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+    .pc-step-arrow {
+        transform: rotate(90deg);
+        margin: -0.5rem 0;
+    }
+}
+
+/* Features */
+.pc-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.pc-feature-card {
+    background-color: #fff;
+    border: 1px solid rgba(122, 31, 43, 0.1);
+    border-radius: 1.15rem;
+    padding: 2rem 1.75rem;
+    box-shadow: 0 4px 16px rgba(59, 42, 32, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    border-top: 4px solid var(--pc-marigold);
+    display: flex;
+    flex-col: column;
+}
+
+.pc-feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(224, 138, 30, 0.45);
+    box-shadow: 0 14px 30px rgba(59, 42, 32, 0.1);
+}
+
+.pc-feature-icon-wrap {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    background-color: rgba(224, 138, 30, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--pc-marigold-dark);
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.pc-feature-card:hover .pc-feature-icon-wrap {
+    transform: scale(1.08);
+    background-color: rgba(224, 138, 30, 0.22);
+}
+
+.pc-feature-card h3 {
+    font-family: var(--pc-heading-font);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--pc-maroon);
+    margin-bottom: 0.45rem;
+}
+
+.pc-feature-card p {
+    font-size: 0.9rem;
+    color: var(--pc-ink);
+    opacity: 0.8;
+    line-height: 1.55;
+}
+
+/* Featured Design Cards */
+.pc-design-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background-color: #fff;
+    border: 1px solid rgba(122, 31, 43, 0.12);
+    box-shadow: 0 4px 18px rgba(59, 42, 32, 0.06);
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.pc-design-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 36px rgba(59, 42, 32, 0.14);
+    border-color: rgba(224, 138, 30, 0.4);
+}
+
+.pc-design-img-wrap {
+    width: 100%;
+    height: 17rem;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #fff, var(--pc-cream-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.pc-design-img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-design-card:hover .pc-design-img {
+    transform: scale(1.06);
+}
+
+.pc-design-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(59, 42, 32, 0.85) 0%, rgba(59, 42, 32, 0.25) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1.5rem 1rem;
+}
+
+.pc-design-card:hover .pc-design-overlay {
+    opacity: 1;
+}
+
+.pc-design-creator {
+    color: #fff;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    opacity: 0.95;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pc-design-btn {
+    background-color: #fff;
+    color: var(--pc-maroon);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.pc-design-card:hover .pc-design-btn:hover {
+    transform: scale(1.04);
+    background-color: var(--pc-cream);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+    .pc-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .pc-ring,
+    .pc-pookalam-wrap,
+    #animated-svg {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .pc-design-card:hover,
+    .pc-feature-card:hover,
+    .pc-step:hover {
+        transform: none !important;
+    }
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Creator Studio
+   Clean 3-Part Workspace: [ LEFT: Editor ] [ CENTER: Preview ] [ RIGHT: Controls ]
+   Scoped exclusively via body:has(.studio-shell).
+   ========================================================================== */
+
+:root {
+    --pc-heading-font: 'Fraunces', Georgia, serif;
+}
+
+body:has(.studio-shell) {
+    --creator-cream: #fbf4e5;
+    --creator-cream-deep: #f4e7c9;
+    --creator-paper: #fffaf0;
+    --creator-maroon: #720d2b;
+    --creator-maroon-dark: #43051b;
+    --creator-gold: #f0b51b;
+    --creator-gold-soft: #f8d66b;
+    --creator-green: #4f7c2e;
+    --creator-ink: #291518;
+    background-color: var(--creator-cream);
+    color: var(--creator-ink);
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+html:has(.studio-shell) {
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+body:has(.studio-shell) h1,
+body:has(.studio-shell) h2,
+body:has(.studio-shell) h3,
+body:has(.studio-shell) header h1,
+body:has(.studio-shell) header p,
+body:has(.studio-shell) .studio-intro h2,
+body:has(.studio-shell) .studio-workspace h3,
+body:has(.studio-shell) .studio-preview h3,
+body:has(.studio-shell) .controls-heading,
+body:has(.studio-shell) #compatibilityModal h2 {
+    font-family: var(--pc-heading-font);
+}
+
+body:has(.studio-shell) #outputdownloadOptions.hidden,
+body:has(.studio-shell) #layoutdownloadOptions.hidden,
+body:has(.studio-shell) #magnifier.hidden,
+body:has(.studio-shell) #compatibilityModal.hidden {
+    display: none !important;
+}
+
+body:has(.studio-shell) > .flex.flex-col.h-screen,
+body:has(.studio-shell) .h-screen {
+    height: auto !important;
+    min-height: 100vh;
+    overflow: visible !important;
+    background:
+        radial-gradient(circle at 10% 100%, rgba(240, 181, 27, 0.14), transparent 17rem),
+        radial-gradient(circle at 96% 98%, rgba(79, 124, 46, 0.1), transparent 18rem),
+        var(--creator-cream);
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — CREATE PAGE NAVBAR ONLY
+   ========================================================================== */
+body:has(.studio-shell) header {
+    position: relative;
+    z-index: 50;
+    min-height: 48px;
+    padding: 0.35rem 1.25rem !important;
+    background: linear-gradient(110deg, var(--creator-maroon-dark), var(--creator-maroon)) !important;
+    border-bottom: 1px solid rgba(255, 218, 105, 0.65);
+    border-radius: 0 0 0.85rem 0.85rem;
+    box-shadow: 0 3px 12px rgba(67, 5, 27, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body:has(.studio-shell) header h1,
+body:has(.studio-shell) header p,
+body:has(.studio-shell) header a,
+body:has(.studio-shell) header button {
+    color: #fffaf0 !important;
+}
+
+body:has(.studio-shell) header h1 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.015em;
+    display: inline-flex;
+    align-items: center;
+}
+
+body:has(.studio-shell) header h1 svg {
+    color: var(--creator-gold);
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-right: 0.45rem;
+}
+
+body:has(.studio-shell) header p {
+    color: var(--creator-gold-soft) !important;
+    font-size: 0.74rem;
+    letter-spacing: 0.02em;
+    font-style: italic;
+    opacity: 0.92;
+}
+
+body:has(.studio-shell) header nav {
+    gap: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+body:has(.studio-shell) header nav a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration-color: var(--creator-gold);
+    text-underline-offset: 0.25rem;
+    opacity: 0.88;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+body:has(.studio-shell) header nav a:hover {
+    opacity: 1;
+    color: var(--creator-gold) !important;
+}
+
+body:has(.studio-shell) header nav a[href="../create/index.html"],
+body:has(.studio-shell) header nav a[href="index.html"] {
+    color: var(--creator-gold) !important;
+    font-weight: 600;
+    border-bottom: 2px solid var(--creator-gold);
+    padding-bottom: 0.15rem;
+    opacity: 1;
+}
+
+body:has(.studio-shell) #navbarToggle {
+    color: #fff;
+    min-width: 34px;
+    min-height: 34px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem;
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 218, 105, 0.25);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+body:has(.studio-shell) #navbarToggle:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+/* Mobile Navbar Collapse */
+body:has(.studio-shell) #navbarCollapse {
+    background: var(--creator-maroon-dark) !important;
+    border-bottom: 1px solid rgba(255, 218, 105, 0.35);
+    box-shadow: 0 8px 20px rgba(67, 5, 27, 0.25);
+}
+
+body:has(.studio-shell) #navbarCollapse:not(.open) {
+    display: none !important;
+}
+
+body:has(.studio-shell) #navbarCollapse.open {
+    display: block !important;
+}
+
+body:has(.studio-shell) #navbarCollapse a {
+    color: #fffaf0 !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.35rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+body:has(.studio-shell) #navbarCollapse a:hover {
+    background: rgba(255, 218, 105, 0.12);
+    color: var(--creator-gold) !important;
+}
+
+body:has(.studio-shell) #navbarCollapse a[href="../create/index.html"],
+body:has(.studio-shell) #navbarCollapse a[href="index.html"] {
+    color: var(--creator-gold) !important;
+    font-weight: 600;
+}
+
+body:has(.studio-shell) .studio-intro {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    margin-bottom: 0.15rem;
+    background: rgba(255, 252, 243, 0.95);
+    border: 1px solid rgba(125, 77, 18, 0.18);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(91, 47, 17, 0.05);
+}
+
+body:has(.studio-shell) .studio-workspace > p,
+body:has(.studio-shell) .studio-preview > p {
+    display: none;
+}
+
+/* Studio container */
+body:has(.studio-shell) .studio-shell {
+    min-width: 0;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0.5rem 0.75rem 1.25rem;
+    box-sizing: border-box;
+}
+
+/* Shared cards */
+body:has(.studio-shell) .studio-workspace,
+body:has(.studio-shell) .studio-preview,
+body:has(.studio-shell) .studio-controls {
+    border: 1px solid rgba(125, 77, 18, 0.24);
+    background: linear-gradient(145deg, rgba(255, 252, 243, 0.98), rgba(250, 239, 211, 0.94));
+    border-radius: 0.9rem;
+    box-shadow: 0 6px 18px rgba(91, 47, 17, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    padding: 0.7rem 0.75rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Headings */
+body:has(.studio-shell) .studio-workspace h3:first-of-type,
+body:has(.studio-shell) .studio-preview h3:first-of-type,
+body:has(.studio-shell) .controls-heading {
+    color: var(--creator-maroon);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.15rem 0;
+}
+
+body:has(.studio-shell) .studio-workspace h3:first-of-type::after,
+body:has(.studio-shell) .studio-preview h3:first-of-type::after,
+body:has(.studio-shell) .controls-heading::after {
+    content: "";
+    display: block;
+    height: 1px;
+    flex: 1;
+    margin-left: 0.5rem;
+    background: linear-gradient(90deg, rgba(240, 181, 27, 0.55), transparent);
+}
+
+body:has(.studio-shell) .controls-heading-mark {
+    color: var(--creator-gold);
+    margin-right: 0.4rem;
+    font-size: 1.1rem;
+}
+
+body:has(.studio-shell) .studio-workspace h3:not(:first-of-type),
+body:has(.studio-shell) .studio-controls h3,
+body:has(.studio-shell) .studio-actions-panel h3 {
+    color: var(--creator-maroon);
+    font-family: var(--pc-heading-font);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0.1rem 0 0.15rem 0;
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid rgba(125, 77, 18, 0.12);
+}
+
+/* LEFT COLUMN — Mode buttons and Tools */
+body:has(.studio-shell) .studio-workspace .mode-btn {
+    height: 1.85rem !important;
+    min-height: 1.85rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    border-radius: 0.5rem !important;
+    padding: 0 0.45rem !important;
+    transition: all 0.15s ease;
+}
+
+body:has(.studio-shell) .studio-workspace .mode-btn.bg-primary {
+    background: var(--creator-gold) !important;
+    border: 1px solid #d49405 !important;
+    color: var(--creator-maroon-dark) !important;
+    box-shadow: 0 2px 6px rgba(212, 148, 5, 0.22) !important;
+}
+
+body:has(.studio-shell) .studio-workspace .mode-btn:not(.bg-primary) {
+    border: 1px solid rgba(125, 77, 18, 0.22) !important;
+    background: rgba(255, 252, 243, 0.9) !important;
+    color: var(--creator-maroon) !important;
+}
+
+body:has(.studio-shell) .studio-workspace .mode-btn:not(.bg-primary):hover {
+    background: #fff3cc !important;
+    border-color: var(--creator-gold) !important;
+}
+
+body:has(.studio-shell) .studio-workspace [data-tool] {
+    height: 2.35rem !important;
+    min-height: 2.35rem !important;
+    border: 1px solid rgba(125, 77, 18, 0.22) !important;
+    background: rgba(255, 252, 243, 0.9) !important;
+    color: var(--creator-maroon) !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(91, 47, 17, 0.05);
+    padding: 0.15rem 0.2rem !important;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+body:has(.studio-shell) .studio-workspace [data-tool]:hover {
+    background: #fff3cc !important;
+    border-color: var(--creator-gold) !important;
+    transform: translateY(-1px);
+}
+
+body:has(.studio-shell) .studio-workspace [data-tool].bg-accent {
+    background: var(--creator-gold) !important;
+    border-color: #d49405 !important;
+    color: var(--creator-maroon-dark) !important;
+    box-shadow: 0 2px 6px rgba(212, 148, 5, 0.24) !important;
+}
+
+body:has(.studio-shell) .studio-workspace [data-tool] svg {
+    stroke: var(--creator-maroon);
+    width: 0.95rem;
+    height: 0.95rem;
+}
+
+body:has(.studio-shell) .studio-workspace [data-tool] span {
+    font-size: 0.62rem;
+    line-height: 1;
+    margin-top: 0.1rem;
+}
+
+/* Drawing Area */
+body:has(.studio-shell) #drawingArea {
+    min-height: 255px;
+    height: 255px;
+    border: 1px solid rgba(125, 77, 18, 0.3);
+    border-radius: 0.7rem;
+    background:
+        linear-gradient(rgba(125, 77, 18, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(125, 77, 18, 0.06) 1px, transparent 1px),
+        var(--creator-paper);
+    background-size: 2.2rem 2.2rem;
+    box-shadow: inset 0 1px 5px rgba(91, 47, 17, 0.06);
+    position: relative;
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Compact Tool-Palette Shape System
+   ========================================================================== */
+
+body:has(.studio-shell) .studio-shapes-section {
+    margin-top: 0.15rem;
+    gap: 0.25rem;
+}
+
+body:has(.studio-shell) #shapearea {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.3rem;
+    padding: 0.05rem 0;
+}
+
+body:has(.studio-shell) .shape-category {
+    display: flex;
+    flex-direction: column;
+}
+
+body:has(.studio-shell) .shape-category-title {
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--creator-ink, #291518);
+    opacity: 0.82;
+    margin-bottom: 0.15rem;
+}
+
+body:has(.studio-shell) .shape-category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* Desktop Compact Shape Tiles (36–40px) */
+body:has(.studio-shell) .shape-tile,
+body:has(.studio-shell) #shapearea .shape-tile,
+body:has(.studio-shell) #shapearea .shape-category-grid > div {
+    width: 38px;
+    height: 38px;
+    min-width: 36px;
+    min-height: 36px;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 252, 243, 0.98);
+    border: 1px solid rgba(125, 77, 18, 0.22);
+    border-radius: 0.375rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease, box-shadow 0.12s ease;
+    touch-action: none;
+    user-select: none;
+}
+
+body:has(.studio-shell) .shape-tile:hover,
+body:has(.studio-shell) #shapearea .shape-tile:hover,
+body:has(.studio-shell) #shapearea .shape-category-grid > div:hover {
+    background: #fff3cc;
+    border-color: var(--creator-gold, #f0b51b);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(91, 47, 17, 0.08);
+}
+
+body:has(.studio-shell) .shape-tile:active,
+body:has(.studio-shell) #shapearea .shape-tile:active,
+body:has(.studio-shell) #shapearea .shape-category-grid > div:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+body:has(.studio-shell) .shape-menu {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: 82%;
+    max-height: 82%;
+    pointer-events: auto;
+}
+
+/* Mobile: comfortable touch target (>= 42–44px) */
+@media (max-width: 640px) {
+    body:has(.studio-shell) .shape-tile,
+    body:has(.studio-shell) #shapearea .shape-tile,
+    body:has(.studio-shell) #shapearea .shape-category-grid > div {
+        width: 44px;
+        height: 44px;
+        min-width: 42px;
+        min-height: 42px;
+    }
+
+    body:has(.studio-shell) .shape-menu {
+        width: 25px !important;
+        height: 25px !important;
+    }
+
+    body:has(.studio-shell) .shape-category-grid {
+        gap: 6px;
+    }
+}
+
+/* Left Sector Actions (Clear / Fill) */
+body:has(.studio-shell) .left-sector-actions {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+}
+
+body:has(.studio-shell) .left-sector-actions > div {
+    height: 2rem !important;
+    min-height: 2rem !important;
+    border: 1px solid rgba(125, 77, 18, 0.22);
+    background: rgba(255, 252, 243, 0.95);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+body:has(.studio-shell) .left-sector-actions > div:hover {
+    background: #fff3cc;
+    border-color: var(--creator-gold);
+    transform: translateY(-1px);
+}
+
+body:has(.studio-shell) .left-sector-actions #clearBtn:hover {
+    border-color: var(--destructive);
+    background: rgba(220, 40, 40, 0.06);
+}
+
+/* CENTER COLUMN — Preview */
+body:has(.studio-shell) .studio-preview > .flex {
+    min-height: 0;
+    padding: 0.5rem;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(240, 181, 27, 0.18), transparent 42%),
+        var(--creator-cream-deep);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body:has(.studio-shell) .studio-preview .relative {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--creator-paper);
+    border: 1px solid rgba(125, 77, 18, 0.26);
+    border-radius: 0.7rem;
+    box-shadow: 0 4px 16px rgba(91, 47, 17, 0.1);
+    width: min(500px, 100%);
+    aspect-ratio: 1 / 1;
+    max-height: 500px;
+}
+
+@media (max-width: 639px) {
+    body:has(.studio-shell) .studio-preview .relative {
+        width: 300px;
+        height: 300px;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+body:has(.studio-shell) .preview-visual-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transform-origin: center center;
+    will-change: transform;
+}
+
+body:has(.studio-shell) #mandalaCanvas,
+body:has(.studio-shell) #gridCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    border-color: rgba(125, 77, 18, 0.26) !important;
+}
+
+/* Fix: #gridCanvas and #mandalaCanvas share identical absolute
+   positioning with no z-index, so per normal stacking rules the later
+   DOM sibling (#mandalaCanvas) painted over the grid lines regardless of
+   the "Show Gridlines" checkbox state -- the grid WAS being drawn
+   correctly, it was just hidden underneath the mandala canvas. This is
+   the only change needed: make the grid layer paint above the mandala. */
+body:has(.studio-shell) #gridCanvas {
+    z-index: 2;
+}
+
+body:has(.studio-shell) #mandalaCanvas {
+    z-index: 1;
+}
+
+body:has(.studio-shell) .studio-preview #magnifier {
+    z-index: 10;
+}
+
+body:has(.studio-shell) .preview-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+}
+
+body:has(.studio-shell) .preview-controls button,
+body:has(.studio-shell) .preview-controls span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.95rem;
+    height: 1.95rem;
+    padding: 0 0.45rem;
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.45rem;
+    background: rgba(255, 252, 243, 0.95);
+    color: var(--creator-maroon);
+    font-weight: 700;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 3px rgba(91, 47, 17, 0.05);
+}
+
+body:has(.studio-shell) .preview-controls button {
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+body:has(.studio-shell) .preview-controls button:hover {
+    background: #fff0ba;
+    border-color: var(--creator-gold);
+}
+
+/* RIGHT COLUMN — Controls & Actions */
+body:has(.studio-shell) .studio-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+body:has(.studio-shell) .studio-controls label {
+    color: var(--creator-ink);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+body:has(.studio-shell) .studio-controls #sectorValue,
+body:has(.studio-shell) .studio-controls #radiusValue {
+    color: var(--creator-maroon);
+    font-weight: 700;
+}
+
+body:has(.studio-shell) .studio-controls input[type="range"] {
+    width: 100%;
+    height: 5px;
+    margin: 3px 0;
+    background: var(--creator-cream-deep);
+    border-radius: 3px;
+}
+
+body:has(.studio-shell) .studio-controls input[type="range"]::-webkit-slider-thumb {
+    background: var(--creator-gold);
+    border: 2px solid var(--creator-maroon);
+    width: 14px;
+    height: 14px;
+}
+
+body:has(.studio-shell) .studio-controls .color-circle {
+    width: 1.4rem !important;
+    height: 1.4rem !important;
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    box-shadow: 0 1px 2px rgba(91, 47, 17, 0.08);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+body:has(.studio-shell) .studio-controls .color-circle:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px var(--creator-gold);
+}
+
+body:has(.studio-shell) .studio-controls #custom-color {
+    height: 1.65rem;
+    padding: 1px 2px;
+    border: 1px solid rgba(125, 77, 18, 0.25);
+    border-radius: 0.4rem;
+    background: #fff;
+}
+
+body:has(.studio-shell) .studio-controls [data-tool="random"] {
+    background: var(--creator-maroon) !important;
+    border: 1px solid var(--creator-maroon) !important;
+    color: #fff !important;
+    border-radius: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    box-shadow: 0 2px 6px rgba(114, 13, 43, 0.2);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+body:has(.studio-shell) .studio-controls [data-tool="random"]:hover {
+    background: var(--creator-maroon-dark) !important;
+    transform: translateY(-1px);
+}
+
+body:has(.studio-shell) .studio-controls [data-tool="random"] span,
+body:has(.studio-shell) .studio-controls [data-tool="random"] svg {
+    color: #fff !important;
+    stroke: #fff !important;
+}
+
+body:has(.studio-shell) .studio-actions-panel [data-tool="undo"],
+body:has(.studio-shell) .studio-actions-panel [data-tool="redo"] {
+    height: 1.85rem !important;
+    border: 1px solid rgba(125, 77, 18, 0.22) !important;
+    background: rgba(255, 252, 243, 0.95) !important;
+    color: var(--creator-maroon) !important;
+    border-radius: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+body:has(.studio-shell) .studio-actions-panel [data-tool="undo"]:hover,
+body:has(.studio-shell) .studio-actions-panel [data-tool="redo"]:hover {
+    background: #fff3cc !important;
+    border-color: var(--creator-gold) !important;
+}
+
+body:has(.studio-shell) .studio-actions-panel [data-tool="undo"] svg,
+body:has(.studio-shell) .studio-actions-panel [data-tool="redo"] svg {
+    stroke: var(--creator-maroon);
+}
+
+body:has(.studio-shell) #outputdownloadBtn,
+body:has(.studio-shell) #layoutdownloadBtn,
+body:has(.studio-shell) #publishBtn {
+    height: 2rem;
+    min-height: 2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 0.45rem;
+    padding: 0 0.6rem;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+body:has(.studio-shell) #outputdownloadBtn,
+body:has(.studio-shell) #layoutdownloadBtn {
+    background: var(--creator-gold) !important;
+    border: 1px solid #d49405 !important;
+    color: var(--creator-maroon-dark) !important;
+}
+
+body:has(.studio-shell) #outputdownloadBtn:hover,
+body:has(.studio-shell) #layoutdownloadBtn:hover {
+    background: #e5a70f !important;
+    box-shadow: 0 2px 8px rgba(212, 148, 5, 0.28);
+}
+
+body:has(.studio-shell) #publishBtn {
+    background: var(--creator-maroon) !important;
+    border: 1px solid var(--creator-maroon) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(114, 13, 43, 0.2);
+}
+
+body:has(.studio-shell) #publishBtn:hover {
+    background: var(--creator-maroon-dark) !important;
+}
+
+body:has(.studio-shell) #outputdownloadOptions,
+body:has(.studio-shell) #layoutdownloadOptions {
+    background: #fff;
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.45rem;
+    box-shadow: 0 4px 14px rgba(91, 47, 17, 0.12);
+}
+
+/* ==========================================================================
+   DESKTOP 3-COLUMN LAYOUT (>= 1024px)
+   ========================================================================== */
+@media (min-width: 1024px) {
+    body:has(.studio-shell) .studio-shell {
+        display: grid;
+        grid-template-columns: 310px minmax(440px, 1fr) 280px;
+        gap: 0.75rem;
+        align-items: start;
+        padding: 0.5rem 0.75rem 1rem;
+        max-width: 1560px;
+        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    body:has(.studio-shell) .studio-workspace {
+        grid-column: 1;
+        width: 100%;
+        min-width: 0;
+    }
+
+    body:has(.studio-shell) .studio-preview {
+        grid-column: 2;
+        width: 100%;
+        min-width: 0;
+    }
+
+    body:has(.studio-shell) .studio-controls {
+        grid-column: 3;
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* ==========================================================================
+   TABLET & MOBILE STACKING (< 1024px)
+   ========================================================================== */
+@media (max-width: 1023px) {
+    body:has(.studio-shell) .studio-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0.75rem 0.75rem 2rem;
+        box-sizing: border-box;
+    }
+
+    body:has(.studio-shell) .studio-workspace {
+        order: 1;
+        width: 100%;
+    }
+
+    body:has(.studio-shell) .studio-preview {
+        order: 2;
+        width: 100%;
+    }
+
+    body:has(.studio-shell) .studio-controls {
+        order: 3;
+        width: 100%;
+    }
+
+    body:has(.studio-shell) #shapearea .grid,
+    body:has(.studio-shell) #shapearea {
+        grid-template-columns: repeat(6, 1fr) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    body:has(.studio-shell) #shapearea .grid,
+    body:has(.studio-shell) #shapearea {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Sector empty-state guidance
+   Small, non-blocking hint shown inside the existing sector editor
+   (#drawingArea) only while it has no user-created content. Purely
+   additive: no existing selector, size, or spacing is touched.
+   ========================================================================== */
+body:has(.studio-shell) #drawingArea {
+    position: relative;
+}
+
+body:has(.studio-shell) .sector-empty-state {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+body:has(.studio-shell) .sector-empty-state.is-visible {
+    opacity: 1;
+}
+
+body:has(.studio-shell) .sector-empty-state__title {
+    font-family: var(--pc-heading-font, 'Fraunces', 'Georgia', serif);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--pc-maroon, #7A1F2B);
+    margin: 0;
+    line-height: 1.3;
+}
+
+body:has(.studio-shell) .sector-empty-state__hint {
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+    font-size: 0.7rem;
+    color: var(--pc-ink, #3B2A20);
+    opacity: 0.65;
+    margin: 0;
+    max-width: 220px;
+    line-height: 1.3;
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — First-time usability guide
+   A small, dismissible workflow hint in the existing studio-intro header
+   ("Choose a tool → Design your sector → Watch it bloom"). Not a modal;
+   purely additive, matches the existing cream/maroon/marigold identity.
+   ========================================================================== */
+body:has(.studio-shell) .first-time-guide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 999px;
+    background: var(--pc-cream-soft, #F7ECD8);
+    border: 1px solid rgba(122, 31, 43, 0.12);
+    max-width: fit-content;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+body:has(.studio-shell) .first-time-guide.is-dismissed {
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: auto;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+}
+
+body:has(.studio-shell) .first-time-guide__steps {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+    font-size: 0.72rem;
+    color: var(--pc-ink, #3B2A20);
+}
+
+body:has(.studio-shell) .first-time-guide__step {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+}
+
+body:has(.studio-shell) .first-time-guide__num {
+    color: var(--pc-maroon, #7A1F2B);
+    font-weight: 700;
+}
+
+body:has(.studio-shell) .first-time-guide__arrow {
+    color: var(--pc-marigold, #E08A1E);
+    font-size: 0.7rem;
+}
+
+body:has(.studio-shell) .first-time-guide__dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 999px;
+    color: var(--pc-ink, #3B2A20);
+    opacity: 0.55;
+    flex-shrink: 0;
+    transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+body:has(.studio-shell) .first-time-guide__dismiss:hover {
+    opacity: 1;
+    background-color: rgba(122, 31, 43, 0.08);
+}
+
+@media (max-width: 640px) {
+    body:has(.studio-shell) .first-time-guide {
+        max-width: 100%;
+    }
+}
+
+
+/* ========================================================================
+   POOVUM CODEUM — Bloom Ideas smart design suggestions
+   Additive, creator-page scoped styles. Does not alter the workspace layout.
+   ======================================================================== */
+body:has(.studio-shell) .bloom-ideas {
+    margin-top: 0.1rem;
+    color: var(--creator-ink);
+}
+
+body:has(.studio-shell) .bloom-ideas__toggle {
+    width: 100%;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--creator-gold);
+    border-radius: 0.45rem;
+    background: #fff8df;
+    color: var(--creator-maroon);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+body:has(.studio-shell) .bloom-ideas__toggle:hover,
+body:has(.studio-shell) .bloom-ideas__toggle[aria-expanded="true"] {
+    background: #ffefbd;
+    box-shadow: 0 2px 7px rgba(212, 148, 5, 0.18);
+}
+
+body:has(.studio-shell) .bloom-ideas__chevron {
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+body:has(.studio-shell) .bloom-ideas__toggle[aria-expanded="true"] .bloom-ideas__chevron {
+    transform: rotate(180deg);
+}
+
+body:has(.studio-shell) .bloom-ideas__panel {
+    margin-top: 0.35rem;
+    padding: 0.6rem;
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.5rem;
+    background: rgba(255, 252, 243, 0.98);
+    box-shadow: 0 3px 12px rgba(91, 47, 17, 0.1);
+}
+
+body:has(.studio-shell) .bloom-ideas__intro h3,
+body:has(.studio-shell) .bloom-ideas__moods legend {
+    margin: 0;
+    color: var(--creator-maroon);
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+body:has(.studio-shell) .bloom-ideas__intro p,
+body:has(.studio-shell) .bloom-ideas__note {
+    margin: 0.15rem 0 0;
+    color: var(--creator-ink-muted);
+    font-size: 0.65rem;
+    line-height: 1.35;
+}
+
+body:has(.studio-shell) .bloom-ideas__moods {
+    min-width: 0;
+    margin: 0.55rem 0 0;
+    padding: 0;
+    border: 0;
+}
+
+body:has(.studio-shell) .bloom-ideas__mood-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+    margin-top: 0.35rem;
+}
+
+body:has(.studio-shell) .bloom-mood {
+    min-width: 0;
+    padding: 0.35rem 0.3rem;
+    border: 1px solid rgba(125, 77, 18, 0.18);
+    border-radius: 0.35rem;
+    background: #fff;
+    color: var(--creator-ink);
+    font-size: 0.62rem;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+}
+
+body:has(.studio-shell) .bloom-mood:hover,
+body:has(.studio-shell) .bloom-mood.is-selected {
+    border-color: var(--creator-gold);
+    background: #fff0c4;
+    color: var(--creator-maroon);
+    font-weight: 700;
+}
+
+body:has(.studio-shell) .bloom-ideas__suggestion {
+    margin-top: 0.55rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(125, 77, 18, 0.14);
+}
+
+body:has(.studio-shell) .bloom-suggestion-row {
+    margin-top: 0.35rem;
+    font-size: 0.65rem;
+    line-height: 1.35;
+}
+
+body:has(.studio-shell) .bloom-suggestion-label {
+    display: block;
+    margin-bottom: 0.18rem;
+    color: var(--creator-maroon);
+    font-weight: 800;
+}
+
+body:has(.studio-shell) .bloom-swatch {
+    display: inline-block;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-right: 0.18rem;
+    vertical-align: middle;
+    border: 1px solid rgba(91, 47, 17, 0.22);
+    border-radius: 50%;
+}
+
+body:has(.studio-shell) .bloom-ideas__apply {
+    width: 100%;
+    margin-top: 0.6rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--creator-maroon);
+    border-radius: 0.4rem;
+    background: var(--creator-maroon);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+body:has(.studio-shell) .bloom-ideas__apply:hover {
+    background: var(--creator-maroon-dark);
+}
+
+@media (max-width: 480px) {
+    body:has(.studio-shell) .bloom-ideas__mood-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* ========================================================================
+   POOVUM CODEUM — One-time initial preview bloom
+   Isolated to the existing preview container; zoom continues to use the
+   nested .preview-visual-layer transform independently.
+   ======================================================================== */
+body:has(.studio-shell) .studio-preview > .flex > .relative {
+    animation: poovum-preview-bloom-in 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes poovum-preview-bloom-in {
+    from {
+        opacity: 0.78;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body:has(.studio-shell) .studio-preview > .flex > .relative {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Reduced-motion override for creator-page micro-interactions only. */
+@media (prefers-reduced-motion: reduce) {
+    body:has(.studio-shell) .studio-workspace .mode-btn,
+    body:has(.studio-shell) .studio-workspace [data-tool],
+    body:has(.studio-shell) #shapearea .grid > div,
+    body:has(.studio-shell) #shapearea > div,
+    body:has(.studio-shell) .left-sector-actions > div,
+    body:has(.studio-shell) .symmetry-preset-btn,
+    body:has(.studio-shell) .studio-controls .color-circle,
+    body:has(.studio-shell) .studio-controls [data-tool="random"],
+    body:has(.studio-shell) .studio-actions-panel [data-tool="undo"],
+    body:has(.studio-shell) .studio-actions-panel [data-tool="redo"],
+    body:has(.studio-shell) #outputdownloadBtn,
+    body:has(.studio-shell) #layoutdownloadBtn,
+    body:has(.studio-shell) #publishBtn,
+    body:has(.studio-shell) .bloom-ideas__toggle,
+    body:has(.studio-shell) .bloom-mood,
+    body:has(.studio-shell) .bloom-ideas__apply,
+    body:has(.studio-shell) .studio-preview > .flex > .relative {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* Mobile touch affordances: suppress browser gestures only on active editor surfaces. */
+body:has(.studio-shell) #drawingArea,
+body:has(.studio-shell) #triangleTemplate,
+body:has(.studio-shell) #shapearea .grid > div,
+body:has(.studio-shell) #shapearea > div,
+body:has(.studio-shell) .shape-menu,
+body:has(.studio-shell) .resizable {
+    touch-action: none;
+}
+
+@media (max-width: 639px) {
+    body:has(.studio-shell) .studio-workspace [data-tool],
+    body:has(.studio-shell) .studio-controls .color-circle,
+    body:has(.studio-shell) .preview-controls button,
+    body:has(.studio-shell) .studio-actions-panel [data-tool="undo"],
+    body:has(.studio-shell) .studio-actions-panel [data-tool="redo"],
+    body:has(.studio-shell) #outputdownloadBtn,
+    body:has(.studio-shell) #layoutdownloadBtn,
+    body:has(.studio-shell) #publishBtn,
+    body:has(.studio-shell) .bloom-ideas__toggle,
+    body:has(.studio-shell) .bloom-ideas__apply {
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    body:has(.studio-shell) .studio-controls .color-circle {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
+}
+
+/* Active placed-shape drag: avoid transition interpolation and promote only while moving. */
+body:has(.studio-shell) .resizable.is-dragging {
+    transition: none !important;
+    will-change: transform;
+}
+
+body:has(.studio-shell) .resizable:not(.is-dragging) {
+    will-change: auto;
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Bloom Symmetry Presets & Flower Palette Groups & Live Stats
+   ========================================================================== */
+
+/* Symmetry Presets */
+body:has(.studio-shell) .symmetry-presets {
+    margin-top: 0.35rem;
+}
+
+body:has(.studio-shell) .symmetry-preset-btn {
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.25rem 0.2rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(122, 31, 43, 0.18);
+    background: rgba(255, 252, 243, 0.95);
+    color: var(--creator-ink, #291518);
+    transition: all 0.15s ease;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+body:has(.studio-shell) .symmetry-preset-btn:hover {
+    background: #fff3cc;
+    border-color: var(--creator-gold, #f0b51b);
+    color: var(--creator-maroon, #720d2b);
+}
+
+body:has(.studio-shell) .symmetry-preset-btn.is-active {
+    background: var(--creator-maroon, #720d2b);
+    border-color: var(--creator-maroon, #720d2b);
+    color: #ffffff;
+    box-shadow: 0 1px 4px rgba(114, 13, 43, 0.25);
+}
+
+/* Flower Palette Groups */
+body:has(.studio-shell) .palette-group {
+    display: flex;
+    flex-direction: column;
+}
+
+body:has(.studio-shell) .palette-group span {
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+    color: var(--creator-ink, #291518);
+    opacity: 0.65;
+}
+
+/* POOVUM CODEUM — Live Your Bloom Panel */
+body:has(.studio-shell) .your-bloom-panel {
+    background: rgba(255, 252, 243, 0.95);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.5rem;
+    color: var(--creator-ink);
+}
+
+body:has(.studio-shell) .your-bloom-stat {
+    background: rgba(244, 231, 201, 0.5);
+    border: 1px solid rgba(125, 77, 18, 0.1);
+    transition: background 0.2s ease;
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Studio Intro & Workflow Ribbon
+   ========================================================================== */
+
+body:has(.studio-shell) .studio-intro {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    margin-bottom: 0.2rem;
+    background: rgba(255, 252, 243, 0.95);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.5rem;
+}
+
+body:has(.studio-shell) .first-time-guide {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+body:has(.studio-shell) .first-time-guide__steps {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    color: var(--creator-maroon-dark, #54081e);
+}
+
+body:has(.studio-shell) .first-time-guide__step {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+body:has(.studio-shell) .first-time-guide__num {
+    color: var(--creator-gold-dark, #b45309);
+    font-weight: 700;
+}
+
+body:has(.studio-shell) .first-time-guide__arrow {
+    color: rgba(125, 77, 18, 0.4);
+    font-size: 0.68rem;
+}
+
+body:has(.studio-shell) .first-time-guide__dismiss {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.15rem;
+    color: rgba(125, 77, 18, 0.6);
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.12s ease, background 0.12s ease;
+}
+
+body:has(.studio-shell) .first-time-guide__dismiss:hover {
+    color: var(--creator-maroon, #720d2b);
+    background: rgba(125, 77, 18, 0.08);
+}
+
+/* ==========================================================================
+   LEFT COLUMN — PETAL STUDIO 🌸 (Tools, Edit Actions, Shapes)
+   ========================================================================== */
+
+body:has(.studio-shell) .left-edit-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+}
+
+body:has(.studio-shell) .left-edit-actions > div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    height: 1.85rem;
+    padding: 0 0.4rem;
+    border-radius: 0.375rem;
+    background: rgba(255, 252, 243, 0.96);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+}
+
+body:has(.studio-shell) .left-edit-actions > div:hover {
+    background: #fff3cc;
+    border-color: var(--creator-gold, #f0b51b);
+    transform: translateY(-1px);
+}
+
+body:has(.studio-shell) .left-edit-actions #clearBtn {
+    border-color: rgba(220, 40, 40, 0.25);
+}
+
+body:has(.studio-shell) .left-edit-actions #clearBtn:hover {
+    background: rgba(220, 40, 40, 0.06);
+    border-color: #dc2828;
+}
+
+/* Shapes Palette: Compact Natural Flex Packing */
+body:has(.studio-shell) #shapearea {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.45rem;
+    padding: 0.1rem 0;
+}
+
+body:has(.studio-shell) .shape-category {
+    display: flex;
+    flex-direction: column;
+}
+
+body:has(.studio-shell) .shape-category-title {
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--creator-ink, #291518);
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+body:has(.studio-shell) .shape-category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+body:has(.studio-shell) .shape-tile,
+body:has(.studio-shell) #shapearea .shape-tile {
+    width: 44px;
+    height: 44px;
+    min-width: 42px;
+    min-height: 42px;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 252, 243, 0.98);
+    border: 1px solid rgba(125, 77, 18, 0.22);
+    border-radius: 0.45rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease, box-shadow 0.12s ease;
+    touch-action: none;
+    user-select: none;
+}
+
+body:has(.studio-shell) .shape-tile:hover,
+body:has(.studio-shell) #shapearea .shape-tile:hover {
+    background: #fff3cc;
+    border-color: var(--creator-gold, #f0b51b);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(91, 47, 17, 0.08);
+}
+
+body:has(.studio-shell) .shape-tile:active,
+body:has(.studio-shell) #shapearea .shape-tile:active {
+    cursor: grabbing;
+    transform: scale(0.96);
+}
+
+body:has(.studio-shell) .shape-menu {
+    width: 24px !important;
+    height: 24px !important;
+    max-width: 85%;
+    max-height: 85%;
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   CENTER COLUMN — BLOOM CANVAS 🌼 (Preview Controls Row)
+   ========================================================================== */
+
+body:has(.studio-shell) .preview-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+body:has(.studio-shell) .preview-zoom-group {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 252, 243, 0.95);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    height: 1.75rem;
+}
+
+body:has(.studio-shell) .preview-zoom-group button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--creator-maroon, #720d2b);
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.12s ease;
+}
+
+body:has(.studio-shell) .preview-zoom-group button:hover {
+    background: #fff3cc;
+}
+
+body:has(.studio-shell) #previewZoomValue {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--creator-maroon, #720d2b);
+    min-width: 2.8rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   RIGHT COLUMN — DESIGN FLOW ✨ (Creative actions & Export)
+   ========================================================================== */
+
+body:has(.studio-shell) .control-section-create {
+    padding-top: 0.25rem;
+    border-top: 1px solid rgba(125, 77, 18, 0.12);
+}
+
+body:has(.studio-shell) .control-section-create button[data-tool="fill"],
+body:has(.studio-shell) .control-section-create button[data-tool="random"] {
+    background: rgba(255, 252, 243, 0.96);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.375rem;
+    color: var(--creator-ink, #291518);
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+body:has(.studio-shell) .control-section-create button[data-tool="fill"]:hover {
+    background: #fff3cc;
+    border-color: var(--creator-gold, #f0b51b);
+    transform: translateY(-1px);
+}
+
+body:has(.studio-shell) .control-section-create button[data-tool="random"]:hover {
+    background: #fff3cc;
+    border-color: #d97706;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   POOVUM CODEUM — Phase 4 Visual Polish & Refinements
+   ========================================================================== */
+
+/* Right Panel Group Cards */
+body:has(.studio-shell) .studio-group-card {
+    background: rgba(255, 252, 243, 0.7);
+    border: 1px solid rgba(125, 77, 18, 0.14);
+    border-radius: 0.65rem;
+    padding: 0.55rem 0.6rem;
+    box-shadow: 0 1px 3px rgba(91, 47, 17, 0.03);
+}
+
+body:has(.studio-shell) .group-header {
+    color: var(--creator-maroon, #720d2b);
+    font-family: var(--pc-body-font, 'Inter', system-ui, sans-serif);
+}
+
+/* Active Tool Emphasis */
+body:has(.studio-shell) .studio-workspace [data-tool].bg-accent {
+    background: #fff3cc !important;
+    border-color: var(--creator-maroon, #720d2b) !important;
+    color: var(--creator-maroon-dark, #54081e) !important;
+    box-shadow: inset 0 0 0 1px var(--creator-maroon, #720d2b), 0 2px 6px rgba(114, 13, 43, 0.15) !important;
+}
+
+body:has(.studio-shell) .studio-workspace [data-tool].bg-accent svg {
+    stroke: var(--creator-maroon-dark, #54081e) !important;
+}
+
+/* Active Dragging Visual Feedback without Transition Delay */
+body:has(.studio-shell) .shape-tile.is-dragging,
+body:has(.studio-shell) .shape-menu.is-dragging {
+    border-color: var(--creator-maroon, #720d2b) !important;
+    background: #ffeaa7 !important;
+    opacity: 0.92;
+    box-shadow: 0 6px 14px rgba(114, 13, 43, 0.22);
+    transition: none !important;
+}
+
+/* Empty State Styling - Strictly pointer-events: none */
+body:has(.studio-shell) .sector-empty-state {
+    pointer-events: none !important;
+    user-select: none;
+}
+
+/* Center Bloom Canvas Dominance */
+body:has(.studio-shell) .studio-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+body:has(.studio-shell) .studio-preview > .flex:last-child {
+    min-height: 0;
+    padding: 0.35rem;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(240, 181, 27, 0.16), transparent 50%),
+        var(--creator-cream-deep);
+    border: 1px solid rgba(125, 77, 18, 0.2);
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+body:has(.studio-shell) .studio-preview .relative {
+    width: min(520px, 100%);
+    aspect-ratio: 1 / 1;
+    max-height: 520px;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 18px rgba(91, 47, 17, 0.1);
+}

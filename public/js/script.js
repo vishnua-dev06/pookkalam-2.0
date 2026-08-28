@@ -1,0 +1,1948 @@
+const freeformBtn = document.getElementById('freeformBtn');
+const dragModeBtn = document.getElementById('dragModeBtn');
+const triangleTemplate = document.getElementById('triangleTemplate');
+const drawingArea = document.getElementById('drawingArea');
+const drawingLayer = document.getElementById('drawingLayer');
+const mandala = document.getElementById('mandala');
+const clearBtn = document.getElementById('clearBtn');
+const slicesSlider = document.getElementById('sectors');
+const slicesValue = document.getElementById('sectorValue');
+const radiusSlider = document.getElementById('radius');
+const radiusValue = document.getElementById('radiusValue');
+
+let isDrawing = false;
+let currentPath = null;
+let paths = [];
+let undoStack = [];
+let redoStack = [];
+let currentMode = 'drag';
+let segments = 7;
+let currentTool = 'pencil';
+let currentColor = '#000000';
+let currentLineWidth = 1;
+let startPoint = null;
+let isDrawingMode = false;
+let selectedColor = '#000000';
+
+const canvas = document.getElementById('mandalaCanvas');
+const ctx = canvas.getContext('2d');
+const gridCanvas = document.getElementById('gridCanvas');
+const gridCtx = gridCanvas.getContext('2d');
+
+// Magnifier elements and config
+const magnifier = document.getElementById('magnifier');
+const magnifierCanvas = document.getElementById('magnifierCanvas');
+const magnifierCtx = magnifierCanvas ? magnifierCanvas.getContext('2d') : null;
+const magnifierSize = 240; // px of lens canvas
+let lensRadius = magnifierSize / 2;
+let magnifierZoom = 2.2; // how much to zoom inside larger lens
+let magnifierDocked = true; // fixed position vs follow cursor
+
+// Offscreen preview canvas to reflect live triangle drawing over the base canvas
+const previewCanvas = document.createElement('canvas');
+const previewCtx = previewCanvas.getContext('2d');
+
+const scaleFactor = 2;
+const displayWidth = window.innerWidth > 640 ? 600 : 300;
+const displayHeight = window.innerWidth > 640 ? 600 : 300;
+
+canvas.width = displayWidth * scaleFactor;
+canvas.height = displayHeight * scaleFactor;
+canvas.style.width = `${displayWidth}px`;
+canvas.style.height = `${displayHeight}px`;
+ctx.scale(scaleFactor, scaleFactor);
+
+// Match preview canvas to main canvas size
+previewCanvas.width = canvas.width;
+previewCanvas.height = canvas.height;
+
+// canvas.width = 500;
+// canvas.height = 500;
+// document.body.appendChild(canvas);
+// const ctx = canvas.getContext('2d');
+
+function getPointInSVG(e) {
+  const pt = triangleTemplate.createSVGPoint();
+  if (e.touches && e.touches.length > 0) {
+    pt.x = e.touches[0].clientX;
+    pt.y = e.touches[0].clientY;
+  } else if (e.changedTouches && e.changedTouches.length > 0) {
+    pt.x = e.changedTouches[0].clientX;
+    pt.y = e.changedTouches[0].clientY;
+  } else if (typeof e.clientX === 'number') {
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+  } else if (e.client && typeof e.client.x === 'number') {
+    pt.x = e.client.x;
+    pt.y = e.client.y;
+  } else if (e.detail && typeof e.detail.clientX === 'number') {
+    pt.x = e.detail.clientX;
+    pt.y = e.detail.clientY;
+  }
+  const screenCTM = triangleTemplate.getScreenCTM();
+  if (screenCTM) {
+    return pt.matrixTransform(screenCTM.inverse());
+  }
+  return { x: 0, y: 0 };
+}
+
+// Convert a point in triangleTemplate SVG space to mandala canvas display coordinates (before device scale)
+function triangleSvgPointToCanvasDisplay(point) {
+  // Find bottom-center of template inside mandala (translate values used in generateMandala)
+  const translateX = 300 - triangleTemplate.width.baseVal.value / 2;
+  const translateY = 300 - triangleTemplate.height.baseVal.value;
+  return {
+    x: translateX + point.x,
+    y: translateY + point.y,
+  };
+}
+
+function showMagnifier() {
+  if (!magnifier) return;
+  magnifier.classList.remove('hidden');
+  // Ensure position set when shown
+  updateMagnifierPosition(0, 0);
+}
+
+function hideMagnifier() {
+  if (!magnifier) return;
+  magnifier.classList.add('hidden');
+}
+
+function updateMagnifierPosition(clientX, clientY) {
+  if (!magnifier) return;
+  // If docked, keep it fixed at a corner of the drawing area
+  const container = canvas.parentElement; // the relative wrapper
+  const rect = container.getBoundingClientRect();
+  if (magnifierDocked) {
+    const padding = 8;
+    // Dock to top-right by default
+    const lensLeft = rect.width - magnifierSize - padding;
+    const lensTop = padding;
+    magnifier.style.left = `${lensLeft}px`;
+    magnifier.style.top = `${lensTop}px`;
+    return;
+  }
+
+  // Otherwise, position near the cursor
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const offset = 18;
+  let lensLeft = x + offset - lensRadius;
+  let lensTop = y + offset - lensRadius;
+  lensLeft = Math.max(0, Math.min(lensLeft, rect.width - magnifierSize));
+  lensTop = Math.max(0, Math.min(lensTop, rect.height - magnifierSize));
+  magnifier.style.left = `${lensLeft}px`;
+  magnifier.style.top = `${lensTop}px`;
+}
+
+function drawMagnifierAt(pointInSvg) {
+  if (!magnifierCtx) return;
+
+  // Map to canvas display coordinates (0..displayWidth/Height)
+  const disp = triangleSvgPointToCanvasDisplay(pointInSvg);
+
+  // Clear and clip to circle
+  magnifierCtx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
+  magnifierCtx.save();
+  magnifierCtx.beginPath();
+  magnifierCtx.arc(lensRadius, lensRadius, lensRadius - 1, 0, Math.PI * 2);
+  magnifierCtx.closePath();
+  magnifierCtx.clip();
+
+  // Compute source rect on the visible canvas (display space). Our visible canvas is scaled CSS down from high-DPI canvas.
+  // The rendering context 'ctx' is scaled by scaleFactor. But we can sample from the underlying real canvas by using its bitmap.
+  // Approach: use the on-screen canvas element by drawing it as an image source; coordinates must be in CSS pixels.
+
+  // Source size in display pixels to cover lens when zoomed
+  const srcW = magnifierSize / magnifierZoom;
+  const srcH = magnifierSize / magnifierZoom;
+  const srcX = disp.x - srcW / 2;
+  const srcY = disp.y - srcH / 2;
+
+  // Clamp source rect within display bounds
+  const clampedSrcX = Math.max(0, Math.min(srcX, displayWidth - srcW));
+  const clampedSrcY = Math.max(0, Math.min(srcY, displayHeight - srcH));
+
+  // Draw from visible canvas element. drawImage uses CSS pixels when source is an HTMLCanvasElement and sx/sy/sWidth/sHeight are in its intrinsic pixel space.
+  // Our canvas intrinsic size is display*scaleFactor, so scale source rect accordingly.
+  const sx = clampedSrcX * scaleFactor;
+  const sy = clampedSrcY * scaleFactor;
+  const sWidth = srcW * scaleFactor;
+  const sHeight = srcH * scaleFactor;
+
+  magnifierCtx.imageSmoothingEnabled = true;
+  magnifierCtx.drawImage(previewCanvas, sx, sy, sWidth, sHeight, 0, 0, magnifierSize, magnifierSize);
+
+  // Additionally clip magnified content to triangle shape so only inside triangle shows
+  try {
+    const translateX = 300 - triangleTemplate.width.baseVal.value / 2;
+    const translateY = 300 - triangleTemplate.height.baseVal.value;
+    const pathD = triangleTemplate.querySelector('path').getAttribute('d');
+    const triPath = new Path2D(pathD);
+    magnifierCtx.save();
+    magnifierCtx.globalCompositeOperation = 'destination-in';
+    // Map canvas display space to lens space
+    magnifierCtx.setTransform(
+      magnifierZoom, 0,
+      0, magnifierZoom,
+      -clampedSrcX * magnifierZoom,
+      -clampedSrcY * magnifierZoom
+    );
+    magnifierCtx.translate(translateX, translateY);
+    magnifierCtx.fill(triPath);
+    magnifierCtx.restore();
+  } catch (_) {
+    // ignore if Path2D or setTransform not supported
+  }
+
+  // Crosshair for precision
+  magnifierCtx.strokeStyle = 'rgba(0,0,0,0.35)';
+  magnifierCtx.lineWidth = 1;
+  magnifierCtx.beginPath();
+  magnifierCtx.moveTo(lensRadius, 0);
+  magnifierCtx.lineTo(lensRadius, magnifierSize);
+  magnifierCtx.moveTo(0, lensRadius);
+  magnifierCtx.lineTo(magnifierSize, lensRadius);
+  magnifierCtx.stroke();
+
+  magnifierCtx.restore();
+}
+
+// Utility: is the svg point inside triangle path
+function isPointInsideTriangle(pointInSvg) {
+  const trianglePath = triangleTemplate.querySelector('path');
+  if (!trianglePath) return true;
+  if (typeof trianglePath.isPointInFill === 'function') {
+    try { return trianglePath.isPointInFill(pointInSvg); } catch (_) {}
+  }
+  const bbox = trianglePath.getBBox();
+  return (
+    pointInSvg.x >= bbox.x && pointInSvg.x <= bbox.x + bbox.width &&
+    pointInSvg.y >= bbox.y && pointInSvg.y <= bbox.y + bbox.height
+  );
+}
+
+// Preview canvas render: base canvas + live drawing overlay clipped to triangle
+let previewRafPending = false;
+function requestPreviewRedraw() {
+  if (previewRafPending) return;
+  previewRafPending = true;
+  requestAnimationFrame(() => {
+    redrawPreviewNow();
+    previewRafPending = false;
+  });
+}
+
+function redrawPreviewNow() {
+  // Draw base canvas
+  previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+  previewCtx.drawImage(canvas, 0, 0);
+
+  // Overlay global square grid (if any)
+  try { previewCtx.drawImage(gridCanvas, 0, 0); } catch (_) {}
+
+  // Overlay triangle drawing mapped to base canvas position
+  const translateX = 300 - triangleTemplate.width.baseVal.value / 2;
+  const translateY = 300 - triangleTemplate.height.baseVal.value;
+  previewCtx.save();
+  previewCtx.scale(scaleFactor, scaleFactor);
+  previewCtx.translate(translateX, translateY);
+  const trianglePathEl = triangleTemplate.querySelector('path');
+  if (trianglePathEl) {
+    try {
+      const triP = new Path2D(trianglePathEl.getAttribute('d'));
+      previewCtx.save();
+      // Draw internal triangle grid (polar/lines) beneath drawing
+      drawTriangleInternalGridToCtx(previewCtx);
+      previewCtx.clip(triP);
+      drawDrawingLayerToCtx(previewCtx);
+      previewCtx.restore();
+      // Draw grid again on top if desired for visibility
+      drawTriangleInternalGridToCtx(previewCtx);
+    } catch (_) {
+      drawDrawingLayerToCtx(previewCtx);
+    }
+  } else {
+    drawTriangleInternalGridToCtx(previewCtx);
+    drawDrawingLayerToCtx(previewCtx);
+  }
+  // Draw triangle outline on top for clarity
+  previewCtx.restore();
+  if (trianglePathEl) {
+    try {
+      const triOutline = new Path2D(trianglePathEl.getAttribute('d'));
+      previewCtx.save();
+      previewCtx.scale(scaleFactor, scaleFactor);
+      previewCtx.translate(translateX, translateY);
+      previewCtx.strokeStyle = 'rgba(0,0,0,0.5)';
+      previewCtx.lineWidth = 1;
+      previewCtx.stroke(triOutline);
+      previewCtx.restore();
+    } catch (_) {}
+  }
+}
+
+function drawDrawingLayerToCtx(targetCtx) {
+  Array.from(drawingLayer.children).forEach(el => {
+    targetCtx.save();
+    if (typeof el.getCTM === 'function') {
+      const m = el.getCTM();
+      if (m) targetCtx.transform(m.a, m.b, m.c, m.d, m.e, m.f);
+    }
+    const stroke = el.getAttribute('stroke') || '#000';
+    const fill = el.getAttribute('fill') || 'none';
+    const lineWidth = parseFloat(el.getAttribute('stroke-width') || '1');
+    targetCtx.strokeStyle = stroke;
+    targetCtx.fillStyle = fill;
+    targetCtx.lineWidth = lineWidth;
+
+    const tag = el.tagName.toLowerCase();
+    if (tag === 'path') {
+      const d = el.getAttribute('d');
+      if (d) {
+        try {
+          const p = new Path2D(d);
+          if (fill !== 'none') targetCtx.fill(p);
+          targetCtx.stroke(p);
+        } catch (_) {}
+      }
+    } else if (tag === 'circle') {
+      const cx = parseFloat(el.getAttribute('cx') || '0');
+      const cy = parseFloat(el.getAttribute('cy') || '0');
+      const r = parseFloat(el.getAttribute('r') || '0');
+      targetCtx.beginPath();
+      targetCtx.arc(cx, cy, r, 0, Math.PI * 2);
+      if (fill !== 'none') targetCtx.fill();
+      targetCtx.stroke();
+    } else if (tag === 'line') {
+      const x1 = parseFloat(el.getAttribute('x1') || '0');
+      const y1 = parseFloat(el.getAttribute('y1') || '0');
+      const x2 = parseFloat(el.getAttribute('x2') || '0');
+      const y2 = parseFloat(el.getAttribute('y2') || '0');
+      targetCtx.beginPath();
+      targetCtx.moveTo(x1, y1);
+      targetCtx.lineTo(x2, y2);
+      targetCtx.stroke();
+    }
+    targetCtx.restore();
+  });
+}
+
+// Draw the triangle template's internal grid (gridGroup) into a 2D context
+function drawTriangleInternalGridToCtx(targetCtx) {
+  const grp = triangleTemplate.querySelector('#gridGroup');
+  if (!grp) return;
+  Array.from(grp.children).forEach(el => {
+    targetCtx.save();
+    // gridGroup is already in triangleTemplate coords, CTM is identity under our mapping
+    const stroke = el.getAttribute('stroke') || '#e0e0e0';
+    const lineWidth = parseFloat(el.getAttribute('stroke-width') || '0.5');
+    targetCtx.strokeStyle = stroke;
+    targetCtx.lineWidth = lineWidth;
+    const tag = el.tagName.toLowerCase();
+    if (tag === 'circle') {
+      const cx = parseFloat(el.getAttribute('cx') || '0');
+      const cy = parseFloat(el.getAttribute('cy') || '0');
+      const r = parseFloat(el.getAttribute('r') || '0');
+      targetCtx.beginPath();
+      targetCtx.arc(cx, cy, r, 0, Math.PI * 2);
+      targetCtx.stroke();
+    } else if (tag === 'line') {
+      const x1 = parseFloat(el.getAttribute('x1') || '0');
+      const y1 = parseFloat(el.getAttribute('y1') || '0');
+      const x2 = parseFloat(el.getAttribute('x2') || '0');
+      const y2 = parseFloat(el.getAttribute('y2') || '0');
+      targetCtx.beginPath();
+      targetCtx.moveTo(x1, y1);
+      targetCtx.lineTo(x2, y2);
+      targetCtx.stroke();
+    }
+    targetCtx.restore();
+  });
+}
+
+function updatePaths() {
+  paths = Array.from(drawingLayer.children).map(child => {
+    const clone = child.cloneNode(true);
+    const transform = child.getAttribute('transform');
+    if (transform) {
+      clone.setAttribute('transform', transform);
+    }
+    return clone.outerHTML;
+  });
+  undoStack.push(paths.slice());
+  redoStack = [];
+  saveProgressToSessionStorage(); // Save progress to session storage
+}
+
+function saveProgressToSessionStorage() {
+  const state = {
+    paths,
+    segments,
+    radius: radiusSlider.value
+  };
+  sessionStorage.setItem('pookkalamState', JSON.stringify(state));
+}
+
+function loadProgressFromSessionStorage() {
+  const savedState = sessionStorage.getItem('pookkalamState');
+  if (savedState) {
+    const { paths: savedPaths, segments: savedSegments, radius: savedRadius } = JSON.parse(savedState);
+    paths = savedPaths;
+    segments = savedSegments;
+    radiusSlider.value = savedRadius;
+    slicesSlider.value = savedSegments;
+    slicesValue.textContent = savedSegments;
+    radiusValue.textContent = savedRadius;
+    drawingLayer.innerHTML = paths.join('');
+    updateTriangleTemplate();
+    generateMandala();
+    updateSegmentsUI();
+  }
+}
+function updateTriangleTemplate() {
+  const angle = 360 / segments;
+  const radians = (angle * Math.PI) / 180;
+  const height = parseInt(radiusSlider.value);
+  const width = 2 * height * Math.tan(radians / 2);
+  const arcHeight = height * (1 - Math.cos(radians / 2));
+  const extraSpace = 30;
+  const viewBoxWidth = Math.max(width, 96);
+  const viewBoxHeight = height + arcHeight + extraSpace;
+  const xOffset = (viewBoxWidth - width) / 2;
+
+  triangleTemplate.setAttribute('width', viewBoxWidth);
+  triangleTemplate.setAttribute('height', viewBoxHeight);
+  triangleTemplate.setAttribute('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`);
+
+  const pathD = `M${xOffset + width / 2},${viewBoxHeight} L${xOffset},${arcHeight + extraSpace} A${height},${height} 0 0,1 ${xOffset + width},${arcHeight + extraSpace} Z`;
+  triangleTemplate.querySelector('path').setAttribute('d', pathD);
+
+  // Create or update the clipPath
+  let clipPath = triangleTemplate.querySelector('#triangleClip');
+  if (!clipPath) {
+    clipPath = document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
+    clipPath.id = 'triangleClip';
+    triangleTemplate.appendChild(clipPath);
+  }
+  let clipPathPath = clipPath.querySelector('path');
+  if (!clipPathPath) {
+    clipPathPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    clipPath.appendChild(clipPathPath);
+  }
+  clipPathPath.setAttribute('d', pathD);
+
+  // Remove existing gridGroup if it exists
+  const existingGridGroup = triangleTemplate.querySelector('#gridGroup');
+  if (existingGridGroup) {
+    existingGridGroup.remove();
+  }
+  // Create new gridGroup
+  const gridGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  gridGroup.id = 'gridGroup';
+  gridGroup.setAttribute('clip-path', 'url(#triangleClip)');
+
+  // Get the center point from getTriangleAnglePoint()
+  const centerPoint = getTriangleAnglePoint();
+
+  // Circular gridlines
+  const numCircularLines = 10;
+  console.log(height);
+  console.log(arcHeight);
+  for (let i = 1; i <= numCircularLines; i++) {
+    const radius = (i * (height+arcHeight)) / numCircularLines;
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute('cx', centerPoint.x);
+    circle.setAttribute('cy', centerPoint.y);
+    circle.setAttribute('r', radius);
+    circle.setAttribute('stroke', '#e0e0e0');
+    circle.setAttribute('stroke-width', '0.5');
+    circle.setAttribute('fill', 'none');
+    gridGroup.appendChild(circle);
+  }
+
+  // Vertical gridlines
+  const numVerticalLines = 40; // Use the number of sectors for vertical lines
+  for (let i = 0; i < numVerticalLines; i++) {
+    const angle = (i * 360 / numVerticalLines) * (Math.PI / 180);
+    const x = centerPoint.x + (height+arcHeight) * Math.cos(angle);
+    const y = centerPoint.y + (height+arcHeight) * Math.sin(angle);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute('x1', centerPoint.x);
+    line.setAttribute('y1', centerPoint.y);
+    line.setAttribute('x2', x);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#e0e0e0');
+    line.setAttribute('stroke-width', '0.5');
+    gridGroup.appendChild(line);
+  }
+
+  // Central line from triangle angle
+  const centralLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  centralLine.setAttribute('x1', centerPoint.x);
+  centralLine.setAttribute('y1', centerPoint.y);
+  centralLine.setAttribute('x2', centerPoint.x);
+  centralLine.setAttribute('y2', 0);
+  centralLine.setAttribute('stroke', '#e0e0e0');
+  centralLine.setAttribute('stroke-width', '0.5');
+  gridGroup.appendChild(centralLine);
+
+  triangleTemplate.appendChild(gridGroup);
+}
+
+let svgBlobUrl = null;
+
+function generateMandala() {
+  // Clear the existing canvas content
+  ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+  // Generate new mandala SVG content
+  const angle = 360 / segments;
+  const overlap = 0.1; // Small overlap to hide gaps
+  const shapesHTML = Array(segments).fill('').map((_, i) => {
+    const rotation = i * angle - overlap;
+    const translateX = 300 - triangleTemplate.width.baseVal.value / 2;
+    const translateY = 300 - triangleTemplate.height.baseVal.value;
+    return `<g stroke="black" stroke-width="2" fill="none" transform="rotate(${rotation} 300 300) translate(${translateX} ${translateY})" clip-path="url(#mandalaClip)">${paths.join('')}</g>`;
+  }).join('');
+
+  mandala.innerHTML = `
+    <svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="600" fill="#ffffff" />
+      <defs>
+        <clipPath id="mandalaClip">
+          <path d="${triangleTemplate.querySelector('path').getAttribute('d')}" />
+        </clipPath>
+      </defs>
+      ${shapesHTML}
+    </svg>
+  `;
+
+  const svgData = new XMLSerializer().serializeToString(mandala.querySelector('svg'));
+  const newSvgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+
+  // Revoke the old Blob URL if it exists
+  if (svgBlobUrl) {
+    URL.revokeObjectURL(svgBlobUrl);
+  }
+
+  // Create a new Blob URL
+  svgBlobUrl = URL.createObjectURL(newSvgBlob);
+  const img = new Image();
+  img.src = svgBlobUrl;
+
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0, displayWidth, displayHeight);
+    // Revoke the Blob URL after the image is loaded to free up memory
+    URL.revokeObjectURL(svgBlobUrl);
+    svgBlobUrl = null;
+    // Sync preview with updated base canvas
+    requestPreviewRedraw();
+    if (typeof updateYourBloomStats === 'function') {
+      updateYourBloomStats();
+    }
+  };
+}
+
+// Add the canvas click event listener only once
+function getCanvasPixelPoint(e) {
+  const touch = e.touches?.[0] || e.changedTouches?.[0];
+  const clientX = touch?.clientX ?? e.clientX;
+  const clientY = touch?.clientY ?? e.clientY;
+  const rect = canvas.getBoundingClientRect();
+
+  return {
+    x: Math.max(0, Math.min(canvas.width - 1, Math.floor((clientX - rect.left) * (canvas.width / rect.width)))),
+    y: Math.max(0, Math.min(canvas.height - 1, Math.floor((clientY - rect.top) * (canvas.height / rect.height))))
+  };
+}
+canvas.addEventListener('click', (e) => {
+  const point = getCanvasPixelPoint(e);
+  floodFill(point.x, point.y);
+});
+
+
+
+
+function drawGridlines() {
+  const gridSize = 20;
+  // Fix (part 2): the internal canvas is 600x600 but is displayed at
+  // 300-520 CSS px depending on breakpoint, so the previous 0.5px line at
+  // '#e0e0e0' (very low contrast against the canvas background) became a
+  // sub-pixel, near-invisible smudge once downscaled -- technically drawn,
+  // practically imperceptible. Slightly thicker + slightly darker keeps it
+  // subtle while actually being visible on screen.
+  gridCtx.strokeStyle = '#b3b3b3';
+  gridCtx.lineWidth = 1;
+
+  // Clear the grid canvas
+  gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+
+  // Draw vertical gridlines
+  for (let x = 0; x <= gridCanvas.width; x += gridSize) {
+    gridCtx.beginPath();
+    gridCtx.moveTo(x, 0);
+    gridCtx.lineTo(x, gridCanvas.height);
+    gridCtx.stroke();
+  }
+
+  // Draw horizontal gridlines
+  for (let y = 0; y <= gridCanvas.height; y += gridSize) {
+    gridCtx.beginPath();
+    gridCtx.moveTo(0, y);
+    gridCtx.lineTo(gridCanvas.width, y);
+    gridCtx.stroke();
+  }
+}
+
+// Call drawGridlines when the checkbox is toggled
+document.getElementById('gridlines').addEventListener('change', (e) => {
+  if (e.target.checked) {
+    drawGridlines();
+  } else {
+    gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+  }
+});
+const worker = new Worker('../public/js/floodFillWorker.js');
+
+worker.onmessage = function(event) {
+  const rgba = event.data;
+  const imageData = new ImageData(new Uint8ClampedArray(rgba), canvas.width, canvas.height);
+  ctx.putImageData(imageData, 0, 0);
+  // Update preview after flood fill updates the canvas
+  requestPreviewRedraw();
+};
+
+function floodFill(x, y) {
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const rgba = imageData.data;
+  const fillColor = hexToRgb(selectedColor);
+  const tolerance = 25; // Increased tolerance for better edge handling
+
+  worker.postMessage({ rgba, width: canvas.width, height: canvas.height, x, y, color: fillColor, tolerance });
+}
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
+}
+function eraseAtPoint(clientX, clientY) {
+  const clickedElement = document.elementFromPoint(clientX, clientY);
+  if (clickedElement && clickedElement.parentNode === drawingLayer) {
+    drawingLayer.removeChild(clickedElement);
+    updatePaths();
+    generateMandala();
+  }
+}
+
+
+let curvePoints = [];
+let currentCurve = null;
+let clickState = 0;
+
+function Curve(parent, x1, y1) {
+  this.parent = parent;
+  this.origin = { x: x1, y: y1 };
+  this.target = { x: x1, y: y1 };
+  this.control = { x: x1, y: y1 };
+  this.path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  this.path.setAttribute("fill", "none");
+  this.path.setAttribute("stroke", currentColor);
+  this.path.setAttribute("stroke-width", currentLineWidth);
+  drawingLayer.appendChild(this.path);
+
+  this.to = function (x, y) {
+    this.target.x = x;
+    this.target.y = y;
+    this.updatePath();
+  };
+
+  this.arc = function (x, y) {
+    // Interpolate the control point
+    const t = 1.5; // Adjust this value to change how closely the curve follows the mouse
+    this.control.x = this.origin.x + (x - this.origin.x) * t;
+    this.control.y = this.origin.y + (y - this.origin.y) * t;
+    this.updatePath();
+  };
+
+  this.preview = function () {
+    this.path.setAttribute("stroke", COLORS.preview);
+    this.updatePath();
+  };
+
+  this.updatePath = function () {
+    this.path.setAttribute("d", `M${this.origin.x},${this.origin.y} Q${this.control.x},${this.control.y} ${this.target.x},${this.target.y}`);
+  };
+
+  this.finalize = function () {
+    this.path.setAttribute("stroke", currentColor);
+  };
+}
+
+function handleCurveDrawing(e, point) {
+  if (e.type === 'mousedown' || e.type === 'touchstart') {
+    if (clickState === 0) {
+      // First touch: start a new curve
+      currentCurve = new Curve(this, point.x, point.y);
+      curvePoints = [point];
+      clickState++;
+      requestPreviewRedraw();
+    }
+  } else if (e.type === 'mousemove' || e.type === 'touchmove') {
+    if (clickState === 1) {
+      // Preview end point
+      currentCurve.to(point.x, point.y);
+      currentCurve.preview();
+      requestPreviewRedraw();
+    } else if (clickState === 2) {
+      // Preview control point
+      currentCurve.arc(point.x, point.y);
+      currentCurve.preview();
+      requestPreviewRedraw();
+    }
+  } else if (e.type === 'mouseup' || e.type === 'touchend') {
+    if (clickState === 1) {
+      // Set end point
+      currentCurve.to(point.x, point.y);
+      curvePoints.push(point);
+      clickState++;
+      requestPreviewRedraw();
+    } else if (clickState === 2) {
+      // Set control point and finish curve
+      currentCurve.arc(point.x, point.y);
+      currentCurve.finalize();
+      curvePoints.push(point);
+      clickState = 0;
+      updatePaths();
+      generateMandala();
+      currentCurve = null;
+      curvePoints = [];
+      requestPreviewRedraw();
+    }
+  } else if (e.type === 'mouseleave' || e.type === 'touchcancel') {
+    if (clickState === 2) {
+      // Finish curve on touch leave
+      currentCurve.arc(point.x, point.y);
+      currentCurve.finalize();
+      curvePoints.push(point);
+      clickState = 0;
+      updatePaths();
+      generateMandala();
+      currentCurve = null;
+      curvePoints = [];
+      requestPreviewRedraw();
+    }
+  }
+}
+
+const COLORS = {
+  preview: "#0c8",
+  stroke: "#363636",
+  anchor: "#0cc"
+};
+
+// Update handleDrawing function
+
+
+let lastTouchPoint = null;
+
+function handleDrawing(e) {
+  if (!isDrawingMode || currentTool === 'fill') return;
+
+  let point;
+  if (e.type.startsWith('touch')) {
+    if (e.touches.length > 0) {
+      point = getPointInSVG(e.touches[0]);
+    } else if (e.changedTouches.length > 0) {
+      point = getPointInSVG(e.changedTouches[0]);
+    } else {
+      point = lastTouchPoint;
+    }
+  } else {
+    point = getPointInSVG(e);
+  }
+
+  if (e.type === 'touchmove') {
+    lastTouchPoint = point;
+  }
+
+  if (currentTool === 'rotate') {
+    handleRotation(e, point);
+  } else if (currentTool === 'eraser') {
+    handleEraser(e);
+  } else if (currentTool === 'curve') {
+    handleCurveDrawing(e, point);
+  } else {
+    handleShapeDrawing(e, point);
+  }
+
+  if ((e.type === 'mouseup') && currentTool === 'curve' && clickState === 0) {
+    updatePaths();
+    generateMandala();
+  }
+}
+
+function handleRotation(e, point) {
+  if (e.type === 'mousedown' || e.type === 'touchstart') {
+    const target = e.target;
+    if (isDraggableShape(target)) {
+      isDrawing = true;
+      startRotation(target, point);
+      document.addEventListener('mousemove', handleRotationMove);
+      document.addEventListener('mouseup', handleRotationEnd);
+      document.addEventListener('touchmove', handleRotationMove);
+      document.addEventListener('touchend', handleRotationEnd);
+    }
+  }
+}
+
+function handleEraser(e) {
+  let clientX, clientY;
+
+  if (e.type.startsWith('touch')) {
+    const touch = e.touches[0] || e.changedTouches[0];
+    clientX = touch.clientX;
+    clientY = touch.clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+
+  if (e.type === 'mousedown' || e.type === 'touchstart') {
+    isDrawing = true;
+    eraseAtPoint(clientX, clientY);
+  } else if ((e.type === 'mousemove' || e.type === 'touchmove') && isDrawing) {
+    eraseAtPoint(clientX, clientY);
+  } else if (['mouseup', 'mouseleave', 'touchend', 'touchcancel'].includes(e.type)) {
+    isDrawing = false;
+  }
+}
+
+function handleShapeDrawing(e, point) {
+  if (e.type === 'mousedown' || e.type === 'touchstart') {
+    isDrawing = true;
+    startPoint = currentTool === 'circle' ? getTriangleAnglePoint() : point;
+    currentPath = document.createElementNS("http://www.w3.org/2000/svg", getShapeElement());
+    setShapeAttributes(currentPath, startPoint);
+    drawingLayer.appendChild(currentPath);
+    requestPreviewRedraw();
+  } else if ((e.type === 'mousemove' || e.type === 'touchmove') && isDrawing) {
+    updateShape(currentPath, startPoint, point);
+    requestPreviewRedraw();
+  } else if (['mouseup', 'mouseleave', 'touchend', 'touchcancel'].includes(e.type) && isDrawing) {
+    isDrawing = false;
+    updateShape(currentPath, startPoint, point);
+    updatePaths();
+    generateMandala();
+  }
+}
+
+function handleRotationMove(e) {
+  if (isDrawing && currentTool === 'rotate') {
+    const point = getPointInSVG(e);
+    const shape = document.querySelector('[data-rotating="true"]');
+    if (shape) {
+      continueRotation(shape, point);
+      requestPreviewRedraw();
+    }
+  }
+}
+
+function handleRotationEnd(e) {
+  if (isDrawing && currentTool === 'rotate') {
+    isDrawing = false;
+    const shape = document.querySelector('[data-rotating="true"]');
+    if (shape) {
+      endRotation(shape);
+      updatePaths();
+      generateMandala();
+    }
+    document.removeEventListener('mousemove', handleRotationMove);
+    document.removeEventListener('mouseup', handleRotationEnd);
+  }
+}
+
+function startRotation(shape, startPoint) {
+  const bbox = shape.getBBox();
+  const centerX = bbox.x + bbox.width / 2;
+  const centerY = bbox.y + bbox.height / 2;
+
+  shape.setAttribute('data-center-x', centerX);
+  shape.setAttribute('data-center-y', centerY);
+
+  const startAngle = Math.atan2(startPoint.y - centerY, startPoint.x - centerX);
+  shape.setAttribute('data-start-angle', startAngle);
+
+  const currentRotation = getCurrentRotation(shape);
+  shape.setAttribute('data-start-rotation', currentRotation);
+  shape.setAttribute('data-rotating', 'true');
+}
+
+function continueRotation(shape, currentPoint) {
+  const centerX = parseFloat(shape.getAttribute('data-center-x'));
+  const centerY = parseFloat(shape.getAttribute('data-center-y'));
+  const startAngle = parseFloat(shape.getAttribute('data-start-angle'));
+  const startRotation = parseFloat(shape.getAttribute('data-start-rotation') || 0);
+
+  const currentAngle = Math.atan2(currentPoint.y - centerY, currentPoint.x - centerX);
+  let rotation = (currentAngle - startAngle) * (180 / Math.PI);
+  rotation = (rotation + startRotation + 360) % 360;
+
+  const currentTransform = shape.getAttribute('transform') || '';
+  const newTransform = removeRotation(currentTransform) + ` rotate(${rotation.toFixed(2)} ${centerX.toFixed(2)} ${centerY.toFixed(2)})`;
+  shape.setAttribute('transform', newTransform.trim());
+  shape.setAttribute('data-rotation', rotation.toFixed(2));
+}
+
+function removeRotation(transform) {
+  return transform.replace(/\s*rotate\([^)]*\)/, '');
+}
+
+function getCurrentRotation(shape) {
+  const transform = shape.getAttribute('transform');
+  if (!transform) return 0;
+  const match = transform.match(/rotate\(([^,\s]+)[^)]*\)/);
+  return match ? parseFloat(match[1]) : 0;
+}
+
+function endRotation(shape) {
+  const rotation = getCurrentRotation(shape);
+  shape.setAttribute('data-rotation', rotation);
+  shape.removeAttribute('data-rotating');
+}
+
+function getShapeElement() {
+  switch (currentTool) {
+    case 'pencil':
+    case 'line':
+      return 'path';
+    case 'circle':
+      return 'circle';
+    default:
+      return 'path';
+  }
+}
+
+function setShapeAttributes(shape, point) {
+  shape.setAttribute("fill", "none");
+  shape.setAttribute("stroke", currentColor);
+  shape.setAttribute("stroke-width", currentLineWidth);
+
+  switch (currentTool) {
+    case 'pencil':
+    case 'line':
+      shape.setAttribute("d", `M${point.x},${point.y}`);
+      break;
+    case 'circle':
+      shape.setAttribute("cx", point.x);
+      shape.setAttribute("cy", point.y);
+      shape.setAttribute("r", 0);
+      break;
+  }
+}
+
+function updateShape(shape, start, end) {
+  switch (currentTool) {
+    case 'pencil':
+      const d = shape.getAttribute("d");
+      shape.setAttribute("d", `${d} L${end.x},${end.y}`);
+      break;
+    case 'line':
+      shape.setAttribute("d", `M${start.x},${start.y} L${end.x},${end.y}`);
+      break;
+    case 'circle':
+      const radius = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+      shape.setAttribute("r", radius);
+      break;
+  }
+}
+
+function getTriangleAnglePoint() {
+  const path = triangleTemplate.querySelector('path');
+  const pathData = path.getAttribute('d');
+  const match = pathData.match(/M([\d.]+),([\d.]+)/);
+  if (match) {
+    return { x: parseFloat(match[1]), y: parseFloat(match[2]) };
+  }
+  return { x: 0, y: 0 };
+}
+
+function clearShapes() {
+  paths = [];
+  drawingLayer.innerHTML = '';
+  sessionStorage.removeItem('mandalaPaths'); // Clear session storage
+  generateMandala();
+  requestPreviewRedraw();
+}
+
+function undo() {
+  if (undoStack.length > 0) {
+    redoStack.push(paths.slice());
+    undoStack.pop();
+    paths = undoStack.length > 0 ? undoStack[undoStack.length - 1] : [];
+    drawingLayer.innerHTML = paths.join('');
+    generateMandala();
+    updateShapeInteractivity();
+    requestPreviewRedraw();
+  }
+}
+
+function redo() {
+  if (redoStack.length > 0) {
+    paths = redoStack.pop();
+    undoStack.push(paths.slice());
+    drawingLayer.innerHTML = paths.join('');
+    generateMandala();
+    updateShapeInteractivity();
+    requestPreviewRedraw();
+  }
+}
+
+function toggleMode() {
+  document.querySelectorAll('[data-tool]').forEach(t => t.classList.remove('bg-accent'));
+
+  const isDrawingMode = currentMode === 'drawing' || currentMode === 'eraser';
+  toggleButtonStyles(freeformBtn, isDrawingMode);
+  toggleButtonStyles(dragModeBtn, !isDrawingMode);
+
+  triangleTemplate.style.cursor = currentMode === 'eraser' ? 'crosshair' : (isDrawingMode ? 'crosshair' : 'default');
+
+  if (isDrawingMode) {
+    addDrawingEventListeners();
+  } else {
+    removeDrawingEventListeners();
+  }
+
+  updateShapeInteractivity();
+}
+
+function toggleButtonStyles(button, isActive) {
+  button.classList.toggle('bg-primary', isActive);
+  button.classList.toggle('text-primary-foreground', isActive);
+  button.classList.toggle('border', !isActive);
+  button.classList.toggle('border-input', !isActive);
+  button.classList.toggle('bg-background', !isActive);
+  button.classList.toggle('hover:bg-accent', !isActive);
+  button.classList.toggle('hover:text-accent-foreground', !isActive);
+}
+
+function addDrawingEventListeners() {
+  ['mousedown', 'mousemove', 'mouseup', 'mouseleave', 'touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(event =>
+    triangleTemplate.addEventListener(event, handleDrawing)
+  );
+  // Magnifier hooks
+  if (drawingArea) {
+    drawingArea.addEventListener('mouseenter', onTemplateEnter);
+    drawingArea.addEventListener('mouseleave', onTemplateLeave);
+    drawingArea.addEventListener('mousemove', onTemplateMove);
+    drawingArea.addEventListener('touchstart', onTemplateTouchStart, { passive: true });
+    drawingArea.addEventListener('touchmove', onTemplateTouchMove, { passive: true });
+    drawingArea.addEventListener('touchend', onTemplateTouchEnd);
+  }
+}
+
+function removeDrawingEventListeners() {
+  ['mousedown', 'mousemove', 'mouseup', 'mouseleave', 'touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(event =>
+    triangleTemplate.removeEventListener(event, handleDrawing)
+  );
+  if (drawingArea) {
+    drawingArea.removeEventListener('mouseenter', onTemplateEnter);
+    drawingArea.removeEventListener('mouseleave', onTemplateLeave);
+    drawingArea.removeEventListener('mousemove', onTemplateMove);
+    drawingArea.removeEventListener('touchstart', onTemplateTouchStart);
+    drawingArea.removeEventListener('touchmove', onTemplateTouchMove);
+    drawingArea.removeEventListener('touchend', onTemplateTouchEnd);
+  }
+}
+
+function onTemplateEnter(e) {
+  // Redraw preview so magnifier has fresh base
+  requestPreviewRedraw();
+  showMagnifier();
+  // Position immediately on enter
+  const clientX = (e.touches && e.touches[0]?.clientX) || e.clientX || 0;
+  const clientY = (e.touches && e.touches[0]?.clientY) || e.clientY || 0;
+  updateMagnifierPosition(clientX, clientY);
+}
+
+function onTemplateLeave(e) {
+  // Only hide when the pointer leaves the drawing area container
+  hideMagnifier();
+}
+
+function onTemplateMove(e) {
+  const svgPt = getPointInSVG(e);
+  // Keep lens visible as long as cursor is inside the drawingArea container
+  showMagnifier();
+  // Ensure preview matches current state during hover/move
+  requestPreviewRedraw();
+  drawMagnifierAt(svgPt);
+  updateMagnifierPosition(e.clientX, e.clientY);
+}
+
+function onTemplateTouchStart(e) {
+  if (!e.touches || e.touches.length === 0) return;
+  showMagnifier();
+  const t = e.touches[0];
+  const svgPt = getPointInSVG(e);
+  if (!isPointInsideTriangle(svgPt)) return;
+  requestPreviewRedraw();
+  drawMagnifierAt(svgPt);
+  updateMagnifierPosition(t.clientX, t.clientY);
+}
+
+function onTemplateTouchMove(e) {
+  if (!e.touches || e.touches.length === 0) return;
+  const t = e.touches[0];
+  const svgPt = getPointInSVG(e);
+  // Keep lens visible while touch remains inside the drawingArea container
+  showMagnifier();
+  requestPreviewRedraw();
+  drawMagnifierAt(svgPt);
+  updateMagnifierPosition(t.clientX, t.clientY);
+}
+
+function onTemplateTouchEnd(e) {
+  hideMagnifier();
+}
+
+
+function updateShapeInteractivity() {
+  Array.from(drawingLayer.children).forEach(shape => {
+    const interactable = interact(shape);
+
+    if (currentMode === 'drag') {
+      interactable.draggable({
+        inertia: true,
+        listeners: {
+          start(event) {
+            event.target.classList.add('is-dragging');
+          },
+          move(event) {
+            const target = event.target;
+            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+            const currentScaleX = parseFloat(target.getAttribute('data-scale-x') || 1);
+            const currentScaleY = parseFloat(target.getAttribute('data-scale-y') || 1);
+            const currentRotation = getCurrentRotation(target);
+
+            const centerX = target.getAttribute('data-center-x') || (target.getBBox().x + target.getBBox().width / 2);
+            const centerY = target.getAttribute('data-center-y') || (target.getBBox().y + target.getBBox().height / 2);
+            target.setAttribute('data-center-x', centerX);
+            target.setAttribute('data-center-y', centerY);
+
+            target.setAttribute('transform', `translate(${x}, ${y}) scale(${currentScaleX}, ${currentScaleY}) rotate(${currentRotation} ${centerX} ${centerY})`);
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
+            requestPreviewRedraw();
+          },
+          end(event) {
+            event.target.classList.remove('is-dragging');
+            updatePaths();
+            generateMandala();
+            requestPreviewRedraw();
+          }
+        }
+      });
+
+      interactable.resizable({
+        edges: { left: true, right: true, bottom: true, top: true },
+        margin: 5,
+        listeners: {
+          start(event) {
+            const target = event.target;
+            target.setAttribute('data-start-scale-x', target.getAttribute('data-scale-x') || 1);
+            target.setAttribute('data-start-scale-y', target.getAttribute('data-scale-y') || 1);
+            target.setAttribute('data-start-width', event.rect.width);
+            target.setAttribute('data-start-height', event.rect.height);
+            target.setAttribute('data-start-x', target.getAttribute('data-x') || 0);
+            target.setAttribute('data-start-y', target.getAttribute('data-y') || 0);
+          },
+          move(event) {
+            const target = event.target;
+            const startX = parseFloat(target.getAttribute('data-start-x'));
+            const startY = parseFloat(target.getAttribute('data-start-y'));
+            const startScaleX = parseFloat(target.getAttribute('data-start-scale-x'));
+            const startScaleY = parseFloat(target.getAttribute('data-start-scale-y'));
+            const startWidth = parseFloat(target.getAttribute('data-start-width'));
+            const startHeight = parseFloat(target.getAttribute('data-start-height'));
+
+            let newScaleX = startScaleX;
+            let newScaleY = startScaleY;
+            let newX = startX;
+            let newY = startY;
+
+            if (event.edges.left) {
+              const widthChange = startWidth - event.rect.width;
+              newScaleX = startScaleX * (event.rect.width / startWidth);
+              newX = startX + widthChange * startScaleX;
+            } else if (event.edges.right) {
+              newScaleX = startScaleX * (event.rect.width / startWidth);
+            }
+
+            if (event.edges.top) {
+              const heightChange = startHeight - event.rect.height;
+              newScaleY = startScaleY * (event.rect.height / startHeight);
+              newY = startY + heightChange * startScaleY;
+            } else if (event.edges.bottom) {
+              newScaleY = startScaleY * (event.rect.height / startHeight);
+            }
+
+            const currentRotation = getCurrentRotation(target);
+
+            const centerX = target.getAttribute('data-center-x') || (target.getBBox().x + target.getBBox().width / 2);
+            const centerY = target.getAttribute('data-center-y') || (target.getBBox().y + target.getBBox().height / 2);
+            target.setAttribute('data-center-x', centerX);
+            target.setAttribute('data-center-y', centerY);
+
+            target.setAttribute('transform', `translate(${newX}, ${newY}) scale(${newScaleX}, ${newScaleY}) rotate(${currentRotation} ${centerX} ${centerY})`);
+            target.setAttribute('data-x', newX);
+            target.setAttribute('data-y', newY);
+            target.setAttribute('data-scale-x', newScaleX);
+            target.setAttribute('data-scale-y', newScaleY);
+            requestPreviewRedraw();
+          },
+          end() {
+            updatePaths();
+            generateMandala();
+          }
+        }
+      });
+    } else {
+      interactable.draggable(false);
+      interactable.resizable(false);
+    }
+  });
+}
+
+function addShapeToDrawingLayer(x, y, shapeType) {
+  const shapeAttributes = {
+    custom1: { tag: 'path', attrs: { d: "M107.532 90.1785C83.7449 96.6751 66.3493 104.347 55.0435 113.566C43.7426 104.351 26.3571 96.6817 2.58549 90.1869C-0.772028 61.8199 9.45296 24.6334 55.022 2.23499C76.3402 13.2042 90.7708 26.1434 99.2105 40.8475C107.558 55.3905 110.148 71.8385 107.532 90.1785Z" } },
+    custom2: { tag: 'path', attrs: { d: "M69.6646 3C-10.1141 56.1561 -0.783584 108.38 10.1799 124H130.545C139.642 108.613 151.538 59.6532 69.6646 3Z" } },
+    custom3: { tag: 'path', attrs: { d: "M49.4247 52.7852C59.8994 36.2386 70.2865 19.8303 78.2537 4.26678C84.9538 14.4935 91.8836 24.6367 98.7163 34.6378L99.8471 36.2929C107.698 47.7854 115.395 59.0846 122.476 70.146C136.656 92.2989 148.252 113.335 153.601 132.815C158.931 152.229 158.012 169.906 147.414 185.616C136.808 201.338 116.289 215.426 81.6443 227.149C42.7707 217.246 21.0576 203.315 10.613 187.099C0.170573 170.886 0.690247 151.902 7.45753 131.18C14.2331 110.434 27.1612 88.2975 41.0375 66.0915C43.8096 61.6552 46.6203 57.2152 49.4247 52.7852Z" } },
+    custom4: { tag: 'path', attrs: { d: "M45 10 Q18 55 45 100 Q72 55 45 10" } },
+    custom5: { tag: 'circle', attrs: { cx: "89.5", cy: "89.5", r: "87.5" } },
+    custom6: { tag: 'rect', attrs: { x: "2", y: "2", width: "166", height: "166" } },
+    custom7: { tag: 'path', attrs: { d: "M79.5 3.48483C82.9034 1.51987 87.0966 1.51987 90.5 3.48483L162.37 44.9793C165.774 46.9442 167.87 50.5756 167.87 54.5056V137.494C167.87 141.424 165.774 145.056 162.37 147.021L90.5 188.515C87.0966 190.48 82.9034 190.48 79.5 188.515L7.62951 147.021C4.22609 145.056 2.12951 141.424 2.12951 137.494V54.5056C2.12951 50.5756 4.2261 46.9442 7.62951 44.9793L79.5 3.48483Z" } },
+    custom8: { tag: 'path', attrs: { d: "M99.1422 29.4261L99.1639 29.4423L99.1861 29.4579C110.283 37.2743 122.272 44.6607 134.319 50.7799C128.365 62.7557 122.871 75.2107 118.695 88.1303C114.535 101.002 111.249 114.326 109.262 127.688C95.8562 125.479 82.4056 124.162 68.5 124.162C54.5734 124.162 41.103 125.483 27.6767 127.698C25.3253 114.398 22.4828 101.057 18.3044 88.1303C14.1313 75.2196 8.64254 62.7728 2.69364 50.8045C15.153 44.6702 26.6955 37.2611 36.9044 29.4175C48.0147 21.1304 58.2467 12.4005 68.0174 2.81136C77.7916 12.4039 88.0274 21.1364 99.1422 29.4261Z" } },
+    custom9: { tag: 'path', attrs: { d: "M102.298 131.087C101.832 130.869 101.302 130.625 100.713 130.36C98.2522 129.252 94.7547 127.777 90.5954 126.302C82.3086 123.363 71.2582 120.374 60.5001 120.374C50.9418 120.374 40.4871 123.379 32.5287 126.311C28.5268 127.785 25.1099 129.259 22.6913 130.365C22.0937 130.638 21.5567 130.889 21.0864 131.112L2.23029 55.1762L60.5001 2.69168L118.799 55.2026L102.298 131.087Z" } },
+    custom10: { tag: 'path', attrs: { d: "M75.3023 6.64393C77.1152 1.15134 84.8848 1.15133 86.6977 6.64395L94.1938 29.3558C96.1086 35.1573 102.732 37.9009 108.188 35.1526L129.549 24.3935C134.715 21.7915 140.209 27.2854 137.607 32.4512L126.847 53.8115C124.099 59.2677 126.843 65.8914 132.644 67.8062L155.356 75.3023C160.849 77.1152 160.849 84.8848 155.356 86.6977L132.644 94.1938C126.843 96.1086 124.099 102.732 126.847 108.189L137.607 129.549C140.209 134.715 134.715 140.209 129.549 137.607L108.188 126.847C102.732 124.099 96.1086 126.843 94.1938 132.644L86.6977 155.356C84.8848 160.849 77.1152 160.849 75.3023 155.356L67.8062 132.644C65.8914 126.843 59.2677 124.099 53.8115 126.847L32.4512 137.607C27.2854 140.209 21.7915 134.715 24.3935 129.549L35.1526 108.188C37.9009 102.732 35.1573 96.1086 29.3558 94.1938L6.64393 86.6977C1.15134 84.8848 1.15133 77.1152 6.64395 75.3023L29.3558 67.8062C35.1573 65.8914 37.9009 59.2677 35.1526 53.8115L24.3935 32.4512C21.7915 27.2854 27.2854 21.7915 32.4512 24.3935L53.8115 35.1526C59.2677 37.9009 65.8914 35.1573 67.8062 29.3558L75.3023 6.64393Z" } },
+    custom11: { tag: 'path', attrs: { d: "M89.9318 6.12863C94.1569 -2.04288 105.843 -2.04288 110.068 6.12863L136.973 58.1644C138.051 60.2496 139.75 61.9486 141.836 63.0268L193.871 89.9318C202.043 94.1569 202.043 105.843 193.871 110.068L141.836 136.973C139.75 138.051 138.051 139.75 136.973 141.836L110.068 193.871C105.843 202.043 94.1569 202.043 89.9318 193.871L63.0268 141.836C61.9486 139.75 60.2496 138.051 58.1644 136.973L6.12863 110.068C-2.04288 105.843 -2.04288 94.1569 6.12863 89.9318L58.1644 63.0268C60.2496 61.9486 61.9486 60.2496 63.0268 58.1644L89.9318 6.12863Z" } },
+    custom12: { tag: 'path', attrs: { d: "M4.03989 140.397C-10.3154 77.7553 54.6099 24.0316 88.867 5C64.0713 61.1165 92.6734 143.66 110.074 177.917C80.7106 191.511 18.3952 203.039 4.03989 140.397Z" } },
+    custom13: { tag: 'path', attrs: { d: "M69.7793 3.67984C63.873 24.6197 22.7988 58.4907 3 72.8087L35.8863 255.362C49.6449 162.743 75.6856 -17.26 69.7793 3.67984Z" } },
+    custom14: { tag: 'path', attrs: { d: "M94 6.47214L114.1 68.3344L114.549 69.7163H116.002L181.048 69.7163L128.425 107.949L127.249 108.803L127.698 110.185L147.799 172.048L95.1756 133.815L94 132.961L92.8244 133.815L40.2013 172.048L60.3015 110.185L60.7506 108.803L59.575 107.949L6.95183 69.7163L71.9976 69.7163H73.4507L73.8997 68.3344L94 6.47214Z" } },
+    custom15: { tag: 'path', attrs: { d: "M50.7143 0H0.71429V50C0.71429 75.462 19.7466 96.4788 44.361 99.6002C19.4015 102.402 4.22025e-06 123.578 2.18557e-06 149.286L0 199.286H50C75.462 199.286 96.4788 180.253 99.6002 155.639C102.402 180.599 123.578 200 149.286 200H199.286V150C199.286 124.538 180.253 103.521 155.639 100.4C180.599 97.5984 200 76.422 200 50.7143V0.714286L150 0.714284C124.538 0.714282 103.521 19.7466 100.4 44.361C97.5984 19.4015 76.422 0 50.7143 0Z" } },
+    custom16: { tag: 'path', attrs: { d: "M100.387 91.8532C96.2415 40.435 53.2 0 0.714282 0C0.714282 52.2424 40.7753 95.1281 91.8532 99.6128C40.435 103.758 -5.33517e-06 146.8 -7.62939e-06 199.286C52.2424 199.286 95.1281 159.225 99.6128 108.147C103.758 159.565 146.8 200 199.286 200C199.286 147.758 159.225 104.872 108.147 100.387C159.565 96.2416 200 53.2 200 0.714286C147.758 0.714283 104.872 40.7753 100.387 91.8532ZM99.9975 100.002C99.9991 100.002 100.001 100.003 100.002 100.003L100.003 99.9975C100.001 99.9975 99.9992 99.9975 99.9975 99.9975C99.9975 99.9991 99.9975 100.001 99.9975 100.002Z" } },
+    custom17: { tag: 'path', attrs: { d: "M123.344 200C100 200 100 143.969 76.6558 143.969C49.7872 143.969 0 150.205 0 123.338C0 99.9951 56.0242 99.995 56.0242 76.652C56.0242 49.7946 49.7872 0 76.6558 0C100 0 100 56.0313 123.344 56.0313C150.213 56.0313 200 49.7946 200 76.652C200 99.995 143.966 99.9951 143.966 123.338C143.966 150.205 150.213 200 123.344 200Z" } }
+  };
+
+  const { tag, attrs } = shapeAttributes[shapeType];
+  const shape = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  Object.entries(attrs).forEach(([key, value]) => shape.setAttribute(key, value));
+
+  shape.setAttribute('fill', 'none');
+  shape.setAttribute('stroke', 'black');
+  shape.setAttribute('stroke-width', '2');
+
+  const initialScale = 0.3;
+  const offsetX = 20;
+  const offsetY = 20;
+  shape.setAttribute('transform', `translate(${x - offsetX}, ${y - offsetY}) scale(${initialScale})`);
+  shape.setAttribute('data-x', x - offsetX);
+  shape.setAttribute('data-y', y - offsetY);
+  shape.setAttribute('data-original-width', 30);
+  shape.setAttribute('data-original-height', 30);
+  shape.classList.add('resizable');
+  shape.setAttribute('data-scale-x', initialScale);
+  shape.setAttribute('data-scale-y', initialScale);
+
+  drawingLayer.appendChild(shape);
+  makeShapeInteractive(shape);
+  updatePaths();
+  generateMandala();
+
+  currentMode = 'drag';
+  toggleMode();
+}
+
+function makeShapeInteractive(shape) {
+  let originalTransform = shape.getAttribute('transform') || '';
+  let scale = 1;
+
+  interact(shape)
+    .draggable({
+      inertia: true,
+      listeners: {
+        start(event) {
+          currentMode = 'drag';
+          toggleMode();
+          event.target.classList.add('is-dragging');
+        },
+        move(event) {
+          if (currentMode !== 'drag') return;
+          const target = event.target;
+          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+          const currentScaleX = parseFloat(target.getAttribute('data-scale-x') || scale);
+          const currentScaleY = parseFloat(target.getAttribute('data-scale-y') || scale);
+          const currentRotation = parseFloat(target.getAttribute('data-rotation') || 0);
+
+          target.setAttribute('transform', `translate(${x}, ${y}) scale(${currentScaleX}, ${currentScaleY}) rotate(${currentRotation})`);
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        },
+        end(event) {
+          event.target.classList.remove('is-dragging');
+          if (currentMode !== 'drag') return;
+          updatePaths();
+          generateMandala();
+          requestPreviewRedraw();
+        }
+      }
+    })
+    .resizable({
+      edges: { left: true, right: true, bottom: true, top: true },
+      margin: 5,
+      listeners: {
+        start(event) {
+          const target = event.target;
+          target.setAttribute('data-start-scale-x', target.getAttribute('data-scale-x') || scale);
+          target.setAttribute('data-start-scale-y', target.getAttribute('data-scale-y') || scale);
+          target.setAttribute('data-start-width', event.rect.width);
+          target.setAttribute('data-start-height', event.rect.height);
+          target.setAttribute('data-start-x', target.getAttribute('data-x') || 0);
+          target.setAttribute('data-start-y', target.getAttribute('data-y') || 0);
+        },
+        move(event) {
+          const target = event.target;
+          const startX = parseFloat(target.getAttribute('data-start-x'));
+          const startY = parseFloat(target.getAttribute('data-start-y'));
+          const startScaleX = parseFloat(target.getAttribute('data-start-scale-x'));
+          const startScaleY = parseFloat(target.getAttribute('data-start-scale-y'));
+          const startWidth = parseFloat(target.getAttribute('data-start-width'));
+          const startHeight = parseFloat(target.getAttribute('data-start-height'));
+
+          let newScaleX = startScaleX;
+          let newScaleY = startScaleY;
+          let newX = startX;
+          let newY = startY;
+
+          if (event.edges.left) {
+            const widthChange = startWidth - event.rect.width;
+            newScaleX = startScaleX * (event.rect.width / startWidth);
+            newX = startX + widthChange * startScaleX;
+          } else if (event.edges.right) {
+            newScaleX = startScaleX * (event.rect.width / startWidth);
+          }
+
+          if (event.edges.top) {
+            const heightChange = startHeight - event.rect.height;
+            newScaleY = startScaleY * (event.rect.height / startHeight);
+            newY = startY + heightChange * startScaleY;
+          } else if (event.edges.bottom) {
+            newScaleY = startScaleY * (event.rect.height / startHeight);
+          }
+
+          const currentRotation = getCurrentRotation(target);
+
+          target.setAttribute('transform', `translate(${newX}, ${newY}) scale(${newScaleX}, ${newScaleY}) rotate(${currentRotation} ${target.getAttribute('data-center-x')} ${target.getAttribute('data-center-y')})`);
+          target.setAttribute('data-x', newX);
+          target.setAttribute('data-y', newY);
+          target.setAttribute('data-scale-x', newScaleX);
+          target.setAttribute('data-scale-y', newScaleY);
+        },
+        end() {
+          updatePaths();
+          generateMandala();
+        }
+      }
+    })
+    .gesturable({
+      listeners: {
+        start(event) {
+          if (currentTool === 'rotate' && isDraggableShape(event.target)) {
+            const point = getPointInSVG(event);
+            startRotation(event.target, point);
+            document.addEventListener('mousemove', handleRotationMove);
+            document.addEventListener('mouseup', handleRotationEnd);
+          }
+        }
+      }
+    });
+
+  shape.classList.add('resizable');
+  shape.style.cursor = 'default';
+  shape.style.pointerEvents = 'all';
+}
+
+function isDraggableShape(element) {
+  return element.parentNode === drawingLayer && element.classList.contains('resizable');
+}
+
+function initializeEventListeners() {
+  ['mousedown', 'mousemove', 'mouseup', 'mouseleave'].forEach(event =>
+    triangleTemplate.addEventListener(event, handleDrawing)
+  );
+
+  const undoBtn = document.querySelector('[data-tool="undo"]');
+  if (undoBtn) undoBtn.addEventListener('click', undo);
+  const redoBtn = document.querySelector('[data-tool="redo"]');
+  if (redoBtn) redoBtn.addEventListener('click', redo);
+
+  clearBtn.addEventListener('click', clearShapes);
+
+  document.querySelectorAll('[data-tool]').forEach(tool => {
+    tool.addEventListener('click', (e) => {
+      const clickedTool = e.currentTarget.getAttribute('data-tool');
+
+      if (clickedTool === 'random') {
+        generateRandomMandala();
+        return;
+      } else if (['pencil', 'circle', 'line', 'eraser', 'rotate', 'curve', 'fill'].includes(clickedTool)) {
+        currentTool = clickedTool;
+        currentMode = clickedTool === 'eraser' ? 'eraser' : 'drawing';
+        isDrawingMode = true;
+        if (clickedTool === 'curve') {
+          curvePoints = [];
+          currentCurve = null;
+          clickState = 0;
+        }
+        toggleMode();
+      } else if (clickedTool === 'undo' || clickedTool === 'redo') {
+        return;
+      } else {
+        isDrawingMode = false;
+      }
+
+      document.querySelectorAll('[data-tool]').forEach(t => t.classList.remove('bg-accent'));
+      e.currentTarget.classList.add('bg-accent');
+    });
+  });
+  interact('.shape-menu, .shape-tile').draggable({
+    listeners: {
+      start(event) {
+        event.target.classList.add('is-dragging');
+      },
+      move(event) {
+        const target = event.target;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      },
+      end(event) {
+        event.target.classList.remove('is-dragging');
+        const dropPoint = getPointInSVG(event);
+        const maxW = triangleTemplate.viewBox?.baseVal?.width || triangleTemplate.width?.baseVal?.value || 300;
+        const maxH = triangleTemplate.viewBox?.baseVal?.height || triangleTemplate.height?.baseVal?.value || 300;
+        if (dropPoint && dropPoint.x >= 0 && dropPoint.x <= maxW && dropPoint.y >= 0 && dropPoint.y <= maxH) {
+          const shapeType = event.target.getAttribute('data-shape') || event.target.closest('[data-shape]')?.getAttribute('data-shape');
+          if (shapeType) {
+            addShapeToDrawingLayer(dropPoint.x, dropPoint.y, shapeType);
+
+            currentMode = 'drag';
+            toggleMode();
+            requestPreviewRedraw();
+          }
+        }
+        event.target.style.transform = '';
+        event.target.removeAttribute('data-x');
+        event.target.removeAttribute('data-y');
+      }
+    }
+  });
+
+  slicesSlider.addEventListener('input', (e) => {
+    segments = parseInt(e.target.value);
+    slicesValue.textContent = segments;
+    updateTriangleTemplate();
+    generateMandala();
+    requestPreviewRedraw();
+    if (typeof updateYourBloomStats === 'function') {
+      updateYourBloomStats();
+    }
+    if (typeof syncSymmetryPresetButtons === 'function') {
+      syncSymmetryPresetButtons(segments);
+    }
+  });
+
+  initSymmetryPresets();
+
+  radiusSlider.addEventListener('input', (e) => {
+    radiusValue.textContent = e.target.value;
+    updateTriangleTemplate();
+    generateMandala();
+    requestPreviewRedraw();
+  });
+
+  document.querySelectorAll('.color-circle').forEach(circle => {
+    circle.addEventListener('click', handleColorSelection);
+  });
+
+  document.querySelectorAll('.color-circle').forEach(circle => {
+    circle.addEventListener('click', handleColorSelection);
+  });
+
+  // Add event listener for custom color input
+  const customColorInput = document.getElementById('custom-color');
+  customColorInput.addEventListener('input', handleColorSelection);
+
+  const publishBtn = document.getElementById('publishBtn');
+  publishBtn.addEventListener('click', publishDesign);
+
+}
+
+function handleColorSelection(e) {
+  const isCustomColor = e.target.type === 'color';
+  selectedColor = isCustomColor ? e.target.value : e.target.getAttribute('data-color');
+  console.log(`${isCustomColor ? 'Custom color' : 'Color'} selected:`, selectedColor);
+
+  document.querySelectorAll('.color-circle, #custom-color').forEach(element => {
+    element.classList.remove('ring-2', 'ring-offset-2', 'ring-black');
+  });
+  e.target.classList.add('ring-2', 'ring-offset-2', 'ring-black');
+
+  // Update currentColor for drawing operations
+  currentColor = selectedColor;
+}
+
+
+freeformBtn.addEventListener('click', () => {
+  currentMode = 'drawing';
+  toggleMode();
+});
+
+
+
+
+dragModeBtn.addEventListener('click', () => {
+  currentMode = 'drag';
+  toggleMode();
+});
+
+document.querySelectorAll('input[type="range"]').forEach(function (input) {
+  input.style.setProperty('--range-progress', '0%');
+
+  input.addEventListener('input', function () {
+    var progress = (this.value - this.min) / (this.max - this.min) * 100;
+    this.style.setProperty('--range-progress', `${progress}%`);
+  });
+
+  var progress = (input.value - input.min) / (input.max - input.min) * 100;
+  input.style.setProperty('--range-progress', `${progress}%`);
+});
+
+
+
+
+function generateRandomMandala() {
+  clearShapes();
+  // Random Design replaces the current composition. Start a fresh history
+  // boundary so Undo removes the generated design and Redo restores it.
+  undoStack = [];
+  redoStack = [];
+
+  // Generate a random number of sectors
+  const randomSectors = rndInt(5, 10);
+  segments = randomSectors;
+  updateSegmentsUI();
+  updateTriangleTemplate();
+
+  const trianglePath = triangleTemplate.querySelector('path');
+  const trianglePathD = trianglePath.getAttribute('d');
+  const match = trianglePathD.match(/M([\d.]+),([\d.]+)/);
+
+  if (match) {
+    const triangleBottomX = parseFloat(match[1]);
+    const triangleBottomY = parseFloat(match[2]);
+
+    // Generate flower with size information
+    const { flower, totalRadius } = generateFlower(randomSectors);
+
+    // Position the flower at the bottom center of the triangle
+    const xPosition = triangleBottomX - totalRadius;
+    const yPosition = triangleBottomY - totalRadius;
+    // Adjust this multiplier to move the flower up or down
+
+    flower.setAttribute('transform', `translate(${xPosition}, ${yPosition})`);
+    drawingLayer.appendChild(flower);
+
+    updatePaths();
+    generateMandala();
+    mandala.classList.add('random-mandala');
+  requestPreviewRedraw();
+
+  } else {
+    console.error('Unable to parse triangle path data');
+  }
+}
+
+function updateSegmentsUI() {
+  // Update the slider and displayed value
+  slicesSlider.value = segments;
+  slicesValue.textContent = segments;
+
+  // Update the slider's visual progress
+  const progress = (segments - slicesSlider.min) / (slicesSlider.max - slicesSlider.min) * 100;
+  slicesSlider.style.setProperty('--range-progress', `${progress}%`);
+}
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  loadProgressFromSessionStorage();
+  initializeEventListeners();
+  Array.from(drawingLayer.children).forEach(makeShapeInteractive);
+
+  currentMode = 'drag';
+  toggleMode();
+
+  updateTriangleTemplate();
+  showInitialIndication();
+
+
+  updatePaths();
+  generateMandala();
+
+  // Ensure magnifier is hidden initially
+  hideMagnifier();
+
+  // Sector empty-state guidance: purely observes the existing drawingLayer
+  // state (no duplicate/parallel state system). Shows the hint whenever
+  // drawingLayer has no children, hides it as soon as content is added
+  // (draw, shape add, drag-and-drop), and reappears after clearShapes().
+  (function initSectorEmptyState() {
+    const emptyState = document.getElementById('sectorEmptyState');
+    if (!emptyState || !drawingLayer) return;
+    function refreshSectorEmptyState() {
+      emptyState.classList.toggle('is-visible', drawingLayer.children.length === 0);
+    }
+    refreshSectorEmptyState();
+    new MutationObserver(refreshSectorEmptyState).observe(drawingLayer, { childList: true });
+  })();
+
+  // First-time usability guide: small dismissible workflow hint. Purely
+  // additive UI wiring; persists dismissal in localStorage so returning
+  // users aren't shown it again.
+  (function initFirstTimeGuide() {
+    const guide = document.getElementById('firstTimeGuide');
+    const dismissBtn = document.getElementById('dismissFirstTimeGuide');
+    if (!guide || !dismissBtn) return;
+    const STORAGE_KEY = 'pc_firstTimeGuideDismissed';
+    if (localStorage.getItem(STORAGE_KEY) === '1') {
+      guide.classList.add('is-dismissed');
+    }
+    dismissBtn.addEventListener('click', function () {
+      guide.classList.add('is-dismissed');
+      localStorage.setItem(STORAGE_KEY, '1');
+    });
+  })();
+
+  const layoutDownloadBtn = document.getElementById('layoutdownloadBtn');
+  const layoutDownloadOptions = document.getElementById('layoutdownloadOptions');
+  const outputDownloadBtn = document.getElementById('outputdownloadBtn');
+  const outputDownloadOptions = document.getElementById('outputdownloadOptions');
+
+  layoutDownloadBtn.addEventListener('click', function (event) {
+    event.stopPropagation();
+    layoutDownloadOptions.classList.toggle('hidden');
+  });
+
+  outputDownloadBtn.addEventListener('click', function (event) {
+    event.stopPropagation();
+    outputDownloadOptions.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', function (event) {
+    if (!layoutDownloadBtn.contains(event.target) && !layoutDownloadOptions.contains(event.target)) {
+      layoutDownloadOptions.classList.add('hidden');
+    }
+    if (!outputDownloadBtn.contains(event.target) && !outputDownloadOptions.contains(event.target)) {
+      outputDownloadOptions.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('downloadLayoutSVG').addEventListener('click', function () {
+    downloadSVGFile('mandala', 'layout.svg');
+    layoutDownloadOptions.classList.add('hidden');
+  });
+
+  document.getElementById('downloadLayoutPDF').addEventListener('click', function () {
+    downloadPDFFromSVG('mandala', 'layout.pdf');
+    layoutDownloadOptions.classList.add('hidden');
+  });
+
+  document.getElementById('downloadOutputPDF').addEventListener('click', function () {
+    downloadPDF('mandalaCanvas', 'output.pdf');
+    outputDownloadOptions.classList.add('hidden');
+  });
+
+
+});
+
+
+
+
+document.addEventListener('keydown', function (event) {
+  if (event.ctrlKey && event.key === 'z') {
+    undo();
+  } else if (event.ctrlKey && event.key === 'y') {
+    redo();
+  }
+});
+
+
+document.getElementById('navbarToggle').addEventListener('click', function () {
+  const navbarCollapse = document.getElementById('navbarCollapse');
+  navbarCollapse.classList.toggle('open');
+});
+
+
+function checkCompatibility() {
+  let hasTouchScreen = false;
+  let isFirefox = typeof InstallTrigger !== 'undefined';
+
+  const modal = document.getElementById("compatibilityModal");
+  const message = document.getElementById("compatibilityMessage");
+  const continueButton = document.getElementById("continueButton");
+
+  if ("maxTouchPoints" in navigator) {
+    hasTouchScreen = navigator.maxTouchPoints > 0;
+  } else if ("msMaxTouchPoints" in navigator) {
+    hasTouchScreen = navigator.msMaxTouchPoints > 0;
+  } else {
+    const mQ = window.matchMedia && matchMedia("(pointer:coarse)");
+    if (mQ && mQ.media === "(pointer:coarse)") {
+      hasTouchScreen = !!mQ.matches;
+    } else if ('orientation' in window) {
+      hasTouchScreen = true; // deprecated, but good fallback
+    } else {
+      const UA = navigator.userAgent;
+      hasTouchScreen = (
+        /\b(BlackBerry|webOS|iPhone|IEMobile)\b/i.test(UA) ||
+        /\b(Android|Windows Phone|iPad|iPod)\b/i.test(UA)
+      );
+    }
+  }
+
+  if (isFirefox) {
+    message.textContent = "This site is not fully compatible with Firefox. Please switch to a Chromium-based browser for the best experience.";
+    modal.classList.remove("hidden");
+  } else if (hasTouchScreen) {
+    message.textContent = "This site is designed for desktop devices. Some functionality may not work on mobile devices.";
+    modal.classList.remove("hidden");
+  }
+  continueButton.addEventListener("click", function () {
+    modal.classList.add("hidden");
+  });
+
+}
+
+
+// ============================================================================
+// POOVUM CODEUM — Bloom Ideas smart design suggestions
+// Curated, rule-based guidance only. This feature never creates or replaces art.
+// ============================================================================
+(() => {
+  const bloomIdeas = {
+    traditional: {
+      palette: [{ name: 'Yellow', color: '#FFDB49' }, { name: 'Orange', color: '#FF8C00' }, { name: 'White', color: '#FFFFF0' }, { name: 'Red', color: '#B31B1B' }, { name: 'Green', color: '#66B032' }],
+      symmetry: 8,
+      shapes: 'Petal · Flower · Circle',
+      style: 'Layered traditional floral pattern',
+      tip: 'Begin with a bright centre and gradually build outward using traditional floral layers.'
+    },
+    modern: {
+      palette: [{ name: 'Purple', color: '#9932CC' }, { name: 'Pink', color: '#FFC0CB' }, { name: 'Orange', color: '#FF8C00' }, { name: 'Yellow', color: '#FFDB49' }, { name: 'Blue', color: '#6495ED' }],
+      symmetry: 6,
+      shapes: 'Petal · Geometric flower · Circle',
+      style: 'Contemporary floral geometry',
+      tip: 'Mix traditional floral forms with unexpected colours and geometric arrangements.'
+    },
+    minimal: {
+      palette: [{ name: 'White', color: '#FFFFF0' }, { name: 'Soft Yellow', color: '#FFFF66' }, { name: 'Green', color: '#66B032' }, { name: 'Orange', color: '#FF8C00' }],
+      symmetry: 6,
+      shapes: 'Circle · Simple petal',
+      style: 'Clean and spacious composition',
+      tip: 'Use fewer colours and shapes, and leave space between layers for a clean design.'
+    },
+    vibrant: {
+      palette: [{ name: 'Red', color: '#B31B1B' }, { name: 'Orange', color: '#FF8C00' }, { name: 'Yellow', color: '#FFDB49' }, { name: 'Pink', color: '#FFC0CB' }, { name: 'Purple', color: '#9932CC' }],
+      symmetry: 8,
+      shapes: 'Flower · Petal · Circle',
+      style: 'Rich multi-layer festival composition',
+      tip: 'Build multiple colourful layers and create strong contrast between adjacent sections.'
+    },
+    gold: {
+      palette: [{ name: 'Gold', color: '#FFD700' }, { name: 'Cream', color: '#FFFFF0' }, { name: 'Deep Maroon', color: '#B31B1B' }, { name: 'Orange', color: '#FF8C00' }],
+      symmetry: 8,
+      shapes: 'Petal · Circle · Flower',
+      style: 'Refined warm-toned composition',
+      tip: 'Use warm tones with balanced spacing and avoid too many competing colours.'
+    }
+  };
+
+  function renderBloomSuggestion(moodKey) {
+    const suggestion = document.getElementById('bloomSuggestion');
+    const data = bloomIdeas[moodKey];
+    if (!suggestion || !data) return;
+    suggestion.innerHTML = `
+      <div class="bloom-suggestion-row"><span class="bloom-suggestion-label">Suggested Palette</span>${data.palette.map(item => `<span class="bloom-swatch" title="${item.name}" style="background:${item.color}"></span><span class="sr-only">${item.name}</span>`).join('')}</div>
+      <div class="bloom-suggestion-row"><span class="bloom-suggestion-label">Suggested Symmetry</span>${data.symmetry}-fold radial</div>
+      <div class="bloom-suggestion-row"><span class="bloom-suggestion-label">Suggested Shapes</span>${data.shapes}</div>
+      <div class="bloom-suggestion-row"><span class="bloom-suggestion-label">Suggested Style</span>${data.style}</div>
+      <div class="bloom-suggestion-row"><span class="bloom-suggestion-label">Design Tip</span>${data.tip}</div>`;
+  }
+
+  function selectMood(button) {
+    document.querySelectorAll('.bloom-mood').forEach(moodButton => {
+      const selected = moodButton === button;
+      moodButton.classList.toggle('is-selected', selected);
+      moodButton.setAttribute('aria-pressed', String(selected));
+    });
+    renderBloomSuggestion(button.getAttribute('data-mood'));
+    if (typeof updateYourBloomStats === 'function') {
+      updateYourBloomStats();
+    }
+  }
+
+  function applyBloomSuggestion() {
+    const selectedMood = document.querySelector('.bloom-mood.is-selected');
+    const data = selectedMood && bloomIdeas[selectedMood.getAttribute('data-mood')];
+    if (!data) return;
+
+    // Drive the existing symmetry slider and its native input handler.
+    const supportedSymmetry = Math.max(Number(slicesSlider.min), Math.min(Number(slicesSlider.max), data.symmetry));
+    slicesSlider.value = String(supportedSymmetry);
+    slicesSlider.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Select the first suggested colour through the existing colour handler.
+    const firstExistingSwatch = Array.from(document.querySelectorAll('.color-circle')).find(swatch =>
+      swatch.getAttribute('data-color').toLowerCase() === data.palette[0].color.toLowerCase()
+    );
+    if (firstExistingSwatch && typeof handleColorSelection === 'function') {
+      handleColorSelection({ target: firstExistingSwatch });
+    }
+
+    const applyButton = document.getElementById('bloomApply');
+    if (applyButton) {
+      const originalText = applyButton.textContent;
+      applyButton.textContent = '✓ Safe settings applied';
+      window.setTimeout(() => { applyButton.textContent = originalText; }, 1800);
+    }
+  }
+
+  const toggle = document.getElementById('bloomIdeasToggle');
+  const panel = document.getElementById('bloomIdeasPanel');
+  const applyButton = document.getElementById('bloomApply');
+  if (!toggle || !panel) return;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    panel.hidden = isOpen;
+  });
+  document.querySelectorAll('.bloom-mood').forEach(button => button.addEventListener('click', () => selectMood(button)));
+  applyButton?.addEventListener('click', applyBloomSuggestion);
+  renderBloomSuggestion('traditional');
+})();
+
+
+// ============================================================================
+// POOVUM CODEUM — Live "Your Bloom" stats and Symmetry Presets
+// ============================================================================
+
+function syncSymmetryPresetButtons(currentSlices) {
+  const presetBtns = document.querySelectorAll('.symmetry-preset-btn');
+  presetBtns.forEach(btn => {
+    const slices = parseInt(btn.getAttribute('data-slices'), 10);
+    btn.classList.toggle('is-active', slices === currentSlices);
+  });
+}
+
+function initSymmetryPresets() {
+  const presetBtns = document.querySelectorAll('.symmetry-preset-btn');
+  if (!presetBtns.length) return;
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slices = parseInt(btn.getAttribute('data-slices'), 10);
+      if (slicesSlider) {
+        slicesSlider.value = String(slices);
+        slicesSlider.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      syncSymmetryPresetButtons(slices);
+    });
+  });
+
+  if (slicesSlider) {
+    syncSymmetryPresetButtons(parseInt(slicesSlider.value, 10) || segments);
+  }
+}
+
+function updateYourBloomStats() {
+  const shapesEl = document.getElementById('bloomStatShapes');
+  const coloursEl = document.getElementById('bloomStatColours');
+  const symmetryEl = document.getElementById('bloomStatSymmetry');
+  const moodEl = document.getElementById('bloomStatMood');
+  const emptyHintEl = document.getElementById('bloomEmptyHint');
+
+  if (shapesEl && drawingLayer) {
+    const shapeCount = drawingLayer.children ? drawingLayer.children.length : 0;
+    shapesEl.textContent = shapeCount;
+
+    if (emptyHintEl) {
+      if (shapeCount === 0) {
+        emptyHintEl.style.display = 'block';
+      } else {
+        emptyHintEl.style.display = 'none';
+      }
+    }
+  }
+
+  if (coloursEl && drawingLayer) {
+    const colorSet = new Set();
+    if (drawingLayer.children) {
+      Array.from(drawingLayer.children).forEach(child => {
+        const fill = child.getAttribute('fill');
+        const stroke = child.getAttribute('stroke');
+        if (fill && fill !== 'none' && fill !== 'transparent') colorSet.add(fill.toLowerCase());
+        if (stroke && stroke !== 'none' && stroke !== 'transparent') colorSet.add(stroke.toLowerCase());
+
+        if (child.querySelectorAll) {
+          child.querySelectorAll('*').forEach(nested => {
+            const nFill = nested.getAttribute('fill');
+            const nStroke = nested.getAttribute('stroke');
+            if (nFill && nFill !== 'none' && nFill !== 'transparent') colorSet.add(nFill.toLowerCase());
+            if (nStroke && nStroke !== 'none' && nStroke !== 'transparent') colorSet.add(nStroke.toLowerCase());
+          });
+        }
+      });
+    }
+    coloursEl.textContent = colorSet.size > 0 ? colorSet.size : 1;
+  }
+
+  if (symmetryEl) {
+    symmetryEl.textContent = `${segments || 7}-fold`;
+  }
+
+  if (moodEl) {
+    const selectedMoodBtn = document.querySelector('.bloom-mood.is-selected');
+    if (selectedMoodBtn) {
+      const moodName = selectedMoodBtn.textContent.trim().replace(/^[^a-zA-Z]+/, '');
+      moodEl.textContent = moodName || 'Traditional';
+      moodEl.title = selectedMoodBtn.textContent.trim();
+    } else {
+      moodEl.textContent = 'Traditional';
+    }
+  }
+}
+
+
+// Initial live stats & symmetry presets update
+document.addEventListener('DOMContentLoaded', () => {
+  updateYourBloomStats();
+  initSymmetryPresets();
+});

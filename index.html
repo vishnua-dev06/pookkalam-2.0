@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DE1G405X6F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DE1G405X6F');
+    </script>
+     <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "nyehueksi5");
+    </script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Primary Meta Tags -->
+    <title>POOVUM CODEUM - Design it. Code it. Bloom it.</title>
+    <meta name="title" content="POOVUM CODEUM - Design it. Code it. Bloom it." />
+    <meta name="description"
+        content="POOVUM CODEUM is an interactive digital studio where creativity, symmetry, colour, and code come together to create unique Pookalam patterns inspired by Onam." />
+    <meta name="keywords"
+        content="POOVUM CODEUM, Digital Pookalam Studio, Onam Pookalam Creator, Symmetry Design Tool, Interactive Floral Mandala Maker, Kerala Onam Art, Pookalam Drawing Canvas, Custom Pookalam Patterns, Online Pookalam Editor, Onam Festival Design Tool" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://poovumcodeum.com" />
+    <meta property="og:title" content="POOVUM CODEUM - Design it. Code it. Bloom it." />
+    <meta property="og:description"
+        content="POOVUM CODEUM is an interactive digital studio where creativity, symmetry, colour, and code come together to create unique Pookalam patterns inspired by Onam." />
+    <meta property="og:image" content="public/favicon/banner.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://poovumcodeum.com" />
+    <meta property="twitter:title" content="POOVUM CODEUM - Design it. Code it. Bloom it." />
+    <meta property="twitter:description"
+        content="POOVUM CODEUM is an interactive digital studio where creativity, symmetry, colour, and code come together to create unique Pookalam patterns inspired by Onam." />
+    <meta property="twitter:image" content="public/favicon/banner.png" />
+
+    <!-- Meta Tags Generated with https://metatags.io -->
+    <link rel="icon" href="public/favicon/favicon-32x32.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="public/style/style.css">
+
+</head>
+
+<body class="flex flex-col min-h-screen pc-body">
+    <header class="px-4 lg:px-6 py-4 flex items-center justify-between pc-header relative z-20">
+        <a class="flex items-center justify-center gap-2" href="index.html">
+            <span class="pc-logo-mark" aria-hidden="true">
+                <svg viewBox="0 0 40 40" width="30" height="30">
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35"/>
+                    <g fill="currentColor">
+                        <ellipse cx="20" cy="9" rx="4.2" ry="7.5"/>
+                        <ellipse cx="31" cy="20" rx="7.5" ry="4.2"/>
+                        <ellipse cx="20" cy="31" rx="4.2" ry="7.5"/>
+                        <ellipse cx="9" cy="20" rx="7.5" ry="4.2"/>
+                    </g>
+                    <circle cx="20" cy="20" r="4.5" fill="var(--pc-marigold)"/>
+                </svg>
+            </span>
+            <span class="ml-1 text-2xl pc-brand-name dyuthi-font">POOVUM CODEUM</span>
+        </a>
+
+        <button id="navbar-toggle" class="sm:hidden p-2 pc-nav-toggle focus:outline-none z-30">
+            <i data-lucide="menu" class="h-6 w-6"></i>
+        </button>
+        <nav id="navbar-menu"
+            class="fixed inset-0 pc-nav-menu flex items-center justify-center transform translate-x-full transition-transform duration-300 ease-in-out sm:relative sm:inset-auto sm:translate-x-0 sm:transition-none sm:transform-none sm:bg-transparent">
+            <div class="flex flex-col sm:flex-row gap-6 sm:gap-6 text-center sm:text-left">
+                <a class="text-2xl sm:text-sm font-medium pc-nav-link"
+                    href="index.html">Home</a>
+                <a class="text-2xl sm:text-sm font-medium pc-nav-link"
+                    href="create/index.html">Create</a>
+            </div>
+        </nav>
+    </header>
+    <main class="flex-1">
+        <section class="w-full pc-hero relative overflow-hidden py-16 md:py-24 lg:py-28 flex items-center justify-center">
+            <div class="pc-hero-bg" aria-hidden="true">
+                <div class="pc-pookalam-wrap" id="heroPookalam">
+                    <svg viewBox="0 0 800 800" class="pc-pookalam-svg" id="pookalamSvg">
+                        <defs>
+                            <radialGradient id="pookalamGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="var(--pc-marigold)" stop-opacity="0.22" />
+                                <stop offset="60%" stop-color="var(--pc-gold)" stop-opacity="0.08" />
+                                <stop offset="100%" stop-color="var(--pc-cream)" stop-opacity="0" />
+                            </radialGradient>
+                            <filter id="pcDropShadow" x="-10%" y="-10%" width="120%" height="120%">
+                                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#3B2A20" flood-opacity="0.1" />
+                            </filter>
+                        </defs>
+
+                        <!-- Subtle Radial Ambient Glow -->
+                        <circle cx="400" cy="400" r="390" fill="url(#pookalamGlow)" />
+
+                        <!-- Outer Guide & Geometry Circles -->
+                        <circle cx="400" cy="400" r="375" fill="none" stroke="var(--pc-gold)" stroke-width="1.2" stroke-dasharray="3 6" opacity="0.45" />
+                        <circle cx="400" cy="400" r="360" fill="none" stroke="var(--pc-maroon)" stroke-width="1.5" opacity="0.3" />
+
+                        <!-- Ring 1: Outer Layer (Slow clockwise rotation) -->
+                        <g class="pc-ring pc-ring-outer" id="pookalamRingOuter">
+                            <!-- 16 Outer Rice/Chethi Petals -->
+                            <g fill="var(--pc-maroon)" opacity="0.2" filter="url(#pcDropShadow)">
+                                <ellipse cx="400" cy="55" rx="18" ry="48" />
+                                <ellipse cx="400" cy="745" rx="18" ry="48" />
+                                <ellipse cx="55" cy="400" rx="48" ry="18" />
+                                <ellipse cx="745" cy="400" rx="48" ry="18" />
+                                <ellipse cx="156" cy="156" rx="18" ry="48" transform="rotate(45 156 156)" />
+                                <ellipse cx="644" cy="156" rx="18" ry="48" transform="rotate(-45 644 156)" />
+                                <ellipse cx="156" cy="644" rx="18" ry="48" transform="rotate(-45 156 644)" />
+                                <ellipse cx="644" cy="644" rx="18" ry="48" transform="rotate(45 644 644)" />
+                                <ellipse cx="260" cy="85" rx="14" ry="40" transform="rotate(22.5 260 85)" />
+                                <ellipse cx="540" cy="85" rx="14" ry="40" transform="rotate(-22.5 540 85)" />
+                                <ellipse cx="85" cy="260" rx="40" ry="14" transform="rotate(22.5 85 260)" />
+                                <ellipse cx="715" cy="260" rx="40" ry="14" transform="rotate(-22.5 715 260)" />
+                                <ellipse cx="85" cy="540" rx="40" ry="14" transform="rotate(-22.5 85 540)" />
+                                <ellipse cx="715" cy="540" rx="40" ry="14" transform="rotate(22.5 715 540)" />
+                                <ellipse cx="260" cy="715" rx="14" ry="40" transform="rotate(-22.5 260 715)" />
+                                <ellipse cx="540" cy="715" rx="14" ry="40" transform="rotate(22.5 540 715)" />
+                            </g>
+                            <!-- Outer Decorative Dots -->
+                            <g fill="var(--pc-marigold)" opacity="0.75">
+                                <circle cx="400" cy="18" r="4.5" />
+                                <circle cx="400" cy="782" r="4.5" />
+                                <circle cx="18" cy="400" r="4.5" />
+                                <circle cx="782" cy="400" r="4.5" />
+                                <circle cx="130" cy="130" r="4.5" />
+                                <circle cx="670" cy="130" r="4.5" />
+                                <circle cx="130" cy="670" r="4.5" />
+                                <circle cx="670" cy="670" r="4.5" />
+                            </g>
+                        </g>
+
+                        <!-- Ring 2: Mid Floral Layer (Counter-clockwise rotation) -->
+                        <g class="pc-ring pc-ring-mid" id="pookalamRingMid">
+                            <circle cx="400" cy="400" r="290" fill="none" stroke="var(--pc-marigold)" stroke-width="1.8" opacity="0.35" />
+                            <!-- 12 Marigold & Leaf Petals -->
+                            <g fill="var(--pc-marigold)" opacity="0.32">
+                                <path d="M400 120 C425 200 450 260 400 310 C350 260 375 200 400 120 Z" />
+                                <path d="M400 680 C425 600 450 540 400 490 C350 540 375 600 400 680 Z" />
+                                <path d="M120 400 C200 425 260 450 310 400 C260 350 200 375 120 400 Z" />
+                                <path d="M680 400 C600 425 540 450 490 400 C540 350 600 375 680 400 Z" />
+                                <path d="M202 202 C282 232 320 280 290 320 C250 335 220 282 202 202 Z" />
+                                <path d="M598 202 C518 232 480 280 510 320 C550 335 580 282 598 202 Z" />
+                                <path d="M202 598 C282 568 320 520 290 480 C250 465 220 518 202 598 Z" />
+                                <path d="M598 598 C518 568 480 520 510 480 C550 465 580 518 598 598 Z" />
+                            </g>
+                            <g fill="var(--pc-leaf)" opacity="0.22">
+                                <ellipse cx="400" cy="180" rx="12" ry="32" />
+                                <ellipse cx="400" cy="620" rx="12" ry="32" />
+                                <ellipse cx="180" cy="400" rx="32" ry="12" />
+                                <ellipse cx="620" cy="400" rx="32" ry="12" />
+                                <ellipse cx="244" cy="244" rx="12" ry="32" transform="rotate(45 244 244)" />
+                                <ellipse cx="556" cy="244" rx="12" ry="32" transform="rotate(-45 556 244)" />
+                                <ellipse cx="244" cy="556" rx="12" ry="32" transform="rotate(-45 244 556)" />
+                                <ellipse cx="556" cy="556" rx="12" ry="32" transform="rotate(45 556 556)" />
+                            </g>
+                        </g>
+
+                        <!-- Ring 3: Inner Lotus & Diamond Medallion (Clockwise rotation) -->
+                        <g class="pc-ring pc-ring-inner" id="pookalamRingInner">
+                            <circle cx="400" cy="400" r="195" fill="none" stroke="var(--pc-gold)" stroke-width="1.6" opacity="0.4" />
+                            <circle cx="400" cy="400" r="140" fill="none" stroke="var(--pc-maroon)" stroke-width="1.4" opacity="0.3" />
+                            <!-- 8 Inner Lotus Flower Petals -->
+                            <g fill="var(--pc-maroon)" opacity="0.38">
+                                <ellipse cx="400" cy="270" rx="20" ry="46" />
+                                <ellipse cx="400" cy="530" rx="20" ry="46" />
+                                <ellipse cx="270" cy="400" rx="46" ry="20" />
+                                <ellipse cx="530" cy="400" rx="46" ry="20" />
+                                <ellipse cx="308" cy="308" rx="20" ry="46" transform="rotate(45 308 308)" />
+                                <ellipse cx="492" cy="308" rx="20" ry="46" transform="rotate(-45 492 308)" />
+                                <ellipse cx="308" cy="492" rx="20" ry="46" transform="rotate(-45 308 492)" />
+                                <ellipse cx="492" cy="492" rx="20" ry="46" transform="rotate(45 492 492)" />
+                            </g>
+                            <!-- Inner Gold Flakes -->
+                            <g fill="var(--pc-gold)" opacity="0.5">
+                                <polygon points="400,225 410,245 400,265 390,245" />
+                                <polygon points="400,535 410,555 400,575 390,555" />
+                                <polygon points="225,400 245,410 265,400 245,390" />
+                                <polygon points="535,400 555,410 575,400 555,390" />
+                                <circle cx="340" cy="340" r="6" />
+                                <circle cx="460" cy="340" r="6" />
+                                <circle cx="340" cy="460" r="6" />
+                                <circle cx="460" cy="460" r="6" />
+                            </g>
+                        </g>
+
+                        <!-- Central Core (Gentle subtle pulse) -->
+                        <g class="pc-ring pc-ring-core" id="pookalamCore">
+                            <circle cx="400" cy="400" r="85" fill="var(--pc-cream-soft)" stroke="var(--pc-marigold)" stroke-width="2" opacity="0.85" />
+                            <circle cx="400" cy="400" r="62" fill="var(--pc-maroon)" opacity="0.45" />
+                            <circle cx="400" cy="400" r="42" fill="var(--pc-marigold)" opacity="0.65" />
+                            <circle cx="400" cy="400" r="22" fill="var(--pc-gold)" opacity="0.9" />
+                            <circle cx="400" cy="400" r="8" fill="var(--pc-maroon)" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="container mx-auto px-4 md:px-6 relative z-10">
+                <div class="flex flex-col items-center space-y-5 text-center pc-hero-content">
+                    <span class="pc-eyebrow pc-reveal">Onam · Pookalam · Reimagined</span>
+                    <div class="space-y-3">
+                        <h1 class="pc-hero-title pc-reveal">
+                            POOVUM CODEUM
+                        </h1>
+                        <p class="pc-hero-tagline pc-reveal">
+                            Design it. Code it. Bloom it.
+                        </p>
+                        <p class="mx-auto max-w-[620px] pc-hero-sub pc-reveal">
+                            A code-powered canvas for Kerala's floral art — shape one wedge by hand, and let
+                            the studio mirror it into a full, glowing mandala.
+                        </p>
+                    </div>
+                    <div class="space-y-4 pt-2 pc-reveal">
+                        <div class="flex flex-wrap items-center justify-center gap-4">
+                            <a class="pc-btn-primary group"
+                                href="create/index.html">
+                                <span>Open the Studio</span>
+                                <i data-lucide="sparkles" class="ml-2 h-4 w-4 transition-transform group-hover:rotate-12"></i>
+                            </a>
+                            <a class="pc-btn-secondary"
+                                href="#features">
+                                See What It Can Do
+                            </a>
+                        </div>
+                        <p class="text-sm pc-hero-note flex items-center justify-center">
+                            <i data-lucide="info" class="h-4 w-4 mr-1"></i>
+                            <span>Use desktop or laptop for the best drawing experience</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full py-16 md:py-24 pc-section-alt">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="text-center max-w-[640px] mx-auto mb-12 pc-reveal">
+                    <h2 class="pc-section-title">From Wedge to Whole</h2>
+                    <p class="pc-section-sub mb-0">Four moves take a single shape to a complete floral mandala.</p>
+                </div>
+                <div class="pc-steps">
+                    <div class="pc-step pc-reveal">
+                        <div class="pc-step-icon"><i data-lucide="disc-3"></i></div>
+                        <h3>Set the Petal Count</h3>
+                        <p>Decide how many repeating wedges make up your pattern.</p>
+                    </div>
+                    <div class="pc-step-arrow pc-reveal" aria-hidden="true">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                    <div class="pc-step pc-reveal">
+                        <div class="pc-step-icon"><i data-lucide="pencil-ruler"></i></div>
+                        <h3>Shape a Single Wedge</h3>
+                        <p>Sketch curves and shapes inside one slice of the canvas.</p>
+                    </div>
+                    <div class="pc-step-arrow pc-reveal" aria-hidden="true">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                    <div class="pc-step pc-reveal">
+                        <div class="pc-step-icon"><i data-lucide="flower-2"></i></div>
+                        <h3>Let It Multiply</h3>
+                        <p>The studio mirrors your wedge into a full radial mandala.</p>
+                    </div>
+                    <div class="pc-step-arrow pc-reveal" aria-hidden="true">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                    <div class="pc-step pc-reveal">
+                        <div class="pc-step-icon"><i data-lucide="download"></i></div>
+                        <h3>Take It With You</h3>
+                        <p>Export as PNG, SVG, or PDF, ready to print or share.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="w-full py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="text-center max-w-[640px] mx-auto mb-12 pc-reveal">
+                    <h2 class="pc-section-title">Features</h2>
+                    <p class="pc-section-sub mb-0">A toolkit built for both artists and coders, right in the browser.</p>
+                </div>
+                <div class="pc-feature-grid">
+                    <div class="pc-feature-card pc-reveal">
+                        <div class="pc-feature-icon-wrap"><i data-lucide="pen-tool"></i></div>
+                        <h3>Interactive Drawing</h3>
+                        <p>Freehand and curve tools for precise petal and leaf strokes.</p>
+                    </div>
+                    <div class="pc-feature-card pc-reveal">
+                        <div class="pc-feature-icon-wrap"><i data-lucide="rotate-cw"></i></div>
+                        <h3>Symmetry Generator</h3>
+                        <p>Adjustable sector count builds a perfectly radial mandala.</p>
+                    </div>
+                    <div class="pc-feature-card pc-reveal">
+                        <div class="pc-feature-icon-wrap"><i data-lucide="shuffle"></i></div>
+                        <h3>Surprise Bloom</h3>
+                        <p>Let the algorithm spark a pattern you'd never have sketched yourself.</p>
+                    </div>
+                    <div class="pc-feature-card pc-reveal">
+                        <div class="pc-feature-icon-wrap"><i data-lucide="palette"></i></div>
+                        <h3>Colors &amp; Shapes</h3>
+                        <p>Fill with a flood-fill tool and a library of shapes.</p>
+                    </div>
+                    <div class="pc-feature-card pc-reveal">
+                        <div class="pc-feature-icon-wrap"><i data-lucide="undo-2"></i></div>
+                        <h3>Undo / Redo</h3>
+                        <p>Experiment freely and step back whenever you like.</p>
+                    </div>
+                    <div class="pc-feature-card pc-reveal">
+                        <div class="pc-feature-icon-wrap"><i data-lucide="file-down"></i></div>
+                        <h3>PNG / SVG / PDF Export</h3>
+                        <p>Take your finished Pookalam with you, in any format.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full py-14 md:py-20 pc-bg-cream-soft relative overflow-hidden">
+            <div class="container mx-auto px-4 md:px-6 relative z-10">
+                <div class="flex flex-col items-center justify-center space-y-4 text-center pc-reveal">
+                    <div class="space-y-3">
+                        <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl pc-text-maroon">
+                            Create Your Own Pookkalam
+                        </h2>
+                        <p class="mx-auto max-w-[600px] pc-text-ink md:text-lg opacity-85">
+                            Use our intuitive POOVUM CODEUM studio to design your unique floral carpet for Onam.
+                        </p>
+                    </div>
+                    <a class="inline-flex h-11 items-center justify-center rounded-full pc-bg-marigold px-6 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-[var(--pc-marigold-dark)] hover:shadow-lg focus-visible:outline-none group"
+                        href="create/index.html">
+                        <span>Launch Design Studio</span>
+                        <i data-lucide="chevron-right"
+                            class="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="grid gap-8 lg:grid-cols-[1fr_420px] lg:gap-14 xl:grid-cols-[1fr_520px] items-center">
+                    <div class="pc-culture-visual pc-reveal lg:order-last flex justify-center">
+                        <svg id="animated-svg" xmlns="http://www.w3.org/2000/svg" viewBox="400 70 75 75"
+                            class="w-full max-w-[380px] sm:max-w-[440px] aspect-square rounded-2xl shadow-xl border border-[rgba(122,31,43,0.12)] bg-[#fffaf3] p-4">
+                            <g class="flower">
+                                <g class="layer"
+                                    style="animation-name: layerAnim7; animation-duration: 1.2s; animation-delay: 0.6s;">
+                                    <path
+                                        d="M433.63112492072213 105.56843292902585 Q413.4674743590535 126.55777254931317 404.72610694916597 105.93686300313449 M433.63112492072213 105.56843292902585 Q412.93904204670565 85.09984997847263 404.72610694916597 105.93686300313449"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                    <path
+                                        d="M435.59905812226685 101.34511167094146 Q406.61710111746913 98.66717406134335 417.289023963432 78.97597101337945 M435.59905812226685 101.34511167094146 Q438.7007380233527 72.40543711402836 417.289023963432 78.97597101337945"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                    <path
+                                        d="M440.12796992431606 100.25050606891442 Q424.15171122518535 75.92183286943032 446.2007487564351 71.98821384213883 M440.12796992431606 100.25050606891442 Q464.687784372247 84.63190510877567 446.2007487564351 71.98821384213883"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                    <path
+                                        d="M443.80749736696197 103.10887646715618 Q452.86738563023 75.44945481148987 469.6901628673364 90.23551516362633 M443.80749736696197 103.10887646715618 Q471.3314051535316 112.57247418817423 469.6901628673364 90.23551516362633"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                    <path
+                                        d="M443.866881237211 107.7678116556605 Q471.14063581259614 97.60575019990748 470.06925837390065 119.97728490564865 M443.866881237211 107.7678116556605 Q453.6288184137327 135.18732595169584 470.06925837390065 119.97728490564865"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                    <path
+                                        d="M440.2614042695553 110.71903841252518 Q465.2113316785886 125.70657670114406 447.0525686275458 138.81736383092428 M440.2614042695553 110.71903841252518 Q424.91043303487965 135.44701576250276 447.0525686275458 138.81736383092428"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                    <path
+                                        d="M435.7060641589667 109.7402227957764 Q439.5443601768773 138.59143880737176 417.9721304621841 132.56878824114798 M435.7060641589667 109.7402227957764 Q406.8017789555508 113.15599189635059 417.9721304621841 132.56878824114798"
+                                        style="fill: rgba(255, 165, 0, 0.906);"></path>
+                                </g>
+                                <g class="layer"
+                                    style="animation-name: layerAnim7; animation-duration: 1.2s; animation-delay: 0.45s;">
+                                    <path
+                                        d="M435.2439264122749 103.74978933189607 Q416.0921228525412 110.68978774601574 413.622129864 93.67472075335867 M435.2439264122749 103.74978933189607 Q428.23906064147803 84.62161604975199 413.622129864 93.67472075335867"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                    <path
+                                        d="M438.0264962242975 101.4721449159827 Q420.65963276916483 90.825680183059 432.4225323813087 78.28584115527737 M438.0264962242975 101.4721449159827 Q448.6140419269004 84.06929935630751 432.4225323813087 78.28584115527737"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                    <path
+                                        d="M441.54213423528216 102.22755753160465 Q439.0378132859191 82.01163474383182 456.17590217137985 83.3897782349449 M441.54213423528216 102.22755753160465 Q461.74945355065137 99.65473735418868 456.17590217137985 83.3897782349449"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                    <path
+                                        d="M443.14349331701123 105.44718607158946 Q457.38751962712587 90.88480741783326 466.9954673018486 105.14316327002891 M443.14349331701123 105.44718607158946 Q457.7540626464797 119.64177734599419 466.9954673018486 105.14316327002891"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                    <path
+                                        d="M441.6247174191705 108.70658457687522 Q461.89104865206144 110.76351820180345 456.73387455056456 127.16525364092391 M441.6247174191705 108.70658457687522 Q439.6364800563485 128.9797705565798 456.73387455056456 127.16525364092391"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                    <path
+                                        d="M438.1294757702163 109.55135949336893 Q449.15715114969896 126.67869242361127 433.1183125575897 132.8729661295688 M438.1294757702163 109.55135949336893 Q421.0396150019598 120.63701763802676 433.1183125575897 132.8729661295688"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                    <path
+                                        d="M435.28975662174736 107.34537807868298 Q428.7747116634886 126.64587928384546 413.93178117330865 117.96827681589744 M435.28975662174736 107.34537807868298 Q415.96728617618214 100.89578169915112 413.93178117330865 117.96827681589744"
+                                        style="fill: rgba(255, 140, 0, 0.906);"></path>
+                                </g>
+                                <g class="layer"
+                                    style="animation-name: layerAnim7; animation-duration: 1.2s; animation-delay: 0.3s;">
+                                    <path
+                                        d="M436.08188844525534 105.53719492779523 Q421.63463702178154 117.84794528933645 417.28295844713693 105.77681045680771 M436.08188844525534 105.53719492779523 Q421.32555025683047 93.59868030385284 417.28295844713693 105.77681045680771"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                    <path
+                                        d="M437.15150703939213 103.24171917530809 Q418.51886090650953 99.62203048095489 425.2432269354389 88.69352170477272 M437.15150703939213 103.24171917530809 Q437.28498725303376 84.26120729628283 425.2432269354389 88.69352170477272"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                    <path
+                                        d="M439.61307853525136 102.64677494434771 Q430.8258002677354 85.82234660914133 443.56262612838555 84.26585389872358 M439.61307853525136 102.64677494434771 Q454.5358638275872 90.9169783870285 443.56262612838555 84.26585389872358"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                    <path
+                                        d="M441.61298938954326 104.20036737547785 Q449.2880787506437 86.8403370916225 458.4462747860463 95.8279312045788 M441.61298938954326 104.20036737547785 Q460.08791806609946 108.5540621917707 458.4462747860463 95.8279312045788"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                    <path
+                                        d="M441.6452659382393 106.73260968054738 Q460.0032240957564 101.90943433186857 458.68648189809943 114.67327358763401 M441.6452659382393 106.73260968054738 Q449.7603398857039 123.89137487459423 458.68648189809943 114.67327358763401"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                    <path
+                                        d="M439.68560328184964 108.33667175550943 Q454.90251330907176 119.68230075440943 444.1023666098368 126.61095385852099 M439.68560328184964 108.33667175550943 Q431.33000630044086 125.37960716117018 444.1023666098368 126.61095385852099"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                    <path
+                                        d="M437.209667370469 107.80466214101429 Q437.8268856485016 126.77560544266684 425.67606519505614 122.6516552889622 M437.209667370469 107.80466214101429 Q418.6753344103044 111.89808978530068 425.67606519505614 122.6516552889622"
+                                        style="fill: rgba(255, 120, 0, 0.906);"></path>
+                                </g>
+                                <g class="layer"
+                                    style="animation-name: layerAnim7; animation-duration: 1.2s; animation-delay: 0.15s;">
+                                    <path
+                                        d="M437.4655417112466 104.78499130700918 Q425.8683750019291 108.1882991101455 425.0049063398012 98.97873207137329 M437.4655417112466 104.78499130700918 Q432.61193661655085 93.71614776889129 425.0049063398012 98.97873207137329"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                    <path
+                                        d="M438.6022972120032 103.85451157299845 Q428.71076885326704 96.90940924006561 435.3727343990177 90.49225112768067 M438.6022972120032 103.85451157299845 Q444.2300942858242 93.15849924211166 435.3727343990177 90.49225112768067"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                    <path
+                                        d="M440.0385310237798 104.16311818636676 Q439.3011636201604 92.0994094283326 448.4719674385079 93.3069111871307 M440.0385310237798 104.16311818636676 Q451.9098842833912 101.89425250675829 448.4719674385079 93.3069111871307"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                    <path
+                                        d="M440.6927297924781 105.47842407282008 Q449.6647760384547 97.38032763929655 454.4386158038776 105.30321581635567 M440.6927297924781 105.47842407282008 Q449.8682681019173 113.34520717766054 454.4386158038776 105.30321581635567"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                    <path
+                                        d="M440.07226850204523 106.80997707250859 Q451.99759457800735 108.77552474900175 448.77967157855767 117.44770294953064 M440.07226850204523 106.80997707250859 Q439.64262436743286 118.88856083072228 448.77967157855767 117.44770294953064"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                    <path
+                                        d="M438.644367159281 107.15509061793564 Q444.5429592977092 117.70418491418039 435.7564351856392 120.59532607298405 M438.644367159281 107.15509061793564 Q428.93307137712327 114.35005510138072 435.7564351856392 120.59532607298405"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                    <path
+                                        d="M437.4842645991661 106.25388717036131 Q432.9143626104721 117.44284491897761 425.1756692545988 112.37586077494497 M437.4842645991661 106.25388717036131 Q425.80412096776035 103.1472773724752 425.1756692545988 112.37586077494497"
+                                        style="fill: rgba(255, 100, 0, 0.906);"></path>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-4 pc-reveal">
+                        <h2 class="text-2xl sm:text-3xl font-bold tracking-tighter sm:text-4xl pc-text-maroon">
+                            Celebrate the Spirit of Onam
+                        </h2>
+                        <p class="text-sm sm:text-base md:text-lg pc-text-ink opacity-90 leading-relaxed">
+                            Onam is Kerala's harvest festival, celebrated with great joy. The Pookkalam, or floral
+                            carpet, is an integral part of the festivities, symbolizing prosperity, harmony, and creative abundance.
+                        </p>
+                        <ul class="grid gap-3 sm:gap-4 py-2 sm:py-3">
+                            <li class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full bg-[rgba(224,138,30,0.15)] flex items-center justify-center text-[var(--pc-marigold-dark)]">
+                                    <i data-lucide="flower" class="h-4 w-4"></i>
+                                </span>
+                                <span class="text-sm sm:text-base font-medium">Create intricate floral mandalas in your browser</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full bg-[rgba(122,31,43,0.12)] flex items-center justify-center text-[var(--pc-maroon)]">
+                                    <i data-lucide="sparkles" class="h-4 w-4"></i>
+                                </span>
+                                <span class="text-sm sm:text-base font-medium">Explore creative symmetrical patterns</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-full bg-[rgba(76,122,61,0.15)] flex items-center justify-center text-[var(--pc-leaf)]">
+                                    <i data-lucide="share-2" class="h-4 w-4"></i>
+                                </span>
+                                <span class="text-sm sm:text-base font-medium">Download &amp; share your creations with family and friends</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <footer
+        class="flex flex-col sm:flex-row items-center justify-between py-6 w-full px-4 md:px-6 border-t pc-border-soft">
+        <div>
+            <p class="text-xs pc-text-ink mb-1">
+                © 2026 POOVUM CODEUM
+            </p>
+            <p class="text-xs pc-text-ink">
+                Design it. Code it. Bloom it. 🌸
+            </p>
+        </div>
+    </footer>
+    <style>
+        @font-face {
+            font-family: 'Dyuthi';
+            src: url('public/fonts/Dyuthi-Regular.woff2') format('woff2');
+        }
+
+        .dyuthi-font {
+            font-family: 'Dyuthi', sans-serif;
+        }
+
+        @media (max-width: 639px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            #navbar-menu.open {
+                transform: translateX(0);
+            }
+
+            body.menu-open {
+                overflow: hidden;
+            }
+        }
+
+        .layer {
+            animation-name: layerAnim1;
+            animation-duration: 4s;
+            animation-fill-mode: both;
+            transform-box: fill-box;
+            transform-origin: center center;
+        }
+
+        @keyframes layerAnim1 {
+
+            from,
+            to {
+                animation-timing-function: ease-out;
+            }
+
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes layerAnim7 {
+
+            from,
+            to {
+                animation-timing-function: ease-out;
+            }
+
+            from {
+                opacity: 0;
+                transform: rotateZ(-270deg);
+            }
+
+            to {
+                opacity: 1;
+                opacity: 1;
+                transform: rotateZ(0deg);
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lucide.createIcons();
+
+            const navbarToggle = document.getElementById('navbar-toggle');
+            const navbarMenu = document.getElementById('navbar-menu');
+            const animatedSvg = document.getElementById('animated-svg');
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Mobile Navigation Toggle
+            if (navbarToggle && navbarMenu) {
+                navbarToggle.addEventListener('click', function () {
+                    navbarMenu.classList.toggle('open');
+                    document.body.classList.toggle('menu-open');
+                    const icon = navbarToggle.querySelector('i');
+                    if (icon) {
+                        if (navbarMenu.classList.contains('open')) {
+                            icon.setAttribute('data-lucide', 'x');
+                        } else {
+                            icon.setAttribute('data-lucide', 'menu');
+                        }
+                        lucide.createIcons();
+                    }
+                });
+
+                // Close menu when link is clicked
+                const navLinks = navbarMenu.querySelectorAll('a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 640) {
+                            navbarMenu.classList.remove('open');
+                            document.body.classList.remove('menu-open');
+                            const icon = navbarToggle.querySelector('i');
+                            if (icon) {
+                                icon.setAttribute('data-lucide', 'menu');
+                                lucide.createIcons();
+                            }
+                        }
+                    });
+                });
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth >= 640) {
+                        navbarMenu.classList.remove('open');
+                        document.body.classList.remove('menu-open');
+                        navbarMenu.style.transform = '';
+                    } else {
+                        if (!navbarMenu.classList.contains('open')) {
+                            navbarMenu.style.transform = 'translateX(100%)';
+                        }
+                    }
+                    const icon = navbarToggle.querySelector('i');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', 'menu');
+                        lucide.createIcons();
+                    }
+                });
+            }
+
+            // Scroll Reveal IntersectionObserver
+            const revealElements = document.querySelectorAll('.pc-reveal');
+            if ('IntersectionObserver' in window && !prefersReducedMotion) {
+                const revealObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('pc-revealed');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    root: null,
+                    threshold: 0.12,
+                    rootMargin: '0px 0px -40px 0px'
+                });
+
+                revealElements.forEach(el => revealObserver.observe(el));
+            } else {
+                revealElements.forEach(el => el.classList.add('pc-revealed'));
+            }
+
+            // High-Performance RAF Scroll-Linked Hero Pookalam Rotation & Parallax
+            const ringOuter = document.getElementById('pookalamRingOuter');
+            const ringMid = document.getElementById('pookalamRingMid');
+            const ringInner = document.getElementById('pookalamRingInner');
+            const heroPookalam = document.getElementById('heroPookalam');
+
+            let ticking = false;
+            let lastScrollY = window.scrollY;
+
+            function updatePookalamRotation() {
+                const scrollY = window.scrollY;
+
+                if (!prefersReducedMotion) {
+                    if (ringOuter) {
+                        ringOuter.style.transform = `rotate(${scrollY * 0.075}deg)`;
+                    }
+                    if (ringMid) {
+                        ringMid.style.transform = `rotate(${-scrollY * 0.055}deg)`;
+                    }
+                    if (ringInner) {
+                        ringInner.style.transform = `rotate(${scrollY * 0.04}deg)`;
+                    }
+                    if (heroPookalam) {
+                        heroPookalam.style.transform = `translate3d(0, ${Math.min(scrollY * 0.06, 60)}px, 0)`;
+                    }
+
+                    // Culture section SVG rotation
+                    if (animatedSvg) {
+                        const svgRect = animatedSvg.getBoundingClientRect();
+                        const windowHeight = window.innerHeight;
+                        if (svgRect.top < windowHeight && svgRect.bottom > 0) {
+                            const progress = (windowHeight - svgRect.top) / (windowHeight + svgRect.height);
+                            animatedSvg.style.transform = `rotate(${progress * 90}deg)`;
+                        }
+                    }
+                }
+
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                lastScrollY = window.scrollY;
+                if (!ticking) {
+                    window.requestAnimationFrame(updatePookalamRotation);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // Initial frame
+            updatePookalamRotation();
+        });
+    </script>
+</body>
+
+</html>
