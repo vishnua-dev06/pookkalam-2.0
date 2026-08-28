@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DE1G405X6F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DE1G405X6F');
+    </script>
+
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "nyehueksi5");
+    </script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Primary Meta Tags -->
+    <title>POOVUM CODEUM - Design it. Code it. Bloom it.</title>
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="POOVUM CODEUM - Design it. Code it. Bloom it." />
+    <meta name="description"
+        content="Create your own digital Pookalam using shapes, colours, drawing tools, symmetry, and creative design controls." />
+    <meta name="keywords"
+        content="POOVUM CODEUM, Digital Pookalam Studio, Onam Pookalam Creator, Symmetry Design Tool, Interactive Floral Mandala Maker, Kerala Onam Art, Pookalam Drawing Canvas, Custom Pookalam Patterns, Online Pookalam Editor, Onam Festival Design Tool" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://poovumcodeum.com/create/" />
+    <meta property="og:title" content="POOVUM CODEUM - Design it. Code it. Bloom it." />
+    <meta property="og:description"
+        content="Create your own digital Pookalam using shapes, colours, drawing tools, symmetry, and creative design controls." />
+    <meta property="og:image" content="../public/favicon/banner.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://poovumcodeum.com/create/" />
+    <meta property="twitter:title" content="POOVUM CODEUM - Design it. Code it. Bloom it." />
+    <meta property="twitter:description"
+        content="Create your own digital Pookalam using shapes, colours, drawing tools, symmetry, and creative design controls." />
+    <meta property="twitter:image" content="../public/favicon/banner.png" />
+
+    <!-- Meta Tags Generated with https://metatags.io -->
+    <link rel="icon" href="../public/favicon/favicon-32x32.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <script src="../public/js/download.js"></script>
+    <script src="../public/js/random_design.js"></script>
+    <script src="../public/js/publish.js"></script>
+    <script src="../public/js/tutorial.js"></script>
+    <link rel="stylesheet" type="text/css" href="../public/style/style.css">
+    <link rel="stylesheet" type="text/css" href="../public/style/tutorial.css">
+
+</head>
+
+<body class="bg-background text-foreground">
+    <div class="flex flex-col h-screen">
+        <header class="bg-primary text-primary-foreground px-4 sm:px-6 lg:px-8 py-2.5 flex justify-between items-center z-20">
+            <a href="../index.html" class="pc-creator-brand group" aria-label="POOVUM CODEUM Home">
+                <span class="pc-logo-mark" aria-hidden="true">
+                    <svg viewBox="0 0 40 40" width="30" height="30">
+                        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35"/>
+                        <g fill="currentColor">
+                            <ellipse cx="20" cy="9" rx="4.2" ry="7.5"/>
+                            <ellipse cx="31" cy="20" rx="7.5" ry="4.2"/>
+                            <ellipse cx="20" cy="31" rx="4.2" ry="7.5"/>
+                            <ellipse cx="9" cy="20" rx="7.5" ry="4.2"/>
+                        </g>
+                        <circle cx="20" cy="20" r="4.5" fill="#f0b51b"/>
+                    </svg>
+                </span>
+                <div class="flex flex-col">
+                    <h1 class="text-base sm:text-lg font-bold text-white dyuthi-font tracking-wide leading-none">POOVUM CODEUM</h1>
+                    <p class="text-[10.5px] sm:text-xs text-amber-200/85 font-normal tracking-wider mt-0.5">Design it. Code it. Bloom it.</p>
+                </div>
+            </a>
+            <nav class="flex items-center gap-2 sm:gap-3 ml-auto">
+                <a class="pc-nav-link" href="../index.html">Home</a>
+                <a class="pc-nav-cta active" href="../create/index.html" aria-current="page">
+                    <span>Create</span>
+                    <span class="pc-sparkle" aria-hidden="true">✨</span>
+                </a>
+            </nav>
+        </header>
+                <div class="studio-shell flex-1 overflow-auto">
+            <!-- Studio Intro / Workflow Guide Bar -->
+            <section class="studio-intro">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-amber-900 tracking-wide">🌸 POOVUM CODEUM</span>
+                    <span class="text-[11px] text-amber-900/60 hidden sm:inline">|</span>
+                    <span class="text-[11px] text-amber-900/80 hidden sm:inline">Petal-to-Bloom Studio</span>
+                </div>
+                <div id="firstTimeGuide" class="first-time-guide">
+                    <div class="first-time-guide__steps">
+                        <span class="first-time-guide__step"><span class="first-time-guide__num">①</span> <strong>Shape</strong> <span class="text-[10px] opacity-75 hidden lg:inline">— Choose element</span></span>
+                        <span class="first-time-guide__arrow" aria-hidden="true">→</span>
+                        <span class="first-time-guide__step"><span class="first-time-guide__num">②</span> <strong>Arrange</strong> <span class="text-[10px] opacity-75 hidden lg:inline">— Build pattern</span></span>
+                        <span class="first-time-guide__arrow" aria-hidden="true">→</span>
+                        <span class="first-time-guide__step"><span class="first-time-guide__num">③</span> <strong>Bloom</strong> <span class="text-[10px] opacity-75 hidden lg:inline">— Bring to life</span></span>
+                    </div>
+                    <button id="dismissFirstTimeGuide" type="button" class="first-time-guide__dismiss" aria-label="Dismiss guide">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- LEFT COLUMN: PETAL STUDIO 🌸 (Tools + Edit Actions + Sector + Shapes) -->
+            <aside class="studio-workspace flex flex-col gap-2">
+                <div class="workspace-heading">
+                    <h3 class="text-base font-semibold text-amber-950">🌸 Petal Studio</h3>
+                    <p class="text-xs text-muted-foreground">Design one petal sector — it mirrors around your bloom.</p>
+                </div>
+
+                <!-- Drawing Mode Controls & Tools -->
+                <div class="studio-draw-controls flex flex-col gap-1.5">
+                    <div class="flex gap-1.5">
+                        <button id="freeformBtn"
+                            class="mode-btn flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground h-8 px-2 py-1">
+                            Drawing Mode
+                        </button>
+                        <button id="dragModeBtn"
+                            class="mode-btn flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-2 py-1">
+                            Drag & Drop Mode
+                        </button>
+                    </div>
+
+                    <!-- Drawing Tools Grid -->
+                    <div class="grid grid-cols-6 gap-1">
+                        <div data-tool="pencil"
+                            class="bg-card rounded-md p-1 flex flex-col items-center justify-center h-[46px] cursor-pointer" title="Freehand Drawing">
+                            <div class="h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-3.5 h-3.5">
+                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-[9.5px] leading-tight">Pen</span>
+                        </div>
+                        <div data-tool="line"
+                            class="bg-card rounded-md p-1 flex flex-col items-center justify-center h-[46px] cursor-pointer" title="Straight Line">
+                            <div class="h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-3.5 h-3.5">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-5.5Z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-[9.5px] leading-tight">Line</span>
+                        </div>
+                        <div data-tool="circle"
+                            class="bg-card rounded-md p-1 flex flex-col items-center justify-center h-[46px] cursor-pointer" title="Circle">
+                            <div class="h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-3.5 h-3.5">
+                                    <path d="m12.99 6.74 1.93 3.44" />
+                                    <path d="M19.136 12a10 10 0 0 1-14.271 0" />
+                                    <path d="m21 21-2.16-3.84" />
+                                    <path d="m3 21 8.02-14.26" />
+                                    <circle cx="12" cy="5" r="2" />
+                                </svg>
+                            </div>
+                            <span class="text-[9.5px] leading-tight">Circle</span>
+                        </div>
+                        <div data-tool="curve"
+                            class="bg-card rounded-md p-1 flex flex-col items-center justify-center h-[46px] cursor-pointer" title="Smooth Curve">
+                            <div class="h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-3.5 h-3.5">
+                                    <circle cx="19" cy="5" r="2" />
+                                    <circle cx="5" cy="19" r="2" />
+                                    <path d="M5 17A12 12 0 0 1 17 5" />
+                                </svg>
+                            </div>
+                            <span class="text-[9.5px] leading-tight">Curve</span>
+                        </div>
+                        <div data-tool="eraser"
+                            class="bg-card rounded-md p-1 flex flex-col items-center justify-center h-[46px] cursor-pointer" title="Eraser">
+                            <div class="h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-3.5 h-3.5">
+                                    <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path>
+                                    <path d="M22 21H7"></path>
+                                    <path d="m5 11 9 9"></path>
+                                </svg>
+                            </div>
+                            <span class="text-[9.5px] leading-tight">Eraser</span>
+                        </div>
+                        <div data-tool="rotate"
+                            class="bg-card rounded-md p-1 flex flex-col items-center justify-center h-[46px] cursor-pointer" title="Rotate Shapes">
+                            <div class="h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-3.5 h-3.5">
+                                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                                    <path d="M3 3v5h5" />
+                                </svg>
+                            </div>
+                            <span class="text-[9.5px] leading-tight">Rotate</span>
+                        </div>
+                    </div>
+
+                    <!-- Edit Actions Group (Undo / Redo / Start Fresh) directly with drawing tools -->
+                    <div class="left-edit-actions flex items-center gap-1.5 mt-0.5">
+                        <div data-tool="undo"
+                            class="flex-1 bg-card rounded-md p-1.5 flex items-center justify-center gap-1 cursor-pointer h-7 border border-input hover:bg-accent" title="Step back to previous state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="w-3 h-3 text-amber-950">
+                                <path d="M3 7v6h6"></path>
+                                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                            </svg>
+                            <span class="text-[10.5px] font-medium">Step Back</span>
+                        </div>
+                        <div data-tool="redo"
+                            class="flex-1 bg-card rounded-md p-1.5 flex items-center justify-center gap-1 cursor-pointer h-7 border border-input hover:bg-accent" title="Bring back undone state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="w-3 h-3 text-amber-950">
+                                <path d="M21 7v6h-6"></path>
+                                <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path>
+                            </svg>
+                            <span class="text-[10.5px] font-medium">Bring It Back</span>
+                        </div>
+                        <div id="clearBtn"
+                            class="flex-1 bg-card rounded-md p-1.5 flex items-center justify-center gap-1 cursor-pointer h-7 border border-destructive/30 hover:bg-destructive/10" title="Start fresh with a clean sector">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                fill="none" stroke="#dc2828" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="w-3 h-3 text-destructive">
+                                <path d="M3 6h18"></path>
+                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                            </svg>
+                            <span class="text-[10.5px] font-semibold text-destructive">Start Fresh</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector Drawing/Editor Area -->
+                <div class="bg-card rounded-md flex items-center justify-center">
+                    <div id="drawingArea"
+                        class="w-full h-[255px] bg-primary-foreground rounded-md flex justify-center items-center relative">
+                        <svg id="triangleTemplate" width="192.62984752301145" height="249.80622641951618"
+                            viewBox="0 0 192.62984752301145 249.80622641951618" class="dragging-container mb-2"
+                            style="cursor: crosshair;">
+                            <defs></defs>
+                            <path
+                                d="M96.31492376150572,249.80622641951618 L0,49.80622641951617 A200,200 0 0,1 192.62984752301145,49.80622641951617 Z"
+                                fill="#ffffff" stroke="gray"></path>
+                            <g id="drawingLayer" clip-path="url(#triangleClip)">
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="21.891496946963997" class="resizable"
+                                    style="cursor: default; pointer-events: all;"></circle>
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="53.90106522134882" class="resizable"
+                                    style="cursor: default; pointer-events: all;"></circle>
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="56.90074290786373" class="resizable"
+                                    style="cursor: default; pointer-events: all;"></circle>
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="82.89920013645286" class="resizable"
+                                    style="cursor: default; pointer-events: all;"></circle>
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="84.89914733545443" class="resizable"
+                                    style="pointer-events: all;"></circle>
+                                <path fill="none" stroke="#000000" stroke-width="1"
+                                    d="M77.36109161376953,166.91250610351562 Q77.36109161376953,141.4115447998047 96.36180114746094,124.91092681884766"
+                                    class="resizable" style="cursor: default; pointer-events: all;"></path>
+                                <path fill="none" stroke="#000000" stroke-width="1"
+                                    d="M96.36180114746094,124.91092681884766 Q115.86253356933594,142.91160202026367 115.36251068115234,166.91250610351562"
+                                    class="resizable" style="cursor: default; pointer-events: all;"></path>
+                                <path fill="none" stroke="#000000" stroke-width="1"
+                                    d="M59.22768783569336,172.99270629882812 Q50.2271671295166,124.98991394042969 96.22984313964844,87.98776245117188">
+                                </path>
+                                <path fill="none" stroke="#000000" stroke-width="1"
+                                    d="M133.23199462890625,172.99270629882812 Q142.2325210571289,127.99009704589844 96.22984313964844,87.98776245117188">
+                                </path>
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="161.81848633511117"></circle>
+                                <path fill="none" stroke="#000000" stroke-width="1"
+                                    d="M126.2315902709961,124.98991394042969 Q144.2326316833496,103.98868942260742 166.23391723632812,103.98869323730469">
+                                </path>
+                                <path fill="none" stroke="#000000" stroke-width="1"
+                                    d="M65.22803497314453,124.98991394042969 Q56.22751426696777,106.98887252807617 25.2257080078125,102.98863220214844">
+                                </path>
+                                <circle fill="none" stroke="#000000" stroke-width="1" cx="96.31492376150572"
+                                    cy="249.80622641951618" r="164.81866140404566"></circle>
+                            </g>
+                            <clipPath id="triangleClip">
+                                <path
+                                    d="M96.31492376150572,249.80622641951618 L0,49.80622641951617 A200,200 0 0,1 192.62984752301145,49.80622641951617 Z">
+                                </path>
+                            </clipPath>
+                            <g id="gridGroup" clip-path="url(#triangleClip)">
+                                <line x1="0" y1="24.98062264195162" x2="192.62984752301145"
+                                    y2="24.98062264195162" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="49.96124528390324" x2="192.62984752301145"
+                                    y2="49.96124528390324" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="74.94186792585487" x2="192.62984752301145"
+                                    y2="74.94186792585487" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="99.92249056780648" x2="192.62984752301145"
+                                    y2="99.92249056780648" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="124.90311320975809" x2="192.62984752301145"
+                                    y2="124.90311320975809" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="149.88373585170973" x2="192.62984752301145"
+                                    y2="149.88373585170973" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="174.86435849366134" x2="192.62984752301145"
+                                    y2="174.86435849366134" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="199.84498113561295" x2="192.62984752301145"
+                                    y2="199.84498113561295" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="0" y1="224.82560377756457" x2="192.62984752301145"
+                                    y2="224.82560377756457" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="19.262984752301143" y1="0" x2="19.262984752301143"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="38.52596950460229" y1="0" x2="38.52596950460229"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="57.78895425690343" y1="0" x2="57.78895425690343"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="77.05193900920457" y1="0" x2="77.05193900920457"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="96.31492376150572" y1="0" x2="96.31492376150572"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="115.57790851380686" y1="0" x2="115.57790851380686"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="134.840893266108" y1="0" x2="134.840893266108" y2="249.80622641951618"
+                                    stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="154.10387801840915" y1="0" x2="154.10387801840915"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="173.3668627707103" y1="0" x2="173.3668627707103"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                                <line x1="96.31492376150572" y1="0" x2="96.31492376150572"
+                                    y2="249.80622641951618" stroke="#e0e0e0" stroke-width="0.5"></line>
+                            </g>
+                        </svg>
+                        <div id="sectorEmptyState" class="sector-empty-state" aria-hidden="true">
+                            <p class="sector-empty-state__title">🌸 Start creating your Pookalam</p>
+                            <p class="sector-empty-state__hint">Choose a tool, draw your sector, or drag a shape into the editing area.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shapes Palette: 4 Categories Packing Naturally -->
+                <div class="studio-shapes-section flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-semibold tracking-wide flex items-center gap-1 text-amber-950">
+                            <span>🌸</span>
+                            <span>SHAPES</span>
+                        </h3>
+                        <span class="text-[10px] text-muted-foreground">Drag into wedge</span>
+                    </div>
+                    <div id="shapearea" class="dragging-container flex flex-col gap-1.5">
+                        <!-- Category: Petals (4 shapes) -->
+                        <div class="shape-category">
+                            <div class="shape-category-title text-[9.5px] font-semibold text-muted-foreground mb-0.5 flex items-center gap-1">
+                                <span>🌸</span><span>Petals</span>
+                            </div>
+                            <div class="shape-category-grid flex flex-wrap gap-1">
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Classic Drop Petal" data-shape="custom1">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 111 117" data-shape="custom1">
+                                        <path
+                                            d="M107.532 90.1785C83.7449 96.6751 66.3493 104.347 55.0435 113.566C43.7426 104.351 26.3571 96.6817 2.58549 90.1869C-0.772028 61.8199 9.45296 24.6334 55.022 2.23499C76.3402 13.2042 90.7708 26.1434 99.2105 40.8475C107.558 55.3905 110.148 71.8385 107.532 90.1785Z"
+                                            stroke="#222222" stroke-width="2" fill="none" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Pointed Petal" data-shape="custom2">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 139 126" data-shape="custom2">
+                                        <path
+                                            d="M69.6646 3C-10.1141 56.1561 -0.783584 108.38 10.1799 124H130.545C139.642 108.613 151.538 59.6532 69.6646 3Z"
+                                            stroke="black" stroke-width="2" fill="none" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Curved Lotus Petal" data-shape="custom3">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 159 230" fill="none"
+                                        data-shape="custom3" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M49.4247 52.7852C59.8994 36.2386 70.2865 19.8303 78.2537 4.26678C84.9538 14.4935 91.8836 24.6367 98.7163 34.6378L99.8471 36.2929C107.698 47.7854 115.395 59.0846 122.476 70.146C136.656 92.2989 148.252 113.335 153.601 132.815C158.931 152.229 158.012 169.906 147.414 185.616C136.808 201.338 116.289 215.426 81.6443 227.149C42.7707 217.246 21.0576 203.315 10.613 187.099C0.170573 170.886 0.690247 151.902 7.45753 131.18C14.2331 110.434 27.1612 88.2975 41.0375 66.0915C43.8096 61.6552 46.6203 57.2152 49.4247 52.7852Z"
+                                            stroke="#222222" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Wide Teardrop Petal" data-shape="custom17">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 200 200" fill="none"
+                                        data-shape="custom17" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M123.344 200C100 200 100 143.969 76.6558 143.969C49.7872 143.969 0 150.205 0 123.338C0 99.9951 56.0242 99.995 56.0242 76.652C56.0242 49.7946 49.7872 0 76.6558 0C100 0 100 56.0313 123.344 56.0313C150.213 56.0313 200 49.7946 200 76.652C200 99.995 143.966 99.9951 143.966 123.338C143.966 150.205 150.213 200 123.344 200Z"
+                                            fill="none" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category: Leaves (3 shapes) -->
+                        <div class="shape-category">
+                            <div class="shape-category-title text-[9.5px] font-semibold text-muted-foreground mb-0.5 flex items-center gap-1">
+                                <span>🌿</span><span>Leaves</span>
+                            </div>
+                            <div class="shape-category-grid flex flex-wrap gap-1">
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Oval Leaf" data-shape="custom4">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 100 100" data-shape="custom4">
+                                        <path d="M45 10 Q18 55 45 100 Q72 55 45 10" fill="none" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Curved Palm Leaf" data-shape="custom12">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 113 191" fill="none"
+                                        data-shape="custom12" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M4.03989 140.397C-10.3154 77.7553 54.6099 24.0316 88.867 5C64.0713 61.1165 92.6734 143.66 110.074 177.917C80.7106 191.511 18.3952 203.039 4.03989 140.397Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Narrow Leaf Stem" data-shape="custom13">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 73 256" fill="none"
+                                        data-shape="custom13" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M69.7793 3.67984C63.873 24.6197 22.7988 58.4907 3 72.8087L35.8863 255.362C49.6449 162.743 75.6856 -17.26 69.7793 3.67984Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category: Patterns (6 shapes) -->
+                        <div class="shape-category">
+                            <div class="shape-category-title text-[9.5px] font-semibold text-muted-foreground mb-0.5 flex items-center gap-1">
+                                <span>✦</span><span>Patterns</span>
+                            </div>
+                            <div class="shape-category-grid flex flex-wrap gap-1">
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Traditional Kolam Tip" data-shape="custom8">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 137 130" fill="none"
+                                        data-shape="custom8" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M99.1422 29.4261L99.1639 29.4423L99.1861 29.4579C110.283 37.2743 122.272 44.6607 134.319 50.7799C128.365 62.7557 122.871 75.2107 118.695 88.1303C114.535 101.002 111.249 114.326 109.262 127.688C95.8562 125.479 82.4056 124.162 68.5 124.162C54.5734 124.162 41.103 125.483 27.6767 127.698C25.3253 114.398 22.4828 101.057 18.3044 88.1303C14.1313 75.2196 8.64254 62.7728 2.69364 50.8045C15.153 44.6702 26.6955 37.2611 36.9044 29.4175C48.0147 21.1304 58.2467 12.4005 68.0174 2.81136C77.7916 12.4039 88.0274 21.1364 99.1422 29.4261Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Diamond Crest" data-shape="custom9">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 121 134" fill="none"
+                                        data-shape="custom9" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M102.298 131.087C101.832 130.869 101.302 130.625 100.713 130.36C98.2522 129.252 94.7547 127.777 90.5954 126.302C82.3086 123.363 71.2582 120.374 60.5001 120.374C50.9418 120.374 40.4871 123.379 32.5287 126.311C28.5268 127.785 25.1099 129.259 22.6913 130.365C22.0937 130.638 21.5567 130.889 21.0864 131.112L2.23029 55.1762L60.5001 2.69168L118.799 55.2026L102.298 131.087Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Eight-Point Star" data-shape="custom10">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 162 162" fill="none"
+                                        data-shape="custom10" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M75.3023 6.64393C77.1152 1.15134 84.8848 1.15133 86.6977 6.64395L94.1938 29.3558C96.1086 35.1573 102.732 37.9009 108.188 35.1526L129.549 24.3935C134.715 21.7915 140.209 27.2854 137.607 32.4512L126.847 53.8115C124.099 59.2677 126.843 65.8914 132.644 67.8062L155.356 75.3023C160.849 77.1152 160.849 84.8848 155.356 86.6977L132.644 94.1938C126.843 96.1086 124.099 102.732 126.847 108.189L137.607 129.549C140.209 134.715 134.715 140.209 129.549 137.607L108.188 126.847C102.732 124.099 96.1086 126.843 94.1938 132.644L86.6977 155.356C84.8848 160.849 77.1152 160.849 75.3023 155.356L67.8062 132.644C65.8914 126.843 59.2677 124.099 53.8115 126.847L32.4512 137.607C27.2854 140.209 21.7915 134.715 24.3935 129.549L35.1526 108.188C37.9009 102.732 35.1573 96.1086 29.3558 94.1938L6.64393 86.6977C1.15134 84.8848 1.15133 77.1152 6.64395 75.3023L29.3558 67.8062C35.1573 65.8914 37.9009 59.2677 35.1526 53.8115L24.3935 32.4512C21.7915 27.2854 27.2854 21.7915 32.4512 24.3935L53.8115 35.1526C59.2677 37.9009 65.8914 35.1573 67.8062 29.3558L75.3023 6.64393Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Star Emblem" data-shape="custom11">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 200 200" fill="none"
+                                        data-shape="custom11" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M89.9318 6.12863C94.1569 -2.04288 105.843 -2.04288 110.068 6.12863L136.973 58.1644C138.051 60.2496 139.75 61.9486 141.836 63.0268L193.871 89.9318C202.043 94.1569 202.043 105.843 193.871 110.068L141.836 136.973C139.75 138.051 138.051 139.75 136.973 141.836L110.068 193.871C105.843 202.043 94.1569 202.043 89.9318 193.871L63.0268 141.836C61.9486 139.75 60.2496 138.051 58.1644 136.973L6.12863 110.068C-2.04288 105.843 -2.04288 94.1569 6.12863 89.9318L58.1644 63.0268C60.2496 61.9486 61.9486 60.2496 63.0268 58.1644L89.9318 6.12863Z"
+                                            fill="none" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Floral Cross" data-shape="custom15">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 200 200" fill="none"
+                                        data-shape="custom15" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M50.7143 0H0.71429V50C0.71429 75.462 19.7466 96.4788 44.361 99.6002C19.4015 102.402 4.22025e-06 123.578 2.18557e-06 149.286L0 199.286H50C75.462 199.286 96.4788 180.253 99.6002 155.639C102.402 180.599 123.578 200 149.286 200H199.286V150C199.286 124.538 180.253 103.521 155.639 100.4C180.599 97.5984 200 76.422 200 50.7143V0.714286L150 0.714284C124.538 0.714282 103.521 19.7466 100.4 44.361C97.5984 19.4015 76.422 0 50.7143 0Z"
+                                            fill="none" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Lotus Motif" data-shape="custom16">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 200 200" fill="none"
+                                        data-shape="custom16" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M100.387 91.8532C96.2415 40.435 53.2 0 0.714282 0C0.714282 52.2424 40.7753 95.1281 91.8532 99.6128C40.435 103.758 -5.33517e-06 146.8 -7.62939e-06 199.286C52.2424 199.286 95.1281 159.225 99.6128 108.147C103.758 159.565 146.8 200 199.286 200C199.286 147.758 159.225 104.872 108.147 100.387C159.565 96.2416 200 53.2 200 0.714286C147.758 0.714283 104.872 40.7753 100.387 91.8532ZM99.9975 100.002C99.9991 100.002 100.001 100.003 100.002 100.003L100.003 99.9975C100.001 99.9975 99.9992 99.9975 99.9975 99.9975C99.9975 99.9991 99.9975 100.001 99.9975 100.002Z"
+                                            fill="none" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category: Basic Shapes (4 shapes) -->
+                        <div class="shape-category">
+                            <div class="shape-category-title text-[9.5px] font-semibold text-muted-foreground mb-0.5 flex items-center gap-1">
+                                <span>◯</span><span>Basic Shapes</span>
+                            </div>
+                            <div class="shape-category-grid flex flex-wrap gap-1">
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Circle" data-shape="custom5">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 179 179" data-shape="custom5"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="89.5" cy="89.5" r="87.5" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Square" data-shape="custom6">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 170 170" fill="none"
+                                        data-shape="custom6" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="166" height="166" stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Hexagon" data-shape="custom7">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 170 192" fill="none"
+                                        data-shape="custom7" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M79.5 3.48483C82.9034 1.51987 87.0966 1.51987 90.5 3.48483L162.37 44.9793C165.774 46.9442 167.87 50.5756 167.87 54.5056V137.494C167.87 141.424 165.774 145.056 162.37 147.021L90.5 188.515C87.0966 190.48 82.9034 190.48 79.5 188.515L7.62951 147.021C4.22609 145.056 2.12951 141.424 2.12951 137.494V54.5056C2.12951 50.5756 4.2261 46.9442 7.62951 44.9793L79.5 3.48483Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                                <div class="shape-tile bg-card rounded-md flex items-center justify-center" title="Star (5-Point)" data-shape="custom14">
+                                    <svg class="shape-menu" width="26" height="26" viewBox="0 0 188 178" fill="none"
+                                        data-shape="custom14" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M94 6.47214L114.1 68.3344L114.549 69.7163H116.002L181.048 69.7163L128.425 107.949L127.249 108.803L127.698 110.185L147.799 172.048L95.1756 133.815L94 132.961L92.8244 133.815L40.2013 172.048L60.3015 110.185L60.7506 108.803L59.575 107.949L6.95183 69.7163L71.9976 69.7163H73.4507L73.8997 68.3344L94 6.47214Z"
+                                            stroke="black" stroke-width="2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CENTER COLUMN: BLOOM CANVAS 🌼 (Artwork + Compact View Controls) -->
+            <section class="studio-preview flex flex-col gap-2">
+                <!-- Heading with Compact View Controls Row -->
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                        <h3 class="text-base font-semibold text-amber-950">🌼 Bloom Canvas</h3>
+                        <p class="text-xs text-muted-foreground">Watch your Pookalam blossom in real time.</p>
+                    </div>
+                    <!-- View Controls (Zoom, Reset, Grid, Fullscreen) -->
+                    <div class="preview-controls flex items-center gap-1" aria-label="Preview controls">
+                        <div class="preview-zoom-group flex items-center bg-card rounded-md border border-input overflow-hidden h-7">
+                            <button id="previewZoomOut" type="button" class="px-2 h-full text-xs font-bold hover:bg-accent" aria-label="Zoom out">−</button>
+                            <span id="previewZoomValue" class="px-1.5 text-xs font-bold text-amber-900 min-w-[2.8rem] text-center">100%</span>
+                            <button id="previewZoomIn" type="button" class="px-2 h-full text-xs font-bold hover:bg-accent" aria-label="Zoom in">+</button>
+                            <button id="previewZoomReset" type="button" class="px-1.5 h-full text-xs hover:bg-accent border-l border-input" title="Reset zoom (100%)" aria-label="Reset zoom">↻</button>
+                        </div>
+                        <label class="flex items-center gap-1 px-2 h-7 rounded-md bg-card border border-input text-xs font-medium cursor-pointer select-none" title="Toggle Mandala Gridlines">
+                            <input type="checkbox" id="gridlines" class="h-3.5 w-3.5 rounded border-gray-400 cursor-pointer" />
+                            <span>Grid</span>
+                        </label>
+                        <button id="previewFullscreen" type="button" class="px-2 h-7 rounded-md bg-card border border-input text-xs font-bold hover:bg-accent" title="Toggle Fullscreen" aria-label="Toggle fullscreen">⛶</button>
+                    </div>
+                </div>
+
+                <!-- Canvas Visual Layer -->
+                <div class="flex items-center justify-center bg-muted rounded-lg p-2 sm:p-3">
+                    <div
+                        class="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[520px] lg:h-[520px] bg-card rounded-lg shadow-lg overflow-hidden">
+                        <div class="preview-visual-layer">
+                            <canvas id="gridCanvas" width="600" height="600"
+                                class="absolute top-0 left-0 pointer-events-none"></canvas>
+                            <canvas id="mandalaCanvas" width="600" height="600" class="border border-gray-300"></canvas>
+                            <svg id="mandala" width="600" height="600" viewBox="0 0 600 600" class="border border-gray-300"
+                                style="display: none;">
+                                <rect width="600" height="600" fill="#ffffff" />
+                            </svg>
+                        </div>
+                        <!-- Magnifier lens overlay -->
+                        <div id="magnifier" class="absolute hidden pointer-events-none rounded-full border-2 border-gray-500 shadow-lg"
+                            style="width: 240px; height: 240px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.25);">
+                            <canvas id="magnifierCanvas" width="240" height="240"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: DESIGN FLOW ✨ (Grouped into: 🌸 DESIGN, 🎨 COLOUR & IDEAS, ✨ FINISH) -->
+            <aside class="studio-controls flex flex-col gap-2.5">
+                <div class="controls-heading" aria-hidden="true">
+                    <span class="controls-heading-mark">✿</span>
+                    <span>✨ Design Flow</span>
+                </div>
+
+                <!-- GROUP 1: 🌸 DESIGN (Bloom Symmetry, Symmetry Presets, Size/Radius) -->
+                <div class="studio-group-card flex flex-col gap-2">
+                    <div class="group-header text-[10.5px] font-bold text-amber-950 tracking-wider flex items-center gap-1.5 uppercase pb-1 border-b border-amber-900/10">
+                        <span>🌸</span>
+                        <span>DESIGN</span>
+                    </div>
+
+                    <!-- 1. BLOOM SYMMETRY -->
+                    <div class="control-section-symmetry flex flex-col">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <label class="text-xs font-medium text-amber-950" for="sectors">
+                                Bloom Symmetry - <span id="sectorValue" class="text-xs font-bold text-amber-900">7</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="range" id="sectors" min="4" max="12" value="7"
+                                class="w-full h-1.5 bg-secondary rounded-full appearance-none cursor-pointer" />
+                        </div>
+                        <div class="symmetry-presets grid grid-cols-4 gap-1 mt-1.5">
+                            <button type="button" class="symmetry-preset-btn" data-slices="4" title="4-fold radial symmetry">4 · Simple</button>
+                            <button type="button" class="symmetry-preset-btn" data-slices="6" title="6-fold radial symmetry">6 · Classic</button>
+                            <button type="button" class="symmetry-preset-btn" data-slices="8" title="8-fold radial symmetry">8 · Balanced</button>
+                            <button type="button" class="symmetry-preset-btn" data-slices="12" title="12-fold radial symmetry">12 · Grand</button>
+                        </div>
+                    </div>
+
+                    <!-- 2. SIZE / RADIUS -->
+                    <div class="control-section-size flex flex-col">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <label class="text-xs font-medium text-amber-950" for="radius">
+                                Size / Radius - <span id="radiusValue" class="text-xs font-bold text-amber-900">200</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="range" id="radius" min="50" max="200" value="200"
+                                class="w-full h-1.5 bg-secondary rounded-full appearance-none cursor-pointer" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 2: 🎨 COLOUR & IDEAS (Flower Palette, Add Colour, Random, Bloom Ideas) -->
+                <div class="studio-group-card flex flex-col gap-2">
+                    <div class="group-header text-[10.5px] font-bold text-amber-950 tracking-wider flex items-center gap-1.5 uppercase pb-1 border-b border-amber-900/10">
+                        <span>🎨</span>
+                        <span>COLOUR & IDEAS</span>
+                    </div>
+
+                    <!-- FLOWER PALETTE -->
+                    <div class="control-section-colours flex flex-col gap-1">
+                        <div class="palette-groups flex flex-col gap-1.5 my-0.5">
+                            <!-- Traditional -->
+                            <div class="palette-group">
+                                <span class="text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">Traditional</span>
+                                <div class="flex flex-wrap gap-1.5 mt-0.5">
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #B31B1B;"
+                                        data-color="#B31B1B" title="Red / Chembarathi"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FFDB49;"
+                                        data-color="#FFDB49" title="Yellow / Jemanthi"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FF8C00;"
+                                        data-color="#FF8C00" title="Orange / Marigold"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FFFFF0;"
+                                        data-color="#FFFFF0" title="Ivory / Thumba"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FFD700;"
+                                        data-color="#FFD700" title="Gold / Ponnam"></div>
+                                </div>
+                            </div>
+                            <!-- Festival -->
+                            <div class="palette-group">
+                                <span class="text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">Festival</span>
+                                <div class="flex flex-wrap gap-1.5 mt-0.5">
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FF4500;"
+                                        data-color="#FF4500" title="Bright Orange-Red"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FFA500;"
+                                        data-color="#FFA500" title="Tangerine"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FF69B4;"
+                                        data-color="#FF69B4" title="Deep Pink"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FFC0CB;"
+                                        data-color="#FFC0CB" title="Soft Pink"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #9932CC;"
+                                        data-color="#9932CC" title="Purple / Orchid"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #800080;"
+                                        data-color="#800080" title="Royal Violet"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #EE82EE;"
+                                        data-color="#EE82EE" title="Lilac"></div>
+                                </div>
+                            </div>
+                            <!-- Nature -->
+                            <div class="palette-group">
+                                <span class="text-[9px] uppercase tracking-wider font-semibold text-muted-foreground">Nature</span>
+                                <div class="flex flex-wrap gap-1.5 mt-0.5">
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #66B032;"
+                                        data-color="#66B032" title="Leaf Green"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #228B22;"
+                                        data-color="#228B22" title="Deep Green"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #ADFF2F;"
+                                        data-color="#ADFF2F" title="Fresh Sprout"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #6495ED;"
+                                        data-color="#6495ED" title="Sky Blue"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #F4A460;"
+                                        data-color="#F4A460" title="Earth Sand"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #FFFF66;"
+                                        data-color="#FFFF66" title="Soft Yellow"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #DDA0DD;"
+                                        data-color="#DDA0DD" title="Plum"></div>
+                                    <div class="color-circle w-6 h-6 rounded-full cursor-pointer" style="background-color: #000000;"
+                                        data-color="#000000" title="Charcoal Outline"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-0.5 flex items-center gap-2">
+                            <label for="custom-color" class="text-xs font-medium text-gray-700 whitespace-nowrap">Custom Color:</label>
+                            <input type="color" id="custom-color" class="w-full h-7 rounded cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- CREATE ACTIONS (Add Colour, Random) -->
+                    <div class="flex items-center gap-1.5 pt-0.5">
+                        <button type="button" data-tool="fill"
+                            class="flex-1 bg-card rounded-md p-1.5 flex items-center justify-center gap-1.5 h-8 cursor-pointer border border-input hover:bg-accent" title="Add colour with paint fill">
+                            <span class="text-xs leading-none">◒</span>
+                            <span class="text-xs font-medium">Add Colour</span>
+                        </button>
+                        <button type="button" data-tool="random"
+                            class="flex-1 bg-card rounded-md p-1.5 flex items-center justify-center gap-1.5 h-8 cursor-pointer border border-amber-500/30 hover:bg-amber-100" title="Generate Random Bloom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                                fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"></path>
+                            </svg>
+                            <span class="text-xs font-semibold text-[#d97706]">Random</span>
+                        </button>
+                    </div>
+
+                    <!-- BLOOM IDEAS: expandable smart suggestions -->
+                    <section class="bloom-ideas" aria-labelledby="bloomIdeasTitle">
+                        <button id="bloomIdeasToggle" type="button" class="bloom-ideas__toggle" aria-expanded="false" aria-controls="bloomIdeasPanel">
+                            <span><span aria-hidden="true">✨</span> Bloom Ideas</span>
+                            <span class="bloom-ideas__chevron" aria-hidden="true">⌄</span>
+                        </button>
+                        <div id="bloomIdeasPanel" class="bloom-ideas__panel" hidden>
+                            <div class="bloom-ideas__intro">
+                                <h3 id="bloomIdeasTitle">Your Smart Pookalam Design Assistant</h3>
+                                <p>Pick a mood and discover a creative starting point.</p>
+                            </div>
+                            <fieldset class="bloom-ideas__moods">
+                                <legend>Choose Your Design Mood</legend>
+                                <div class="bloom-ideas__mood-grid">
+                                    <button type="button" class="bloom-mood is-selected" data-mood="traditional" aria-pressed="true">🌼 Traditional Kerala</button>
+                                    <button type="button" class="bloom-mood" data-mood="modern" aria-pressed="false">🎨 Modern Onam</button>
+                                    <button type="button" class="bloom-mood" data-mood="minimal" aria-pressed="false">🌿 Minimal</button>
+                                    <button type="button" class="bloom-mood" data-mood="vibrant" aria-pressed="false">🔥 Vibrant Festival</button>
+                                    <button type="button" class="bloom-mood" data-mood="gold" aria-pressed="false">✨ Elegant Gold</button>
+                                </div>
+                            </fieldset>
+                            <div id="bloomSuggestion" class="bloom-ideas__suggestion" aria-live="polite"></div>
+                            <button id="bloomApply" type="button" class="bloom-ideas__apply">✨ Apply Suggestions</button>
+                            <p class="bloom-ideas__note">Applies safe settings only; your artwork stays untouched.</p>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- GROUP 3: ✨ FINISH (Your Bloom Live Stats, Save My Bloom, Save Layout, Share the Bloom) -->
+                <div class="studio-group-card flex flex-col gap-2">
+                    <div class="group-header text-[10.5px] font-bold text-amber-950 tracking-wider flex items-center gap-1.5 uppercase pb-1 border-b border-amber-900/10">
+                        <span>✨</span>
+                        <span>FINISH</span>
+                    </div>
+
+                    <!-- LIVE YOUR BLOOM PANEL -->
+                    <section class="your-bloom-panel bg-card rounded-md p-2 flex flex-col gap-1.5 border border-border" aria-label="Your Bloom summary">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xs font-semibold tracking-wide flex items-center gap-1 text-amber-950">
+                                <span>🌸</span>
+                                <span>YOUR BLOOM</span>
+                            </h3>
+                            <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-900 font-medium">Live</span>
+                        </div>
+                        <div id="bloomEmptyHint" class="text-[10.5px] text-amber-900/75 italic text-center py-0.5 bg-amber-50/70 rounded border border-amber-900/10">
+                            Your bloom is just beginning 🌱
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5 text-xs">
+                            <div class="your-bloom-stat bg-primary-foreground/60 rounded p-1.5 flex flex-col">
+                                <span class="text-[10px] text-muted-foreground">Shapes</span>
+                                <span id="bloomStatShapes" class="font-bold text-foreground">0</span>
+                            </div>
+                            <div class="your-bloom-stat bg-primary-foreground/60 rounded p-1.5 flex flex-col">
+                                <span class="text-[10px] text-muted-foreground">Colours</span>
+                                <span id="bloomStatColours" class="font-bold text-foreground">1</span>
+                            </div>
+                            <div class="your-bloom-stat bg-primary-foreground/60 rounded p-1.5 flex flex-col">
+                                <span class="text-[10px] text-muted-foreground">Symmetry</span>
+                                <span id="bloomStatSymmetry" class="font-bold text-foreground">7-fold</span>
+                            </div>
+                            <div class="your-bloom-stat bg-primary-foreground/60 rounded p-1.5 flex flex-col">
+                                <span class="text-[10px] text-muted-foreground">Mood</span>
+                                <span id="bloomStatMood" class="font-bold text-foreground truncate" title="Traditional Kerala">Traditional</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SAVE & SHARE ACTIONS -->
+                    <div class="studio-actions-panel flex flex-col gap-1.5 pt-1 border-t border-muted/60">
+                        <div class="relative">
+                            <button id="outputdownloadBtn" type="button"
+                                class="w-full bg-primary text-primary-foreground px-2.5 py-1.5 rounded-md text-xs font-medium flex items-center justify-between cursor-pointer">
+                                <span class="flex items-center">
+                                    <svg class="w-3.5 h-3.5 mr-1.5 inline-block" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                    <span>Save My Bloom</span>
+                                </span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="outputdownloadOptions"
+                                class="hidden absolute top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-20">
+                                <button id="downloadOutputPNG" type="button"
+                                    class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 cursor-pointer" onclick="downloadCanvas('mandalaCanvas', 'output.png'); document.getElementById('outputdownloadOptions').classList.add('hidden');">Download as PNG</button>
+                                <button id="downloadOutputPDF" type="button"
+                                    class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 cursor-pointer">Download as PDF</button>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <button id="layoutdownloadBtn" type="button"
+                                class="w-full bg-primary text-primary-foreground px-2.5 py-1.5 rounded-md text-xs font-medium flex items-center justify-between cursor-pointer">
+                                <span class="flex items-center">
+                                    <svg class="w-3.5 h-3.5 mr-1.5 inline-block" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                    <span>Save Layout</span>
+                                </span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="layoutdownloadOptions"
+                                class="hidden absolute top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-20">
+                                <button id="downloadLayoutSVG" type="button"
+                                    class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 cursor-pointer">Download as SVG</button>
+                                <button id="downloadLayoutPDF" type="button"
+                                    class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 cursor-pointer">Download as PDF</button>
+                            </div>
+                        </div>
+
+                        <button id="publishBtn" type="button"
+                            class="w-full bg-green-600 hover:bg-green-700 text-white px-2.5 py-1.5 rounded-md text-xs font-medium flex items-center justify-center cursor-pointer shadow-sm transition-colors">
+                            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                                </path>
+                            </svg>
+                            Share the Bloom
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    <div id="compatibilityModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm mx-auto text-center">
+            <h2 class="text-xl font-semibold mb-4">Notice</h2>
+            <p id="compatibilityMessage" class="mb-6"></p>
+            <button id="continueButton"
+                class="bg-black hover:bg-black text-white font-semibold px-4 py-2 rounded-md transition duration-300">Continue
+                Anyway</button>
+        </div>
+    </div>
+
+</body>
+<script src="../public/js/script.js"></script>
+<script>
+    (() => {
+        const previewFrame = document.querySelector('.studio-preview .preview-visual-layer');
+        const previewPanel = document.querySelector('.studio-preview');
+        const zoomValue = document.getElementById('previewZoomValue');
+        const zoomIn = document.getElementById('previewZoomIn');
+        const zoomOut = document.getElementById('previewZoomOut');
+        const zoomReset = document.getElementById('previewZoomReset');
+        const fullscreen = document.getElementById('previewFullscreen');
+        if (!previewFrame || !zoomValue || !zoomIn || !zoomOut || !zoomReset || !fullscreen) return;
+
+        let zoom = 1;
+        const MIN_ZOOM = 0.75;
+        const MAX_ZOOM = 1.5;
+        const updateZoom = () => {
+            previewFrame.style.transform = `scale(${zoom})`;
+            previewFrame.style.transformOrigin = 'center center';
+            zoomValue.textContent = `${Math.round(zoom * 100)}%`;
+        };
+        zoomIn.addEventListener('click', () => { zoom = Math.min(MAX_ZOOM, +(zoom + 0.1).toFixed(2)); updateZoom(); });
+        zoomOut.addEventListener('click', () => { zoom = Math.max(MIN_ZOOM, +(zoom - 0.1).toFixed(2)); updateZoom(); });
+        zoomReset.addEventListener('click', () => { zoom = 1; updateZoom(); });
+        fullscreen.addEventListener('click', async () => {
+            if (!document.fullscreenElement) {
+                await previewPanel.requestFullscreen?.();
+            } else {
+                await document.exitFullscreen?.();
+            }
+        });
+        document.addEventListener('fullscreenchange', () => {
+            fullscreen.textContent = document.fullscreenElement ? '×' : '⛶';
+        });
+    })();
+</script>
+
+</html>
