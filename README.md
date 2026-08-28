@@ -262,23 +262,6 @@ A `vercel.json` configuration file is included.
 
 ---
 
-## 🤝 Credits
-
-Created for the **POOVUM CODEUM – Pookkalam Designer Website Competition**.
-
-**Organized by:**  
-ISTE SB NSSCE – Department of Computer Science and Engineering
-
-### Libraries Used
-- Tailwind CSS
-- Interact.js
-- Chroma.js
-- jsPDF
-- LZ-String
-- Lucide
-
----
-
 ## 🏆 Competition Project
 
 Created for the **POOVUM CODEUM – Pookkalam Designer Website Competition**.
