@@ -1,5 +1,3 @@
-[POOVUM_CODEUM_README_FINAL.md](https://github.com/user-attachments/files/31561199/POOVUM_CODEUM_README_FINAL.md)
-<div align="center">
 
 # 🌸 POOVUM CODEUM
 
