@@ -248,24 +248,6 @@ A `vercel.json` configuration file is included.
 
 ![Pookkalam Creator](public/ss/aa.png)
 
-Add screenshots to make the repository more attractive:
-
-```text
-public/screenshots/
-├── home.png
-└── creator.png
-```
-
-Then add:
-
-```md
-![Landing Page](public/screenshots/home.png)
-
-![Pookkalam Creator](public/screenshots/creator.png)
-```
-
----
-
 ## ✅ Competition Checklist
 
 - [x] Interactive digital Pookkalam creator
