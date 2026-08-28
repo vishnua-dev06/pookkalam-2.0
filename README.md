@@ -1,23 +1,40 @@
+[POOVUM_CODEUM_README_FINAL.md](https://github.com/user-attachments/files/31561199/POOVUM_CODEUM_README_FINAL.md)
+<div align="center">
 
+# 🌸 POOVUM CODEUM
+
+### **Design it. Code it. Bloom it.**
+
+**An interactive digital Pookkalam design studio inspired by the colours, patterns, and creativity of Onam.**
+
+[🌐 **Live Demo**](https://pookkalam-2-0.vercel.app/) · [💻 **Source Code**](github.com/vishnua-dev06/pookkalam-2.0)
+
+</div>
+
+---
 
 ### **Design it. Code it. Bloom it.**
 
 > An interactive digital Pookkalam design studio where users can experiment with shapes, colours, symmetry, and patterns to create their own Onam-inspired floral designs.
 
-[![Live Website](https://img.shields.io/badge/Live_Website-Visit_Now-f0b51b?style=for-the-badge)](YOUR_LIVE_WEBSITE_URL)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-1f2937?style=for-the-badge&logo=github)](YOUR_GITHUB_REPOSITORY_URL)
+[![Live Website](https://img.shields.io/badge/Live_Website-Visit_Now-f0b51b?style=for-the-badge)](https://pookkalam-2-0.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-1f2937?style=for-the-badge&logo=github)](github.com/vishnua-dev06/pookkalam-2.0)
 
 ---
 
 ## 🌼 About the Project
 
+### Creative Workflow
+
+> **① Shape → ② Arrange → ③ Bloom**
+
+- **Shape** — Choose petals, leaves, patterns, and basic elements.
+- **Arrange** — Draw or drag elements into the editing sector.
+- **Bloom** — Apply colour and symmetry to bring the complete Pookkalam to life.
+
 **POOVUM CODEUM** is an interactive web-based Pookkalam creator that combines **traditional Onam art with creative digital interaction**.
 
 Users can actively participate in the creative process by choosing shapes, arranging elements, experimenting with colours, adjusting symmetry, and watching their design evolve into a complete Pookkalam.
-
-### Creative workflow
-
-> **① Shape → ② Arrange → ③ Bloom**
 
 The project was created for the **POOVUM CODEUM – Pookkalam Designer Website Competition**, organized by **ISTE SB NSSCE – Department of Computer Science and Engineering**.
 
@@ -202,6 +219,14 @@ POOVUM CODEUM combines the visual language of **Onam and Pookkalam traditions** 
 
 ---
 
+## 🖥️ Live Demo
+
+### 🌸 [Visit POOVUM CODEUM](https://pookkalam-2-0.vercel.app/)
+
+Experience the interactive Pookkalam creator live on Vercel.
+
+---
+
 ## 🌐 Deployment
 
 The project can be deployed as a static website using:
@@ -272,6 +297,15 @@ ISTE SB NSSCE – Department of Computer Science and Engineering
 
 ---
 
+## 🏆 Competition Project
+
+Created for the **POOVUM CODEUM – Pookkalam Designer Website Competition**.
+
+**Organized by:**  
+ISTE SB NSSCE – Department of Computer Science and Engineering
+
+---
+
 ## 📄 License
 
 Please refer to the included `LICENSE` file.
@@ -280,7 +314,19 @@ Please refer to the included `LICENSE` file.
 
 <div align="center">
 
-## 🌸 POOVUM CODEUM
+#<div align="center">
+
+# 🌸 POOVUM CODEUM
+
+### **Design it. Code it. Bloom it.**
+
+**An interactive digital Pookkalam design studio inspired by the colours, patterns, and creativity of Onam.**
+
+[🌐 **Live Demo**](https://pookkalam-2-0.vercel.app/) · [💻 **Source Code**](github.com/vishnua-dev06/pookkalam-2.0)
+
+</div>
+
+---
 
 ### **Design it. Code it. Bloom it.**
 
